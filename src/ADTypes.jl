@@ -34,5 +34,5 @@ struct AutoEnzyme <: AbstractADType end
 
 struct AutoTracker <: AbstractADType end
 
-export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoTracker
+export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker
 end
