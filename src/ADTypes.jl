@@ -34,5 +34,14 @@ struct AutoEnzyme <: AbstractADType end
 
 struct AutoTracker <: AbstractADType end
 
-export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker
+struct AutoModelingToolkit <: AbstractADType
+    obj_sparse::Bool
+    cons_sparse::Bool
+end
+
+function AutoModelingToolkit(obj_sparse = false, cons_sparse = false)
+    AutoModelingToolkit(obj_sparse, cons_sparse)
+end
+
+export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit
 end
