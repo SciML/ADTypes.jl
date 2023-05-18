@@ -39,7 +39,7 @@ struct AutoModelingToolkit <: AbstractADType
     cons_sparse::Bool
 end
 
-function AutoModelingToolkit(obj_sparse = false, cons_sparse = false)
+function AutoModelingToolkit(; obj_sparse = false, cons_sparse = false)
     AutoModelingToolkit(obj_sparse, cons_sparse)
 end
 
