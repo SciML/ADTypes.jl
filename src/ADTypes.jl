@@ -43,5 +43,9 @@ function AutoModelingToolkit(; obj_sparse = false, cons_sparse = false)
     AutoModelingToolkit(obj_sparse, cons_sparse)
 end
 
-export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit
+struct AutoSparseFiniteDiff <: AbstractADType end
+
+struct AutoSparseForwardDiff <: AbstractADType end
+
+export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
 end
