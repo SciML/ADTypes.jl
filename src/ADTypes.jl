@@ -45,7 +45,11 @@ end
 
 struct AutoSparseFiniteDiff <: AbstractADType end
 
-struct AutoSparseForwardDiff <: AbstractADType end
+struct AutoSparseForwardDiff{chunksize} <: AbstractADType end
+
+function AutoSparseForwardDiff(chunksize = nothing)
+    AutoSparseForwardDiff{chunksize}()
+end
 
 export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
 end
