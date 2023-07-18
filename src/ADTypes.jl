@@ -1,5 +1,7 @@
 module ADTypes
 
+import EnzymeCore
+
 """
 Base type for AD choices.
 """
@@ -30,7 +32,11 @@ AutoReverseDiff(; compile = false) = AutoReverseDiff(compile)
 
 struct AutoZygote <: AbstractADType end
 
-struct AutoEnzyme <: AbstractADType end
+struct AutoEnzyme{M <: EnzymeCore.Mode} <: AbstractADType
+    mode::M
+end
+
+AutoEnzyme(; mode::EnzymeCore.Mode = EnzymeCore.Reverse) = AutoEnzyme(mode)
 
 struct AutoTracker <: AbstractADType end
 
@@ -51,5 +57,6 @@ function AutoSparseForwardDiff(chunksize = nothing)
     AutoSparseForwardDiff{chunksize}()
 end
 
-export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
+export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme,
+       AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
 end
