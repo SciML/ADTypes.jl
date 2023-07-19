@@ -16,6 +16,12 @@ function AutoFiniteDiff(; fdtype = Val(:forward), fdjtype = fdtype,
     AutoFiniteDiff(fdtype, fdjtype, fdhtype)
 end
 
+struct AutoFiniteDifferences{T} <: AbstractADType
+    fdm::T
+end
+
+AutoFiniteDifferences(; fdm = nothing) = AutoFiniteDifferences(fdm)
+
 struct AutoForwardDiff{chunksize} <: AbstractADType end
 
 function AutoForwardDiff(chunksize = nothing)
@@ -55,6 +61,5 @@ function AutoSparseForwardDiff(chunksize = nothing)
     AutoSparseForwardDiff{chunksize}()
 end
 
-export AutoFiniteDiff, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme,
-       AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
+export AutoFiniteDiff, AutoFiniteDifferences, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
 end
