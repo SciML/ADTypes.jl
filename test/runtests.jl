@@ -39,11 +39,11 @@ import EnzymeCore
 
     adtype = AutoEnzyme()
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoEnzyme{<:EnzymeCore.ReverseMode}
+    @test adtype isa AutoEnzyme{Nothing}
 
-    adtype = AutoEnzyme(; mode = EnzymeCore.Forward)
+    adtype = AutoEnzyme(; mode = EnzymeCore.Reverse)
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoEnzyme{<:EnzymeCore.ForwardMode}
+    @test adtype isa AutoEnzyme{<:EnzymeCore.ReverseMode}
 
     adtype = AutoModelingToolkit()
     @test adtype isa ADTypes.AbstractADType
