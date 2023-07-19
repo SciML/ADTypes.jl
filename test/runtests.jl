@@ -6,6 +6,17 @@ using Test
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoFiniteDiff
 
+    adtype = AutoFiniteDifferences()
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoFiniteDifferences{Nothing}
+
+    # In practice, you would rather specify a
+    # `fdm::FiniteDifferences.FiniteDifferenceMethod`, e.g. constructed with
+    # `FiniteDifferences.central_fdm` or `FiniteDifferences.forward_fdm`
+    adtype = AutoFiniteDifferences(; fdm = Val(:forward))
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoFiniteDifferences{Val{:forward}}
+
     adtype = AutoForwardDiff()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoForwardDiff
