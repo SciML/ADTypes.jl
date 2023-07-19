@@ -7,8 +7,7 @@ version = "0.1.6"
 julia = "1"
 
 [extras]
-EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["EnzymeCore", "Test"]
+test = ["Test"]

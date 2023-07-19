@@ -1,8 +1,6 @@
 using ADTypes
 using Test
 
-import EnzymeCore
-
 @testset "ADTypes.jl" begin
     adtype = AutoFiniteDiff()
     @test adtype isa ADTypes.AbstractADType
@@ -52,9 +50,11 @@ import EnzymeCore
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoEnzyme{Nothing}
 
-    adtype = AutoEnzyme(; mode = EnzymeCore.Reverse)
+    # In practice, you would rather specify a
+    # `mode::Enzyme.Mode`, e.g. `Enzyme.Reverse` or `Enzyme.Forward`
+    adtype = AutoEnzyme(; mode = Val(:Reverse))
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoEnzyme{<:EnzymeCore.ReverseMode}
+    @test adtype isa AutoEnzyme{Val{:Reverse}}
 
     adtype = AutoModelingToolkit()
     @test adtype isa ADTypes.AbstractADType
