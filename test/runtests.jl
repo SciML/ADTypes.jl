@@ -1,6 +1,8 @@
 using ADTypes
 using Test
 
+struct CustomTag end
+
 @testset "ADTypes.jl" begin
     adtype = AutoFiniteDiff()
     @test adtype isa ADTypes.AbstractADType
@@ -19,7 +21,11 @@ using Test
 
     adtype = AutoForwardDiff()
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoForwardDiff
+    @test adtype isa AutoForwardDiff{nothing,Nothing}
+
+    adtype = AutoForwardDiff(; chunksize = 10, tag = CustomTag())
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoForwardDiff{10,CustomTag}
 
     adtype = AutoReverseDiff()
     @test adtype isa ADTypes.AbstractADType
@@ -32,4 +38,12 @@ using Test
     adtype = AutoTracker()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoTracker
+
+    adtype = AutoSparseForwardDiff()
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoSparseForwardDiff{nothing,Nothing}
+
+    adtype = AutoSparseForwardDiff(; chunksize = 10, tag = CustomTag())
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoSparseForwardDiff{10,CustomTag}
 end
