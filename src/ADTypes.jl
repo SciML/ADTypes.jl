@@ -30,6 +30,10 @@ function AutoForwardDiff(; chunksize = nothing, tag = nothing)
     AutoForwardDiff{chunksize,typeof(tag)}(tag)
 end
 
+function AutoForwardDiff(chunksize = nothing; tag = nothing)
+    AutoForwardDiff{chunksize,typeof(tag)}(tag)
+end
+
 struct AutoReverseDiff <: AbstractADType
     compile::Bool
 end
@@ -63,6 +67,10 @@ end
 
 function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
     AutoSparseForwardDiff{chunksize,typeof(tag)}(tag)
+end
+
+function AutoSparseForwardDiff(chunksize = nothing; tag = nothing)
+    AutoSparseForwardDiff{chunksize, typeof(tag)}(tag)
 end
 
 export AutoFiniteDiff, AutoFiniteDifferences, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
