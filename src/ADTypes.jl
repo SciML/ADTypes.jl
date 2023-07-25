@@ -36,7 +36,11 @@ AutoReverseDiff(; compile = false) = AutoReverseDiff(compile)
 
 struct AutoZygote <: AbstractADType end
 
-struct AutoEnzyme <: AbstractADType end
+struct AutoEnzyme{M} <: AbstractADType
+    mode::M
+end
+
+AutoEnzyme(; mode = nothing) = AutoEnzyme(mode)
 
 struct AutoTracker <: AbstractADType end
 
