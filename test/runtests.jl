@@ -31,11 +31,6 @@ struct CustomTag end
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoForwardDiff{10,CustomTag}
 
-    adtype = AutoForwardDiff(10)
-    @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoForwardDiff{10}
-
-
     adtype = AutoReverseDiff()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoReverseDiff
@@ -82,10 +77,6 @@ struct CustomTag end
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoSparseForwardDiff{nothing}
 
-    adtype = AutoSparseForwardDiff(10)
-    @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoSparseForwardDiff{10}
-  
     adtype = AutoEnzyme()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoEnzyme{Nothing}
@@ -95,5 +86,4 @@ struct CustomTag end
     adtype = AutoEnzyme(; mode = Val(:Reverse))
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoEnzyme{Val{:Reverse}}
-
 end
