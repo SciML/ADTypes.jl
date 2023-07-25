@@ -22,10 +22,12 @@ end
 
 AutoFiniteDifferences(; fdm = nothing) = AutoFiniteDifferences(fdm)
 
-struct AutoForwardDiff{chunksize} <: AbstractADType end
+struct AutoForwardDiff{chunksize,T} <: AbstractADType
+    tag::T
+end
 
-function AutoForwardDiff(chunksize = nothing)
-    AutoForwardDiff{chunksize}()
+function AutoForwardDiff(; chunksize = nothing, tag = nothing)
+    AutoForwardDiff{chunksize,typeof(tag)}(tag)
 end
 
 struct AutoReverseDiff <: AbstractADType
@@ -55,10 +57,12 @@ end
 
 struct AutoSparseFiniteDiff <: AbstractADType end
 
-struct AutoSparseForwardDiff{chunksize} <: AbstractADType end
+struct AutoSparseForwardDiff{chunksize,T} <: AbstractADType
+    tag::T
+end
 
-function AutoSparseForwardDiff(chunksize = nothing)
-    AutoSparseForwardDiff{chunksize}()
+function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
+    AutoSparseForwardDiff{chunksize,typeof(tag)}(tag)
 end
 
 export AutoFiniteDiff, AutoFiniteDifferences, AutoForwardDiff, AutoReverseDiff, AutoZygote, AutoEnzyme, AutoTracker, AutoModelingToolkit, AutoSparseFiniteDiff, AutoSparseForwardDiff
