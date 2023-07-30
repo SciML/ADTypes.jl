@@ -25,11 +25,11 @@ struct CustomTag end
     adtype = AutoForwardDiff()
     @test adtype isa ADTypes.AbstractADType
 
-    @test adtype isa AutoForwardDiff{nothing,Nothing}
+    @test adtype isa AutoForwardDiff{nothing, Nothing}
 
     adtype = AutoForwardDiff(; chunksize = 10, tag = CustomTag())
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoForwardDiff{10,CustomTag}
+    @test adtype isa AutoForwardDiff{10, CustomTag}
 
     adtype = AutoReverseDiff()
     @test adtype isa ADTypes.AbstractADType
@@ -51,11 +51,11 @@ struct CustomTag end
 
     adtype = AutoSparseForwardDiff()
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoSparseForwardDiff{nothing,Nothing}
+    @test adtype isa AutoSparseForwardDiff{nothing, Nothing}
 
     adtype = AutoSparseForwardDiff(; chunksize = 10, tag = CustomTag())
     @test adtype isa ADTypes.AbstractADType
-    @test adtype isa AutoSparseForwardDiff{10,CustomTag}
+    @test adtype isa AutoSparseForwardDiff{10, CustomTag}
 
     adtype = AutoModelingToolkit()
     @test adtype isa ADTypes.AbstractADType
