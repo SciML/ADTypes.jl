@@ -38,6 +38,7 @@ Base.@kwdef struct AutoReverseDiff <: AbstractReverseMode
 end
 
 struct AutoZygote <: AbstractReverseMode end
+struct AutoSparseZygote <: AbstractSparseReverseMode end
 
 Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
     mode::M = nothing
