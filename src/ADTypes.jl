@@ -61,6 +61,8 @@ function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
     AutoSparseForwardDiff{chunksize, typeof(tag)}(tag)
 end
 
+struct AutoSparseReverseDiff <: AbstractSparseReverseMode end
+
 export AutoFiniteDiff,
        AutoFiniteDifferences,
        AutoForwardDiff,
