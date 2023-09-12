@@ -73,5 +73,6 @@ export AutoFiniteDiff,
        AutoModelingToolkit,
        AutoSparseFiniteDiff,
        AutoSparseForwardDiff,
-       AutoSparseZygote
+       AutoSparseZygote,
+       AutoSparseReverseDiff
 end
