@@ -61,7 +61,9 @@ function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
     AutoSparseForwardDiff{chunksize, typeof(tag)}(tag)
 end
 
-struct AutoSparseReverseDiff <: AbstractSparseReverseMode end
+Base.@kwdef struct AutoSparseReverseDiff <: AbstractSparseReverseMode 
+    compile::Bool = false
+end
 
 export AutoFiniteDiff,
        AutoFiniteDifferences,
