@@ -32,6 +32,12 @@ function AutoForwardDiff(; chunksize = nothing, tag = nothing)
     AutoForwardDiff{chunksize, typeof(tag)}(tag)
 end
 
+struct AutoPolyesterForwardDiff{chunksize} <: AbstractForwardMode
+end
+
+function AutoPolyesterForwardDiff(; chunksize = nothing)
+    AutoPolyesterForwardDiff{chunksize}()
+end
 
 Base.@kwdef struct AutoReverseDiff <: AbstractReverseMode
     compile::Bool = false
@@ -61,6 +67,13 @@ function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
     AutoSparseForwardDiff{chunksize, typeof(tag)}(tag)
 end
 
+struct AutoSparsePolyesterForwardDiff{chunksize} <: AbstractSparseForwardMode
+end
+
+function AutoSparsePolyesterForwardDiff(; chunksize = nothing)
+    AutoSparsePolyesterForwardDiff{chunksize}()
+end
+
 Base.@kwdef struct AutoSparseReverseDiff <: AbstractSparseReverseMode 
     compile::Bool = false
 end
@@ -76,5 +89,7 @@ export AutoFiniteDiff,
        AutoSparseFiniteDiff,
        AutoSparseForwardDiff,
        AutoSparseZygote,
-       AutoSparseReverseDiff
+       AutoSparseReverseDiff,
+       AutoPolyesterForwardDiff,
+       AutoSparsePolyesterForwardDiff
 end
