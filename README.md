@@ -5,6 +5,34 @@
 ADTypes.jl is a common system for implementing multi-valued logic for choosing which
 automatic differentiation library to use.
 
+## Which libraries are supported?
+
+Just run the following code in a Julia REPL to find out:
+
+```julia
+julia> using ADTypes
+
+julia> names(ADTypes)
+15-element Vector{Symbol}:
+ :ADTypes
+ :AutoEnzyme
+ :AutoFiniteDiff
+ :AutoFiniteDifferences
+ :AutoForwardDiff
+ :AutoModelingToolkit
+ :AutoPolyesterForwardDiff
+ :AutoReverseDiff
+ :AutoSparseFiniteDiff
+ :AutoSparseForwardDiff
+ :AutoSparsePolyesterForwardDiff
+ :AutoSparseReverseDiff
+ :AutoSparseZygote
+ :AutoTracker
+ :AutoZygote
+```
+
+Use the help mode of the Julia REPL to find out more about a specific library.
+
 ## Why Should Packages Adopt This?
 
 The current standard is to have a keyword argument with `autodiff = true` or `autodiff = false`.
