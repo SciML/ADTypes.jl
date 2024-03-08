@@ -4,6 +4,11 @@ using Test
 struct CustomTag end
 
 @testset "ADTypes.jl" begin
+    adtype = AutoChainRules(:ruleconfig_placeholder)
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoChainRules
+    @test adtype.ruleconfig == :ruleconfig_placeholder
+
     adtype = AutoFiniteDiff()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoFiniteDiff
