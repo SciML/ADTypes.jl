@@ -19,6 +19,10 @@ abstract type AbstractSparseReverseMode <: AbstractReverseMode end
 abstract type AbstractSparseForwardMode <: AbstractForwardMode end
 abstract type AbstractSparseFiniteDifferences <: AbstractFiniteDifferencesMode end
 
+Base.@kwdef struct AutoChainRules{RC} <: AbstractADType
+    ruleconfig::RC
+end
+
 """
     AutoFiniteDiff{T1,T2,T3}
 
@@ -209,7 +213,8 @@ Base.@kwdef struct AutoSparseReverseDiff <: AbstractSparseReverseMode
     compile::Bool = false
 end
 
-export AutoFiniteDiff,
+export AutoChainRules,
+       AutoFiniteDiff,
        AutoFiniteDifferences,
        AutoForwardDiff,
        AutoReverseDiff,
