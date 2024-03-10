@@ -19,6 +19,15 @@ abstract type AbstractSparseReverseMode <: AbstractReverseMode end
 abstract type AbstractSparseForwardMode <: AbstractForwardMode end
 abstract type AbstractSparseFiniteDifferences <: AbstractFiniteDifferencesMode end
 
+"""
+    AutoChainRules{RC}
+
+Chooses any AD library based on [ChainRulesCore.jl](https://github.com/JuliaDiff/ChainRulesCore.jl), given an appropriate [`RuleConfig`](https://juliadiff.org/ChainRulesCore.jl/stable/rule_author/superpowers/ruleconfig.html) object.
+
+# Fields
+
+- `ruleconfig::RC`
+"""
 Base.@kwdef struct AutoChainRules{RC} <: AbstractADType
     ruleconfig::RC
 end

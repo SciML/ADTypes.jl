@@ -13,8 +13,9 @@ Just run the following code in a Julia REPL to find out:
 julia> using ADTypes
 
 julia> names(ADTypes)
-15-element Vector{Symbol}:
+16-element Vector{Symbol}:
  :ADTypes
+ :AutoChainRules
  :AutoEnzyme
  :AutoFiniteDiff
  :AutoFiniteDifferences
