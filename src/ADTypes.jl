@@ -222,7 +222,15 @@ Base.@kwdef struct AutoSparseReverseDiff <: AbstractSparseReverseMode
     compile::Bool = false
 end
 
+"""
+    AutoDiffractor
+
+Chooses [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl).
+"""
+struct AutoDiffractor <: AbstractADType end
+
 export AutoChainRules,
+       AutoDiffractor,
        AutoFiniteDiff,
        AutoFiniteDifferences,
        AutoForwardDiff,

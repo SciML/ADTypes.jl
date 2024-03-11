@@ -91,4 +91,8 @@ struct CustomTag end
     adtype = AutoEnzyme(; mode = Val(:Reverse))
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoEnzyme{Val{:Reverse}}
+
+    adtype = AutoDiffractor()
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoDiffractor
 end
