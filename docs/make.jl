@@ -8,5 +8,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "https://github.com/SciML/ADTypes.jl.git"
+    repo = "github.com/SciML/ADTypes.jl.git"
 )
