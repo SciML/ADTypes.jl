@@ -168,7 +168,11 @@ end
 
 Chooses [FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl) while exploiting sparsity.
 """
-struct AutoSparseFiniteDiff <: AbstractSparseFiniteDifferences end
+Base.@kwdef struct AutoSparseFiniteDiff{T1, T2, T3} <: AbstractSparseFiniteDifferences
+    fdtype::T1 = Val(:forward)
+    fdjtype::T2 = fdtype
+    fdhtype::T3 = Val(:hcentral)
+end
 
 """
     AutoSparseForwardDiff{chunksize,T}

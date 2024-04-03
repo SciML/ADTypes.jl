@@ -77,6 +77,9 @@ struct CustomTag end
     adtype = AutoSparseFiniteDiff()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoSparseFiniteDiff
+    @test adtype.fdtype === Val(:forward)
+    @test adtype.fdjtype === Val(:forward)
+    @test adtype.fdhtype === Val(:hcentral)
 
     adtype = AutoSparseForwardDiff()
     @test adtype isa ADTypes.AbstractADType
