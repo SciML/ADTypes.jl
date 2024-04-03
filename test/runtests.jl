@@ -95,4 +95,12 @@ struct CustomTag end
     adtype = AutoDiffractor()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoDiffractor
+
+    adtype = AutoFastDifferentiation()
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoFastDifferentiation
+
+    adtype = AutoSparseFastDifferentiation()
+    @test adtype isa ADTypes.AbstractADType
+    @test adtype isa AutoSparseFastDifferentiation
 end
