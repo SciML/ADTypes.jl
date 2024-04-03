@@ -18,6 +18,8 @@ abstract type AbstractSymbolicDifferentiationMode <: AbstractADType end
 abstract type AbstractSparseReverseMode <: AbstractReverseMode end
 abstract type AbstractSparseForwardMode <: AbstractForwardMode end
 abstract type AbstractSparseFiniteDifferences <: AbstractFiniteDifferencesMode end
+abstract type AbstractSparseSymbolicDifferentiationMode <:
+              AbstractSymbolicDifferentiationMode end
 
 """
     AutoChainRules{RC}
@@ -233,6 +235,20 @@ Chooses [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl).
 """
 struct AutoDiffractor <: AbstractADType end
 
+"""
+    AutoFastDifferentiation
+
+Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl).
+"""
+struct AutoFastDifferentiation <: AbstractSymbolicDifferentiationMode end
+
+"""
+    AutoSparseFastDifferentiation
+
+Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl) while exploiting sparsity.
+"""
+struct AutoSparseFastDifferentiation <: AbstractSparseSymbolicDifferentiationMode end
+
 export AutoChainRules,
        AutoDiffractor,
        AutoFiniteDiff,
@@ -248,5 +264,7 @@ export AutoChainRules,
        AutoSparseZygote,
        AutoSparseReverseDiff,
        AutoPolyesterForwardDiff,
-       AutoSparsePolyesterForwardDiff
+       AutoSparsePolyesterForwardDiff,
+       AutoFastDifferentiation,
+       AutoSparseFastDifferentiation
 end
