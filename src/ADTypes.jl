@@ -21,6 +21,8 @@ abstract type AbstractSparseFiniteDifferences <: AbstractFiniteDifferencesMode e
 abstract type AbstractSparseSymbolicDifferentiationMode <:
               AbstractSymbolicDifferentiationMode end
 
+## Dense
+
 """
     AutoChainRules{RC}
 
@@ -33,6 +35,33 @@ Chooses any AD library based on [ChainRulesCore.jl](https://github.com/JuliaDiff
 Base.@kwdef struct AutoChainRules{RC} <: AbstractADType
     ruleconfig::RC
 end
+
+"""
+    AutoDiffractor
+
+Chooses [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl).
+"""
+struct AutoDiffractor <: AbstractADType end
+
+"""
+    AutoEnzyme{M}
+
+Chooses [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl).
+
+# Fields
+
+- `mode::M = nothing`
+"""
+Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
+    mode::M = nothing
+end
+
+"""
+    AutoFastDifferentiation
+
+Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl).
+"""
+struct AutoFastDifferentiation <: AbstractSymbolicDifferentiationMode end
 
 """
     AutoFiniteDiff{T1,T2,T3}
@@ -87,6 +116,21 @@ function AutoForwardDiff(; chunksize = nothing, tag = nothing)
 end
 
 """
+    AutoModelingToolkit
+
+Chooses [ModelingToolkit.jl](https://github.com/SciML/ModelingToolkit.jl).
+
+# Fields
+
+- `obj_sparse::Bool = false`
+- `cons_sparse::Bool = false`
+"""
+Base.@kwdef struct AutoModelingToolkit <: AbstractSymbolicDifferentiationMode
+    obj_sparse::Bool = false
+    cons_sparse::Bool = false
+end
+
+"""
     AutoPolyesterForwardDiff{chunksize}
 
 Chooses [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl).
@@ -117,33 +161,6 @@ Base.@kwdef struct AutoReverseDiff <: AbstractReverseMode
 end
 
 """
-    AutoZygote
-
-Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl).
-"""
-struct AutoZygote <: AbstractReverseMode end
-
-"""
-    AutoSparseZygote
-
-Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl) while exploiting sparsity.
-"""
-struct AutoSparseZygote <: AbstractSparseReverseMode end
-
-"""
-    AutoEnzyme{M}
-
-Chooses [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl).
-
-# Fields
-
-- `mode::M = nothing`
-"""
-Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
-    mode::M = nothing
-end
-
-"""
     AutoTracker
 
 Chooses [Tracker.jl](https://github.com/FluxML/Tracker.jl).
@@ -151,29 +168,30 @@ Chooses [Tracker.jl](https://github.com/FluxML/Tracker.jl).
 struct AutoTracker <: AbstractReverseMode end
 
 """
-    AutoModelingToolkit
+    AutoZygote
 
-Chooses [ModelingToolkit.jl](https://github.com/SciML/ModelingToolkit.jl).
+Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl).
+"""
+struct AutoZygote <: AbstractReverseMode end
+
+## Sparse
+
+"""
+    AutoSparseFiniteDiff{T1,T2,T3}
+
+Chooses [FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl) while exploiting sparsity.
 
 # Fields
 
-- `obj_sparse::Bool = false`
-- `cons_sparse::Bool = false`
+- `fdtype::T1 = Val(:forward)`
+- `fdjtype::T2 = fdtype`
+- `fdhtype::T3 = Val(:hcentral)`
 """
-Base.@kwdef struct AutoModelingToolkit <: AbstractSymbolicDifferentiationMode
-    obj_sparse::Bool = false
-    cons_sparse::Bool = false
-end
-
-"""
-    AutoSparseFiniteDiff
-
-Chooses [FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl) while exploiting sparsity.
-"""
-Base.@kwdef struct AutoSparseFiniteDiff{T1, T2, T3} <: AbstractSparseFiniteDifferences
+Base.@kwdef struct AutoSparseFiniteDiff{T1, T2, T3, S} <: AbstractSparseFiniteDifferences
     fdtype::T1 = Val(:forward)
     fdjtype::T2 = fdtype
     fdhtype::T3 = Val(:hcentral)
+    sparsity_detector::S = nothing
 end
 
 """
@@ -185,8 +203,9 @@ Chooses [ForwardDiff.jl](https://github.com/JuliaDiff/ForwardDiff.jl) while expl
 
 - `tag::T`
 """
-struct AutoSparseForwardDiff{chunksize, T} <: AbstractSparseForwardMode
+struct AutoSparseForwardDiff{chunksize, T, S} <: AbstractSparseForwardMode
     tag::T
+    sparsity_detector::S = nothing
 end
 
 """
@@ -194,8 +213,10 @@ end
 
 Constructor.
 """
-function AutoSparseForwardDiff(; chunksize = nothing, tag = nothing)
-    AutoSparseForwardDiff{chunksize, typeof(tag)}(tag)
+function AutoSparseForwardDiff(;
+        chunksize = nothing, tag = nothing, sparsity_detector = nothing)
+    AutoSparseForwardDiff{chunksize, typeof(tag), typeof(sparsity_detector)}(
+        tag, sparsity_detector)
 end
 
 """
@@ -203,7 +224,8 @@ end
 
 Chooses [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) while exploiting sparsity.
 """
-struct AutoSparsePolyesterForwardDiff{chunksize} <: AbstractSparseForwardMode
+struct AutoSparsePolyesterForwardDiff{chunksize, S} <: AbstractSparseForwardMode
+    sparsity_detector::S
 end
 
 """
@@ -211,8 +233,8 @@ end
 
 Constructor.
 """
-function AutoSparsePolyesterForwardDiff(; chunksize = nothing)
-    AutoSparsePolyesterForwardDiff{chunksize}()
+function AutoSparsePolyesterForwardDiff(; chunksize = nothing, sparsity_detector = nothing)
+    AutoSparsePolyesterForwardDiff{chunksize, typeof(sparsity_detector)}(sparsity_detector)
 end
 
 """
@@ -224,23 +246,19 @@ Chooses [ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl) while expl
 
 - `compile::Bool = false`
 """
-Base.@kwdef struct AutoSparseReverseDiff <: AbstractSparseReverseMode
+Base.@kwdef struct AutoSparseReverseDiff{S} <: AbstractSparseReverseMode
     compile::Bool = false
+    sparsity_detector::S
 end
 
 """
-    AutoDiffractor
+    AutoSparseZygote
 
-Chooses [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl).
+Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl) while exploiting sparsity.
 """
-struct AutoDiffractor <: AbstractADType end
-
-"""
-    AutoFastDifferentiation
-
-Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl).
-"""
-struct AutoFastDifferentiation <: AbstractSymbolicDifferentiationMode end
+struct AutoSparseZygote{S} <: AbstractSparseReverseMode
+    sparsity_detector::S
+end
 
 """
     AutoSparseFastDifferentiation
