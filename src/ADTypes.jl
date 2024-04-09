@@ -205,7 +205,7 @@ Chooses [ForwardDiff.jl](https://github.com/JuliaDiff/ForwardDiff.jl) while expl
 """
 struct AutoSparseForwardDiff{chunksize, T, S} <: AbstractSparseForwardMode
     tag::T
-    sparsity_detector::S = nothing
+    sparsity_detector::S
 end
 
 """
@@ -248,7 +248,7 @@ Chooses [ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl) while expl
 """
 Base.@kwdef struct AutoSparseReverseDiff{S} <: AbstractSparseReverseMode
     compile::Bool = false
-    sparsity_detector::S
+    sparsity_detector::S = nothing
 end
 
 """
@@ -256,8 +256,8 @@ end
 
 Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl) while exploiting sparsity.
 """
-struct AutoSparseZygote{S} <: AbstractSparseReverseMode
-    sparsity_detector::S
+Base.@kwdef struct AutoSparseZygote{S} <: AbstractSparseReverseMode
+    sparsity_detector::S = nothing
 end
 
 """
