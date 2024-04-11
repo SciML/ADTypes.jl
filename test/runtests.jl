@@ -106,4 +106,6 @@ struct CustomTag end
     adtype = AutoSparseFastDifferentiation()
     @test adtype isa ADTypes.AbstractADType
     @test adtype isa AutoSparseFastDifferentiation
+
+    @test identity.(adtype) == adtype
 end
