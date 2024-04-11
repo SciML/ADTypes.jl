@@ -249,6 +249,8 @@ Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentia
 """
 struct AutoSparseFastDifferentiation <: AbstractSparseSymbolicDifferentiationMode end
 
+Base.broadcastable(ad::AbstractADType) = Ref(ad)
+
 export AutoChainRules,
        AutoDiffractor,
        AutoFiniteDiff,
