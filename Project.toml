@@ -1,7 +1,7 @@
 name = "ADTypes"
 uuid = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
 authors = ["Vaibhav Dixit <vaibhavyashdixit@gmail.com> and contributors"]
-version = "0.2.7"
+version = "0.3.0"
 
 [compat]
 julia = "1.6"

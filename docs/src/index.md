@@ -7,16 +7,78 @@ CollapsedDocStrings = true
 
 Documentation for [ADTypes.jl](https://github.com/SciML/ADTypes.jl/).
 
-## Public
-
-```@autodocs
-Modules = [ADTypes]
-Private = false
+```@docs
+ADTypes
+AbstractADType
 ```
 
-## Internal
+## Dense AD
 
-```@autodocs
-Modules = [ADTypes]
-Public = false
+### Forward mode
+
+```@docs
+AutoForwardDiff
+AutoPolyesterForwardDiff
+```
+
+### Reverse mode
+
+```@docs
+AutoReverseDiff
+AutoTracker
+AutoZygote
+```
+
+### Forward or reverse mode
+
+```@docs
+AutoEnzyme
+AutoChainRules
+AutoDiffractor
+```
+
+### Symbolic mode
+
+```@docs
+AutoFastDifferentiation
+AutoModelingToolkit
+```
+
+### Finite differences mode
+
+```@docs
+AutoFiniteDiff
+AutoFiniteDifferences
+```
+
+## Sparse AD
+
+```@docs
+AutoSparse
+ADTypes.dense_ad
+```
+
+### Sparsity detector
+
+```@docs
+ADTypes.sparsity_detector
+ADTypes.AbstractSparsityDetector
+ADTypes.NoSparsityDetector
+```
+
+### Coloring algorithm
+
+```@docs
+ADTypes.coloring_algorithm
+ADTypes.AbstractColoringAlgorithm
+ADTypes.NoColoringAlgorithm
+```
+
+## Internals
+
+```@docs
+AbstractFiniteDifferencesMode
+AbstractForwardMode
+AbstractReverseMode
+AbstractSymbolicDifferentiationMode
 ```
