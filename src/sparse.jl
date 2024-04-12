@@ -77,6 +77,7 @@ sparsity_detector(ad::AutoSparse) = ad.sparsity_detector
 """
 coloring_algorithm(ad::AutoSparse) = ad.coloring_algorithm
 
+# TODO: document or remove these?
 const AbstractSparseFiniteDifferencesMode = AutoSparse{:finite}
 const AbstractSparseForwardMode = AutoSparse{:forward}
 const AbstractSparseReverseMode = AutoSparse{:reverse}
