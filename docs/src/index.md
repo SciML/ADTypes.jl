@@ -25,6 +25,7 @@ AutoPolyesterForwardDiff
 
 ```@docs
 AutoReverseDiff
+AutoTapir
 AutoTracker
 AutoZygote
 ```
@@ -78,11 +79,14 @@ ADTypes.row_coloring
 ADTypes.NoColoringAlgorithm
 ```
 
-## Internals
+## Modes
 
 ```@docs
-AbstractFiniteDifferencesMode
-AbstractForwardMode
-AbstractReverseMode
-AbstractSymbolicDifferentiationMode
+ADTypes.mode
+ADTypes.AbstractMode
+ADTypes.FiniteDifferencesMode
+ADTypes.ForwardMode
+ADTypes.ForwardOrReverseMode
+ADTypes.ReverseMode
+ADTypes.SymbolicMode
 ```

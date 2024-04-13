@@ -1,124 +1,156 @@
 @testset "AutoChainRules" begin
-    adtype = AutoChainRules(:ruleconfig_placeholder)
-    @test adtype isa AbstractADType
-    @test adtype isa AutoChainRules
-    @test adtype.ruleconfig == :ruleconfig_placeholder
+    ad = AutoChainRules(; ruleconfig = ForwardOrReverseRuleConfig())
+    @test ad isa AbstractADType
+    @test ad isa AutoChainRules{ForwardOrReverseRuleConfig}
+    @test ad.ruleconfig == ForwardOrReverseRuleConfig()
+    @test mode(ad) isa ForwardOrReverseMode
+
+    ad = AutoChainRules(; ruleconfig = ForwardRuleConfig())
+    @test ad isa AbstractADType
+    @test ad isa AutoChainRules{ForwardRuleConfig}
+    @test ad.ruleconfig == ForwardRuleConfig()
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoChainRules(; ruleconfig = ReverseRuleConfig())
+    @test ad isa AbstractADType
+    @test ad isa AutoChainRules{ReverseRuleConfig}
+    @test ad.ruleconfig == ReverseRuleConfig()
+    @test mode(ad) isa ReverseMode
 end
 
 @testset "AutoDiffractor" begin
-    adtype = AutoDiffractor()
-    @test adtype isa AbstractADType
-    @test adtype isa AutoDiffractor
+    ad = AutoDiffractor()
+    @test ad isa AbstractADType
+    @test ad isa AutoDiffractor
+    @test mode(ad) isa ForwardMode
 end
 
 @testset "AutoEnzyme" begin
-    adtype = AutoEnzyme()
-    @test adtype isa AbstractADType
-    @test adtype isa AutoEnzyme{Nothing}
-    @test adtype.mode === nothing
+    ad = AutoEnzyme()
+    @test ad isa AbstractADType
+    @test ad isa AutoEnzyme{Nothing}
+    @test ad.mode === nothing
+    @test mode(ad) isa ForwardOrReverseMode
 
-    # In practice, you would rather specify a
-    # `mode::Enzyme.Mode`, e.g. `Enzyme.Reverse` or `Enzyme.Forward`
-    adtype = AutoEnzyme(; mode = Val(:Reverse))
-    @test adtype isa AbstractADType
-    @test adtype isa AutoEnzyme{Val{:Reverse}}
-    @test adtype.mode == Val(:Reverse)
+    ad = AutoEnzyme(; mode = EnzymeCore.Forward)
+    @test ad isa AbstractADType
+    @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward)}
+    @test ad.mode == EnzymeCore.Forward
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoEnzyme(; mode = EnzymeCore.Reverse)
+    @test ad isa AbstractADType
+    @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse)}
+    @test ad.mode == EnzymeCore.Reverse
+    @test mode(ad) isa ReverseMode
 end
 
 @testset "AutoFastDifferentiation" begin
-    adtype = AutoFastDifferentiation()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractSymbolicDifferentiationMode
-    @test adtype isa AutoFastDifferentiation
+    ad = AutoFastDifferentiation()
+    @test ad isa AbstractADType
+    @test ad isa AutoFastDifferentiation
+    @test mode(ad) isa SymbolicMode
 end
 
 @testset "AutoFiniteDiff" begin
-    adtype = AutoFiniteDiff()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractFiniteDifferencesMode
-    @test adtype isa AutoFiniteDiff
-    @test adtype.fdtype === Val(:forward)
-    @test adtype.fdjtype === Val(:forward)
-    @test adtype.fdhtype === Val(:hcentral)
+    ad = AutoFiniteDiff()
+    @test ad isa AbstractADType
+    @test ad isa AutoFiniteDiff
+    @test mode(ad) isa FiniteDifferencesMode
+    @test ad.fdtype === Val(:forward)
+    @test ad.fdjtype === Val(:forward)
+    @test ad.fdhtype === Val(:hcentral)
 end
 
 @testset "AutoFiniteDifferences" begin
-    adtype = AutoFiniteDifferences()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractFiniteDifferencesMode
-    @test adtype isa AutoFiniteDifferences{Nothing}
-    @test adtype.fdm === nothing
+    ad = AutoFiniteDifferences(; fdm = nothing)
+    @test ad isa AbstractADType
+    @test ad isa AutoFiniteDifferences{Nothing}
+    @test mode(ad) isa FiniteDifferencesMode
+    @test ad.fdm === nothing
 
-    # In practice, you would rather specify a
-    # `fdm::FiniteDifferences.FiniteDifferenceMethod`, e.g. constructed with
-    # `FiniteDifferences.central_fdm` or `FiniteDifferences.forward_fdm`
-    adtype = AutoFiniteDifferences(; fdm = Val(:forward))
-    @test adtype isa AbstractADType
-    @test adtype isa AutoFiniteDifferences{Val{:forward}}
-    @test adtype.fdm == Val(:forward)
+    ad = AutoFiniteDifferences(; fdm = Val(:forward))
+    @test ad isa AbstractADType
+    @test ad isa AutoFiniteDifferences{Val{:forward}}
+    @test mode(ad) isa FiniteDifferencesMode
+    @test ad.fdm == Val(:forward)
 end
 
 @testset "AutoForwardDiff" begin
-    adtype = AutoForwardDiff()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractForwardMode
-    @test adtype isa AutoForwardDiff{nothing, Nothing}
-    @test adtype.tag === nothing
+    ad = AutoForwardDiff()
+    @test ad isa AbstractADType
+    @test ad isa AutoForwardDiff{nothing, Nothing}
+    @test mode(ad) isa ForwardMode
+    @test ad.tag === nothing
 
-    adtype = AutoForwardDiff(; chunksize = 10, tag = CustomTag())
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractForwardMode
-    @test adtype isa AutoForwardDiff{10, CustomTag}
-    @test adtype.tag == CustomTag()
+    ad = AutoForwardDiff(; chunksize = 10, tag = CustomTag())
+    @test ad isa AbstractADType
+    @test ad isa AutoForwardDiff{10, CustomTag}
+    @test mode(ad) isa ForwardMode
+    @test ad.tag == CustomTag()
 end
 
 @testset "AutoModelingToolkit" begin
-    adtype = AutoModelingToolkit()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractSymbolicDifferentiationMode
-    @test adtype isa AutoModelingToolkit
-    @test !adtype.obj_sparse
-    @test !adtype.cons_sparse
+    ad = AutoModelingToolkit()
+    @test ad isa AbstractADType
+    @test ad isa AutoModelingToolkit
+    @test mode(ad) isa SymbolicMode
+    @test !ad.obj_sparse
+    @test !ad.cons_sparse
 
-    adtype = AutoModelingToolkit(; obj_sparse = true, cons_sparse = true)
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractSymbolicDifferentiationMode
-    @test adtype isa AutoModelingToolkit
-    @test adtype.obj_sparse
-    @test adtype.cons_sparse
+    ad = AutoModelingToolkit(; obj_sparse = true, cons_sparse = true)
+    @test ad isa AbstractADType
+    @test ad isa AutoModelingToolkit
+    @test mode(ad) isa SymbolicMode
+    @test ad.obj_sparse
+    @test ad.cons_sparse
 end
 
 @testset "AutoPolyesterForwardDiff" begin
-    adtype = AutoPolyesterForwardDiff(; chunksize=10)
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractForwardMode
-    @test adtype isa AutoPolyesterForwardDiff{10}
+    ad = AutoPolyesterForwardDiff()
+    @test ad isa AbstractADType
+    @test ad isa AutoPolyesterForwardDiff{nothing, Nothing}
+    @test mode(ad) isa ForwardMode
+    @test ad.tag === nothing
+
+    ad = AutoPolyesterForwardDiff(; chunksize = 10, tag = CustomTag())
+    @test ad isa AbstractADType
+    @test ad isa AutoPolyesterForwardDiff{10, CustomTag}
+    @test mode(ad) isa ForwardMode
+    @test ad.tag == CustomTag()
 end
 
 @testset "AutoReverseDiff" begin
-    adtype = AutoReverseDiff()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractReverseMode
-    @test adtype isa AutoReverseDiff
-    @test !adtype.compile
+    ad = AutoReverseDiff()
+    @test ad isa AbstractADType
+    @test ad isa AutoReverseDiff
+    @test mode(ad) isa ReverseMode
+    @test !ad.compile
 
-    adtype = AutoReverseDiff(; compile = true)
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractReverseMode
-    @test adtype isa AutoReverseDiff
-    @test adtype.compile
+    ad = AutoReverseDiff(; compile = true)
+    @test ad isa AbstractADType
+    @test ad isa AutoReverseDiff
+    @test mode(ad) isa ReverseMode
+    @test ad.compile
+end
+
+@testset "AutoTapir" begin
+    ad = AutoTapir()
+    @test ad isa AbstractADType
+    @test ad isa AutoTapir
+    @test mode(ad) isa ReverseMode
 end
 
 @testset "AutoTracker" begin
-    adtype = AutoTracker()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractReverseMode
-    @test adtype isa AutoTracker
+    ad = AutoTracker()
+    @test ad isa AbstractADType
+    @test ad isa AutoTracker
+    @test mode(ad) isa ReverseMode
 end
 
 @testset "AutoZygote" begin
-    adtype = AutoZygote()
-    @test adtype isa AbstractADType
-    @test adtype isa AbstractReverseMode
-    @test adtype isa AutoZygote
+    ad = AutoZygote()
+    @test ad isa AbstractADType
+    @test ad isa AutoZygote
+    @test mode(ad) isa ReverseMode
 end

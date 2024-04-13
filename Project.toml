@@ -1,13 +1,31 @@
 name = "ADTypes"
 uuid = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
-authors = ["Vaibhav Dixit <vaibhavyashdixit@gmail.com> and contributors"]
+authors = [
+    "Vaibhav Dixit <vaibhavyashdixit@gmail.com>, Guillaume Dalle and contributors",
+]
 version = "0.3.0"
 
+[deps]
+ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
+
+[weakdeps]
+ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
+
+[extensions]
+ADTypesChainRulesCoreExt = "ChainRulesCore"
+ADTypesEnzymeCoreExt = "EnzymeCore"
+
 [compat]
+ChainRulesCore = "1.23.0"
+EnzymeCore = "0.7.2"
 julia = "1.6"
 
 [extras]
+ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["ChainRulesCore", "EnzymeCore", "Test"]

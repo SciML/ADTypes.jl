@@ -87,7 +87,7 @@ row_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
 ## Sparse backend
 
 """
-    AutoSparse{mode,D,S,C}
+    AutoSparse{D,S,C}
 
 Wraps an ADTypes.jl object to deal with sparse Jacobians and Hessians.
 
@@ -106,20 +106,24 @@ Wraps an ADTypes.jl object to deal with sparse Jacobians and Hessians.
     )
 """
 struct AutoSparse{
-    mode, D <: AbstractADType{mode}, S <: AbstractSparsityDetector,
-    C <: AbstractColoringAlgorithm} <:
-       AbstractADType{mode}
+    D <: AbstractADType,
+    S <: AbstractSparsityDetector,
+    C <: AbstractColoringAlgorithm
+} <: AbstractADType
     dense_ad::D
     sparsity_detector::S
     coloring_algorithm::C
 end
 
 function AutoSparse(
-        dense_ad::AbstractADType{mode}; sparsity_detector = NoSparsityDetector(),
-        coloring_algorithm = NoColoringAlgorithm()) where {mode}
+        dense_ad;
+        sparsity_detector = NoSparsityDetector(),
+        coloring_algorithm = NoColoringAlgorithm())
     return AutoSparse{
-        mode, typeof(dense_ad), typeof(sparsity_detector), typeof(coloring_algorithm)}(
-        dense_ad, sparsity_detector, coloring_algorithm)
+        typeof(dense_ad),
+        typeof(sparsity_detector),
+        typeof(coloring_algorithm)
+    }(dense_ad, sparsity_detector, coloring_algorithm)
 end
 
 """
@@ -132,6 +136,8 @@ Return the underlying AD package for a sparse AD choice.
 - [`AutoSparse`](@ref)
 """
 dense_ad(ad::AutoSparse) = ad.dense_ad
+
+mode(sparse_ad::AutoSparse) = mode(dense_ad(sparse_ad))
 
 """
     sparsity_detector(ad::AutoSparse)::AbstractSparsityDetector
@@ -156,9 +162,3 @@ Return the coloring algorithm for a sparse AD choice.
 - [`AbstractColoringAlgorithm`](@ref)
 """
 coloring_algorithm(ad::AutoSparse) = ad.coloring_algorithm
-
-# TODO: document or remove these?
-const AbstractSparseFiniteDifferencesMode = AutoSparse{:finite}
-const AbstractSparseForwardMode = AutoSparse{:forward}
-const AbstractSparseReverseMode = AutoSparse{:reverse}
-const AbstractSparseSymbolicDifferentiationMode = AutoSparse{:symbolic}

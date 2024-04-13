@@ -7,10 +7,24 @@ module ADTypes
 
 using Base: @deprecate
 
-include("abstract.jl")
+"""
+    AbstractADType
+
+Abstract supertype for all AD choices.
+"""
+abstract type AbstractADType end
+
+Base.broadcastable(ad::AbstractADType) = Ref(ad)
+
+include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
 include("legacy.jl")
+
+if !isdefined(Base, :get_extension)
+    include("../ext/ADTypesChainRulesCoreExt.jl")
+    include("../ext/ADTypesEnzymeCoreExt.jl")
+end
 
 export AbstractADType
 
@@ -24,6 +38,7 @@ export AutoChainRules,
        AutoModelingToolkit,
        AutoPolyesterForwardDiff,
        AutoReverseDiff,
+       AutoTapir,
        AutoTracker,
        AutoZygote
 

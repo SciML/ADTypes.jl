@@ -4,29 +4,24 @@
 [![Docs dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://SciML.github.io/ADTypes.jl/dev/)
 [![Build Status](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
-ADTypes.jl is a multi-valued logic system specifying the choice of an automatic differentiation (AD) library and its parameters.
+ADTypes.jl is a multi-valued logic system to choose an automatic differentiation (AD) package and specify its parameters.
 
 ## Which AD libraries are supported?
 
 See the API reference in the documentation.
+If a given package is missing, feel free to open an issue or pull request.
 
-## Why should packages adopt this standard?
+## Why should AD users adopt this standard?
 
-A common practice is the use of a boolean keyword argument like `autodiff = true/false`.
-However, boolean logic is not precise enough for all the choices required.
-For instance, forward mode AD is implemented by both ForwardDiff and Enzyme, which makes `autodiff = true` ambiguous.
-Something like `ChooseForwardDiff()` is thus required, possibly with additional parameters depending on the library.
+A natural approach is to use a keyword argument with e.g. `Bool` or `Symbol` values.
+Let's see a few examples to understand why this is not enough:
 
-The risk is that every package developer might develop their own version of `ChooseForwardDiff()`, which would ruin interoperability.
+- `autodiff = true`: ambiguous, we don't know which AD package should be used
+- `autodiff = :forward`: ambiguous, there are several AD packages implementing both forward and reverse mode (and there are other modes beyond that)
+- `autodiff = :Enzyme`: ambiguous, some AD packages can work both in forward and reverse mode
+- `autodiff = (:Enzyme, :forward)`: not too bad, but many AD packages require additional configuration (number of chunks, tape compilation, etc.)
+
+A more involved struct is thus required, with package-specific parameters.
+If every AD user develops their own version of said struct, it will ruin interoperability.
 This is why ADTypes.jl provides a single set of shared types for this task, as an extremely lightweight dependency.
-Wonder no more: `ADTypes.AutoForwardDiff()` is the way to go.
-
-## Why define types instead of enums?
-
-If we used enums, they would not contain type-level information useful for dispatch.
-This is needed by many AD libraries to ensure type stability.
-Notably, the choice of config or cache type is different with each AD, so we must know statically which AD library is chosen.
-
-## Why is this AD package missing?
-
-Feel free to open a pull request adding it.
+They are types and not enums because we need AD choice information statically to use it for dispatch.

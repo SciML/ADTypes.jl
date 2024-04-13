@@ -1,42 +1,54 @@
 using ADTypes
-using ADTypes: AbstractADType
-using ADTypes: AbstractFiniteDifferencesMode,
-               AbstractForwardMode,
-               AbstractReverseMode,
-               AbstractSymbolicDifferentiationMode
-using ADTypes: AbstractSparseFiniteDifferencesMode,
-               AbstractSparseForwardMode,
-               AbstractSparseReverseMode,
-               AbstractSparseSymbolicDifferentiationMode
-using ADTypes: dense_ad
-using ADTypes: NoSparsityDetector,
+using ADTypes: AbstractADType,
+               mode,
+               FiniteDifferencesMode,
+               ForwardMode,
+               ForwardOrReverseMode,
+               ReverseMode,
+               SymbolicMode
+using ADTypes: dense_ad,
+               NoSparsityDetector,
                sparsity_detector,
                jacobian_sparsity,
-               hessian_sparsity
-using ADTypes: NoColoringAlgorithm,
+               hessian_sparsity,
+               NoColoringAlgorithm,
                coloring_algorithm,
                column_coloring,
                row_coloring
+using ChainRulesCore: ChainRulesCore, RuleConfig,
+                      HasForwardsMode, HasReverseMode,
+                      NoForwardsMode, NoReverseMode
+
+using EnzymeCore: EnzymeCore
 using Test
+
+## Backend-specific
+
+struct CustomTag end
+
+struct ForwardRuleConfig <: RuleConfig{Union{HasForwardsMode, NoReverseMode}} end
+struct ReverseRuleConfig <: RuleConfig{Union{NoForwardsMode, HasReverseMode}} end
+struct ForwardOrReverseRuleConfig <: RuleConfig{Union{HasForwardsMode, HasReverseMode}} end
 
 function every_ad()
     return [
-        AutoChainRules(:ruleconfig_placeholder),
+        AutoChainRules(:rc),
         AutoDiffractor(),
         AutoEnzyme(),
         AutoFastDifferentiation(),
         AutoFiniteDiff(),
-        AutoFiniteDifferences(),
+        AutoFiniteDifferences(:fdm),
         AutoForwardDiff(),
         AutoModelingToolkit(),
-        AutoPolyesterForwardDiff(; chunksize = 10),
+        AutoPolyesterForwardDiff(),
         AutoReverseDiff(),
+        AutoTapir(),
         AutoTracker(),
         AutoZygote()
     ]
 end
 
-struct CustomTag end
+## Tests
 
 @testset verbose=true "ADTypes.jl" begin
     @testset verbose=true "Dense" begin
