@@ -5,6 +5,8 @@
 """
 module ADTypes
 
+using Base: @deprecate
+
 include("abstract.jl")
 include("dense.jl")
 include("sparse.jl")

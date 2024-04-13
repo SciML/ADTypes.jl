@@ -1,13 +1,12 @@
-AutoSparseFastDifferentiation() = AutoSparse(AutoFastDifferentiation())
+@deprecate AutoSparseFastDifferentiation() AutoSparse(AutoFastDifferentiation())
 
-AutoSparseFiniteDiff(; kwargs...) = AutoSparse(AutoFiniteDiff(; kwargs...))
+@deprecate AutoSparseFiniteDiff(; kwargs...) AutoSparse(AutoFiniteDiff(; kwargs...))
 
-AutoSparseForwardDiff(; kwargs...) = AutoSparse(AutoForwardDiff(; kwargs...))
+@deprecate AutoSparseForwardDiff(; kwargs...) AutoSparse(AutoForwardDiff(; kwargs...))
 
-function AutoSparsePolyesterForwardDiff(; kwargs...)
-    AutoSparse(AutoPolyesterForwardDiff(; kwargs...))
-end
+@deprecate AutoSparsePolyesterForwardDiff(; kwargs...) AutoSparse(AutoPolyesterForwardDiff(;
+    kwargs...))
 
-AutoSparseReverseDiff(; kwargs...) = AutoSparse(AutoReverseDiff(; kwargs...))
+@deprecate AutoSparseReverseDiff(; kwargs...) AutoSparse(AutoReverseDiff(; kwargs...))
 
-AutoSparseZygote(; kwargs...) = AutoSparse(AutoZygote(; kwargs...))
+@deprecate AutoSparseZygote(; kwargs...) AutoSparse(AutoZygote(; kwargs...))
