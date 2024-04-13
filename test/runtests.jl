@@ -1,18 +1,22 @@
 using ADTypes
-using ADTypes: AbstractADType,
-               AbstractFiniteDifferencesMode,
+using ADTypes: AbstractADType
+using ADTypes: AbstractFiniteDifferencesMode,
                AbstractForwardMode,
                AbstractReverseMode,
-               AbstractSymbolicDifferentiationMode,
-               AbstractSparseFiniteDifferencesMode,
+               AbstractSymbolicDifferentiationMode
+using ADTypes: AbstractSparseFiniteDifferencesMode,
                AbstractSparseForwardMode,
                AbstractSparseReverseMode,
                AbstractSparseSymbolicDifferentiationMode
-using ADTypes: NoColoringAlgorithm,
-               NoSparsityDetector,
-               dense_ad,
+using ADTypes: dense_ad
+using ADTypes: NoSparsityDetector,
                sparsity_detector,
-               coloring_algorithm
+               jacobian_sparsity,
+               hessian_sparsity
+using ADTypes: NoColoringAlgorithm,
+               coloring_algorithm,
+               column_coloring,
+               row_coloring
 using Test
 
 function every_ad()

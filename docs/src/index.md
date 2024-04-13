@@ -63,6 +63,8 @@ ADTypes.dense_ad
 ```@docs
 ADTypes.sparsity_detector
 ADTypes.AbstractSparsityDetector
+ADTypes.jacobian_sparsity
+ADTypes.hessian_sparsity
 ADTypes.NoSparsityDetector
 ```
 
@@ -71,6 +73,8 @@ ADTypes.NoSparsityDetector
 ```@docs
 ADTypes.coloring_algorithm
 ADTypes.AbstractColoringAlgorithm
+ADTypes.column_coloring
+ADTypes.row_coloring
 ADTypes.NoColoringAlgorithm
 ```
 
