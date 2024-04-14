@@ -2,47 +2,47 @@
     ad = AutoChainRules(; ruleconfig = ForwardOrReverseRuleConfig())
     @test ad isa AbstractADType
     @test ad isa AutoChainRules{ForwardOrReverseRuleConfig}
-    @test ad.ruleconfig == ForwardOrReverseRuleConfig()
     @test mode(ad) isa ForwardOrReverseMode
+    @test ad.ruleconfig == ForwardOrReverseRuleConfig()
 
     ad = AutoChainRules(; ruleconfig = ForwardRuleConfig())
     @test ad isa AbstractADType
     @test ad isa AutoChainRules{ForwardRuleConfig}
-    @test ad.ruleconfig == ForwardRuleConfig()
     @test mode(ad) isa ForwardMode
+    @test ad.ruleconfig == ForwardRuleConfig()
 
     ad = AutoChainRules(; ruleconfig = ReverseRuleConfig())
     @test ad isa AbstractADType
     @test ad isa AutoChainRules{ReverseRuleConfig}
-    @test ad.ruleconfig == ReverseRuleConfig()
     @test mode(ad) isa ReverseMode
+    @test ad.ruleconfig == ReverseRuleConfig()
 end
 
 @testset "AutoDiffractor" begin
     ad = AutoDiffractor()
     @test ad isa AbstractADType
     @test ad isa AutoDiffractor
-    @test mode(ad) isa ForwardMode
+    @test mode(ad) isa ForwardOrReverseMode
 end
 
 @testset "AutoEnzyme" begin
     ad = AutoEnzyme()
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{Nothing}
-    @test ad.mode === nothing
     @test mode(ad) isa ForwardOrReverseMode
+    @test ad.mode === nothing
 
     ad = AutoEnzyme(; mode = EnzymeCore.Forward)
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward)}
-    @test ad.mode == EnzymeCore.Forward
     @test mode(ad) isa ForwardMode
+    @test ad.mode == EnzymeCore.Forward
 
     ad = AutoEnzyme(; mode = EnzymeCore.Reverse)
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse)}
-    @test ad.mode == EnzymeCore.Reverse
     @test mode(ad) isa ReverseMode
+    @test ad.mode == EnzymeCore.Reverse
 end
 
 @testset "AutoFastDifferentiation" begin
@@ -60,6 +60,14 @@ end
     @test ad.fdtype === Val(:forward)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
+
+    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward))
+    @test ad isa AbstractADType
+    @test ad isa AutoFiniteDiff
+    @test mode(ad) isa FiniteDifferencesMode
+    @test ad.fdtype === Val(:central)
+    @test ad.fdjtype === Val(:forward)
+    @test ad.fdhtype === Val(:hcentral)
 end
 
 @testset "AutoFiniteDifferences" begin
@@ -69,11 +77,11 @@ end
     @test mode(ad) isa FiniteDifferencesMode
     @test ad.fdm === nothing
 
-    ad = AutoFiniteDifferences(; fdm = Val(:forward))
+    ad = AutoFiniteDifferences(; fdm = Val(:forward_fdm))
     @test ad isa AbstractADType
-    @test ad isa AutoFiniteDifferences{Val{:forward}}
+    @test ad isa AutoFiniteDifferences{Val{:forward_fdm}}
     @test mode(ad) isa FiniteDifferencesMode
-    @test ad.fdm == Val(:forward)
+    @test ad.fdm == Val(:forward_fdm)
 end
 
 @testset "AutoForwardDiff" begin

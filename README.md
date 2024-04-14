@@ -16,10 +16,10 @@ If a given package is missing, feel free to open an issue or pull request.
 A natural approach is to use a keyword argument with e.g. `Bool` or `Symbol` values.
 Let's see a few examples to understand why this is not enough:
 
-- `autodiff = true`: ambiguous, we don't know which AD package should be used
-- `autodiff = :forward`: ambiguous, there are several AD packages implementing both forward and reverse mode (and there are other modes beyond that)
-- `autodiff = :Enzyme`: ambiguous, some AD packages can work both in forward and reverse mode
-- `autodiff = (:Enzyme, :forward)`: not too bad, but many AD packages require additional configuration (number of chunks, tape compilation, etc.)
+  - `autodiff = true`: ambiguous, we don't know which AD package should be used
+  - `autodiff = :forward`: ambiguous, there are several AD packages implementing both forward and reverse mode (and there are other modes beyond that)
+  - `autodiff = :Enzyme`: ambiguous, some AD packages can work both in forward and reverse mode
+  - `autodiff = (:Enzyme, :forward)`: not too bad, but many AD packages require additional configuration (number of chunks, tape compilation, etc.)
 
 A more involved struct is thus required, with package-specific parameters.
 If every AD user develops their own version of said struct, it will ruin interoperability.

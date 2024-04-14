@@ -47,7 +47,7 @@ struct ReverseMode <: AbstractMode end
 Trait for AD choices that can rely on either [forward mode](https://en.wikipedia.org/wiki/Automatic_differentiation#Forward_accumulation) or [reverse mode](https://en.wikipedia.org/wiki/Automatic_differentiation#Reverse_accumulation) algorithmic differentiation, depending on their configuration.
 
 !!! warning
-    This trait should probably never be used, because more precise dispatches should be defined. 
+    This trait should rarely be used, because more precise dispatches to [`ForwardMode`](@ref) or [`ReverseMode`](@ref) should be defined. 
 """
 struct ForwardOrReverseMode <: AbstractMode end
 

@@ -16,14 +16,14 @@ abstract type AbstractSparsityDetector end
     jacobian_sparsity(f, x, sd::AbstractSparsityDetector)::AbstractMatrix{Bool}
     jacobian_sparsity(f!, y, x, sd::AbstractSparsityDetector)::AbstractMatrix{Bool}
 
-Use `sd` to construct a (typically sparse) matrix `S` describing the pattern of nonzeroes in the Jacobian of `f` (resp. `f!`) applied at `x` (resp. `(y, x)`).
+Use detector `sd` to construct a (typically sparse) matrix `S` describing the pattern of nonzeroes in the Jacobian of `f` (resp. `f!`) applied at `x` (resp. `(y, x)`).
 """
 function jacobian_sparsity end
 
 """
     hessian_sparsity(f, x, sd::AbstractSparsityDetector)::AbstractMatrix{Bool}
 
-Use `sd` to construct a (typically sparse) matrix `S` describing the pattern of nonzeroes in the Hessian of `f` applied at `x`.
+Use detector `sd` to construct a (typically sparse) matrix `S` describing the pattern of nonzeroes in the Hessian of `f` applied at `x`.
 """
 function hessian_sparsity end
 
@@ -59,14 +59,14 @@ abstract type AbstractColoringAlgorithm end
 """
     column_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
 
-Use `ca` to construct a coloring vector `c` of length `size(M, 2)` such that if two columns `j1` and `j2` satisfy `c[j1] = c[j2]`, they do not share any nonzero coefficients in `M`.
+Use algorithm `ca` to construct a coloring vector `c` of length `size(M, 2)` such that if two columns `j1` and `j2` satisfy `c[j1] = c[j2]`, they do not share any nonzero coefficients in `M`.
 """
 function column_coloring end
 
 """
     row_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
 
-Use `ca` to construct a coloring vector `c` of length `size(M, 1)` such that if two rows `i1` and `i2` satisfy `c[i1] = c[i2]`, they do not share any nonzero coefficients in `M`.
+Use algorithm `ca` to construct a coloring vector `c` of length `size(M, 1)` such that if two rows `i1` and `i2` satisfy `c[i1] = c[i2]`, they do not share any nonzero coefficients in `M`.
 """
 function row_coloring end
 

@@ -18,7 +18,6 @@ using ADTypes: dense_ad,
 using ChainRulesCore: ChainRulesCore, RuleConfig,
                       HasForwardsMode, HasReverseMode,
                       NoForwardsMode, NoReverseMode
-
 using EnzymeCore: EnzymeCore
 using Test
 
@@ -32,12 +31,12 @@ struct ForwardOrReverseRuleConfig <: RuleConfig{Union{HasForwardsMode, HasRevers
 
 function every_ad()
     return [
-        AutoChainRules(:rc),
+        AutoChainRules(; ruleconfig = :rc),
         AutoDiffractor(),
         AutoEnzyme(),
         AutoFastDifferentiation(),
         AutoFiniteDiff(),
-        AutoFiniteDifferences(:fdm),
+        AutoFiniteDifferences(; fdm = :fdm),
         AutoForwardDiff(),
         AutoModelingToolkit(),
         AutoPolyesterForwardDiff(),
