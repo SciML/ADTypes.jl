@@ -5,10 +5,6 @@ authors = [
 ]
 version = "1.0.0"
 
-[deps]
-ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
-
 [weakdeps]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
 EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
@@ -20,7 +16,7 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 [compat]
 ChainRulesCore = "1.23.0"
 EnzymeCore = "0.7.2"
-julia = "1.6"
+julia = "1.9"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
