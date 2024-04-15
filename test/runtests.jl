@@ -52,13 +52,16 @@ end
 
 @testset verbose=true "ADTypes.jl" begin
     if VERSION >= v"1.7"
+        # Aqua spots ambiguities in the ChainRulesCore extension on 1.6, but they can never occur
         @testset "Aqua.jl" begin
             Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
         end
-        if VERSION < v"1.12"  # TODO: remove when JET works on nightly
-            @testset "JET.jl" begin
-                JET.test_package(ADTypes, target_defined_modules = true)
-            end
+    end
+    if v"1.7" <= VERSION < v"1.12"
+        # `JET.test_package` is not defined on 1.6
+        # JET cannot precompile on 1.12
+        @testset "JET.jl" begin
+            JET.test_package(ADTypes, target_defined_modules = true)
         end
     end
     @testset "Dense" begin
