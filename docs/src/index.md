@@ -86,7 +86,6 @@ ADTypes.NoColoringAlgorithm
 ```@docs
 ADTypes.mode
 ADTypes.AbstractMode
-ADTypes.FiniteDifferencesMode
 ADTypes.ForwardMode
 ADTypes.ForwardOrReverseMode
 ADTypes.ReverseMode
