@@ -3,6 +3,7 @@
 [![Docs stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://SciML.github.io/ADTypes.jl/stable/)
 [![Docs dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://SciML.github.io/ADTypes.jl/dev/)
 [![Build Status](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/SciML/ADTypes.jl/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SciML/ADTypes.jl)
 
 ADTypes.jl is a multi-valued logic system to choose an automatic differentiation (AD) package and specify its parameters.
 
