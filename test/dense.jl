@@ -56,7 +56,7 @@ end
     ad = AutoFiniteDiff()
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
-    @test mode(ad) isa FiniteDifferencesMode
+    @test mode(ad) isa ForwardMode
     @test ad.fdtype === Val(:forward)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
@@ -64,7 +64,7 @@ end
     ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward))
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
-    @test mode(ad) isa FiniteDifferencesMode
+    @test mode(ad) isa ForwardMode
     @test ad.fdtype === Val(:central)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
@@ -74,13 +74,13 @@ end
     ad = AutoFiniteDifferences(; fdm = nothing)
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDifferences{Nothing}
-    @test mode(ad) isa FiniteDifferencesMode
+    @test mode(ad) isa ForwardMode
     @test ad.fdm === nothing
 
     ad = AutoFiniteDifferences(; fdm = Val(:forward_fdm))
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDifferences{Val{:forward_fdm}}
-    @test mode(ad) isa FiniteDifferencesMode
+    @test mode(ad) isa ForwardMode
     @test ad.fdm == Val(:forward_fdm)
 end
 
@@ -96,22 +96,6 @@ end
     @test ad isa AutoForwardDiff{10, CustomTag}
     @test mode(ad) isa ForwardMode
     @test ad.tag == CustomTag()
-end
-
-@testset "AutoModelingToolkit" begin
-    ad = AutoModelingToolkit()
-    @test ad isa AbstractADType
-    @test ad isa AutoModelingToolkit
-    @test mode(ad) isa SymbolicMode
-    @test !ad.obj_sparse
-    @test !ad.cons_sparse
-
-    ad = AutoModelingToolkit(; obj_sparse = true, cons_sparse = true)
-    @test ad isa AbstractADType
-    @test ad isa AutoModelingToolkit
-    @test mode(ad) isa SymbolicMode
-    @test ad.obj_sparse
-    @test ad.cons_sparse
 end
 
 @testset "AutoPolyesterForwardDiff" begin
@@ -140,6 +124,13 @@ end
     @test ad isa AutoReverseDiff
     @test mode(ad) isa ReverseMode
     @test ad.compile
+end
+
+@testset "AutoSymbolics" begin
+    ad = AutoSymbolics()
+    @test ad isa AbstractADType
+    @test ad isa AutoSymbolics
+    @test mode(ad) isa SymbolicMode
 end
 
 @testset "AutoTapir" begin

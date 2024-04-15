@@ -85,7 +85,7 @@ Base.@kwdef struct AutoFiniteDiff{T1, T2, T3} <: AbstractADType
     fdhtype::T3 = Val(:hcentral)
 end
 
-mode(::AutoFiniteDiff) = FiniteDifferencesMode()
+mode(::AutoFiniteDiff) = ForwardMode()
 
 """
     AutoFiniteDifferences{T}
@@ -94,7 +94,7 @@ Chooses [FiniteDifferences.jl](https://github.com/JuliaDiff/FiniteDifferences.jl
 
 # Fields
 
-- `fdm::T`: a [`FiniteDifferenceMethod`](https://juliadiff.org/FiniteDifferences.jl/stable/pages/api/#FiniteDifferences.FiniteDifferenceMethod), constructed for instance with `FiniteDifferences.central_fdm`. 
+- `fdm::T`: a [`FiniteDifferenceMethod`](https://juliadiff.org/FiniteDifferences.jl/stable/pages/api/#FiniteDifferences.FiniteDifferenceMethod)
 
 # Constructor
 
@@ -104,7 +104,7 @@ Base.@kwdef struct AutoFiniteDifferences{T} <: AbstractADType
     fdm::T
 end
 
-mode(::AutoFiniteDifferences) = FiniteDifferencesMode()
+mode(::AutoFiniteDifferences) = ForwardMode()
 
 """
     AutoForwardDiff{chunksize,T}
@@ -132,27 +132,6 @@ function AutoForwardDiff(; chunksize = nothing, tag = nothing)
 end
 
 mode(::AutoForwardDiff) = ForwardMode()
-
-"""
-    AutoModelingToolkit
-
-Chooses [ModelingToolkit.jl](https://github.com/SciML/ModelingToolkit.jl).
-
-# Fields
-
-- `obj_sparse::Bool`
-- `cons_sparse::Bool`
-
-# Constructor
-
-    AutoModelingToolkit(; obj_sparse=false, cons_sparse=false)
-"""
-Base.@kwdef struct AutoModelingToolkit <: AbstractADType
-    obj_sparse::Bool = false
-    cons_sparse::Bool = false
-end
-
-mode(::AutoModelingToolkit) = SymbolicMode()
 
 """
     AutoPolyesterForwardDiff{chunksize,T}
@@ -201,12 +180,22 @@ end
 mode(::AutoReverseDiff) = ReverseMode()
 
 """
+    AutoSymbolics
+
+Chooses [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl).
+
+# Constructor
+
+    AutoSymbolics()
+"""
+struct AutoSymbolics <: AbstractADType end
+
+mode(::AutoSymbolics) = SymbolicMode()
+
+"""
     AutoTapir
 
 Chooses [Tapir.jl](https://github.com/withbayes/Tapir.jl).
-
-!!! danger
-    This package is experimental, use at your own risk.
 
 # Constructor
 

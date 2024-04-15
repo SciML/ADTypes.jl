@@ -2,9 +2,7 @@
     for ad in every_ad()
         sparse_ad = AutoSparse(ad)
         @test sparse_ad isa AbstractADType
-        if mode(ad) isa FiniteDifferencesMode
-            @test mode(sparse_ad) isa FiniteDifferencesMode
-        elseif mode(ad) isa ForwardMode
+        if mode(ad) isa ForwardMode
             @test mode(sparse_ad) isa ForwardMode
         elseif mode(ad) isa ForwardOrReverseMode
             @test mode(sparse_ad) isa ForwardOrReverseMode

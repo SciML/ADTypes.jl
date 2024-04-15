@@ -16,9 +16,18 @@ AbstractADType
 
 ### Forward mode
 
+Algorithmic differentiation:
+
 ```@docs
 AutoForwardDiff
 AutoPolyesterForwardDiff
+```
+
+Finite differences:
+
+```@docs
+AutoFiniteDiff
+AutoFiniteDifferences
 ```
 
 ### Reverse mode
@@ -42,14 +51,7 @@ AutoDiffractor
 
 ```@docs
 AutoFastDifferentiation
-AutoModelingToolkit
-```
-
-### Finite differences mode
-
-```@docs
-AutoFiniteDiff
-AutoFiniteDifferences
+AutoSymbolics
 ```
 
 ## Sparse AD

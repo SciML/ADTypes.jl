@@ -9,4 +9,4 @@
 
 @deprecate AutoSparseReverseDiff(; kwargs...) AutoSparse(AutoReverseDiff(; kwargs...))
 
-@deprecate AutoSparseZygote(; kwargs...) AutoSparse(AutoZygote(; kwargs...))
+@deprecate AutoSparseZygote() AutoSparse(AutoZygote())

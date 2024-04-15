@@ -1,7 +1,6 @@
 using ADTypes
 using ADTypes: AbstractADType,
                mode,
-               FiniteDifferencesMode,
                ForwardMode,
                ForwardOrReverseMode,
                ReverseMode,
@@ -15,10 +14,12 @@ using ADTypes: dense_ad,
                coloring_algorithm,
                column_coloring,
                row_coloring
+using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
                       HasForwardsMode, HasReverseMode,
                       NoForwardsMode, NoReverseMode
 using EnzymeCore: EnzymeCore
+using JET: JET
 using Test
 
 ## Backend-specific
@@ -38,9 +39,9 @@ function every_ad()
         AutoFiniteDiff(),
         AutoFiniteDifferences(; fdm = :fdm),
         AutoForwardDiff(),
-        AutoModelingToolkit(),
         AutoPolyesterForwardDiff(),
         AutoReverseDiff(),
+        AutoSymbolics(),
         AutoTapir(),
         AutoTracker(),
         AutoZygote()
@@ -50,16 +51,22 @@ end
 ## Tests
 
 @testset verbose=true "ADTypes.jl" begin
-    @testset verbose=true "Dense" begin
+    @testset "Aqua.jl" begin
+        Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
+    end
+    @testset "JET.jl" begin
+        JET.test_package(ADTypes, target_defined_modules = true)
+    end
+    @testset "Dense" begin
         include("dense.jl")
     end
-    @testset verbose=true "Sparse" begin
+    @testset "Sparse" begin
         include("sparse.jl")
     end
-    @testset verbose=true "Legacy" begin
+    @testset "Legacy" begin
         include("legacy.jl")
     end
-    @testset verbose=true "Miscellaneous" begin
+    @testset "Miscellaneous" begin
         include("misc.jl")
     end
 end

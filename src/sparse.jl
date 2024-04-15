@@ -3,7 +3,7 @@
 """
     AbstractSparsityDetector
 
-Abstract supertype for sparsity pattern detectors
+Abstract supertype for sparsity pattern detectors.
 
 # Required methods
 
@@ -38,9 +38,9 @@ Trivial sparsity detector, which always returns a full sparsity pattern (only on
 """
 struct NoSparsityDetector <: AbstractSparsityDetector end
 
-jacobian_sparsity(f, x, ::NoSparsityDetector) = ones(Bool, length(f(x)), length(x))
-jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = ones(Bool, length(y), length(x))
-hessian_sparsity(f, x, ::NoSparsityDetector) = ones(Bool, length(x), length(x))
+jacobian_sparsity(f, x, ::NoSparsityDetector) = trues(length(f(x)), length(x))
+jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = trues(length(y), length(x))
+hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
 ## Coloring algorithm
 
