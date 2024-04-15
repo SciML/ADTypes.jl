@@ -8,13 +8,13 @@ using ChainRulesCore: HasForwardsMode, HasReverseMode,
 # see https://juliadiff.org/ChainRulesCore.jl/stable/rule_author/superpowers/ruleconfig.html
 
 function ADTypes.mode(::AutoChainRules{RC}) where {
-        RC <: RuleConfig{>:Union{HasForwardsMode, NoReverseMode}}
+        RC <: RuleConfig{>:HasForwardsMode}}
 }
     return ADTypes.ForwardMode()
 end
 
 function ADTypes.mode(::AutoChainRules{RC}) where {
-        RC <: RuleConfig{>:Union{NoForwardsMode, HasReverseMode}}
+        RC <: RuleConfig{>:HasReverseMode}
 }
     return ADTypes.ReverseMode()
 end
@@ -22,6 +22,7 @@ end
 function ADTypes.mode(::AutoChainRules{RC}) where {
         RC <: RuleConfig{>:Union{HasForwardsMode, HasReverseMode}}
 }
+    # more specific than the previous two
     return ADTypes.ForwardOrReverseMode()
 end
 
