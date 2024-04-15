@@ -54,11 +54,8 @@ end
     @testset "Aqua.jl" begin
         Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
     end
-    if v"1.7" <= VERSION
-        # `JET.test_package` is not defined on 1.6
-        @testset "JET.jl" begin
-            JET.test_package(ADTypes, target_defined_modules = true)
-        end
+    @testset "JET.jl" begin
+        JET.test_package(ADTypes, target_defined_modules = true)
     end
     @testset "Dense" begin
         include("dense.jl")
