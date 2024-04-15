@@ -3,7 +3,7 @@
 """
     AbstractSparsityDetector
 
-Abstract supertype for sparsity pattern detectors, defined for instance in [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl).
+Abstract supertype for sparsity pattern detectors
 
 # Required methods
 
