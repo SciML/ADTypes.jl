@@ -51,11 +51,13 @@ end
 ## Tests
 
 @testset verbose=true "ADTypes.jl" begin
-    @testset "Aqua.jl" begin
-        Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
-    end
-    @testset "JET.jl" begin
-        JET.test_package(ADTypes, target_defined_modules = true)
+    if VERSION >= v"1.7"
+        @testset "Aqua.jl" begin
+            Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
+        end
+        @testset "JET.jl" begin
+            JET.test_package(ADTypes, target_defined_modules = true)
+        end
     end
     @testset "Dense" begin
         include("dense.jl")
