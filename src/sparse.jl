@@ -60,8 +60,10 @@ Abstract supertype for Jacobian/Hessian coloring algorithms, defined for example
 The terminology and definitions are taken from the following paper:
 
 > "What Color Is Your Jacobian? Graph Coloring for Computing Derivatives"
+>
 > Assefaw Hadish Gebremedhin, Fredrik Manne, and Alex Pothen (2005)
-> <https://epubs.siam.org/doi/10.1137/S0036144504444711>
+>
+> https://epubs.siam.org/doi/10.1137/S0036144504444711
 """
 abstract type AbstractColoringAlgorithm end
 
