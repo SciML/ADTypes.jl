@@ -62,4 +62,10 @@ end
         @test length(rv) == size(M, 1)
         @test allunique(rv)
     end
+
+    M = rand(3, 3)
+    sv = symmetric_coloring(M, ca)
+    @test sv isa AbstractVector{<:Integer}
+    @test length(sv) == size(M, 1) == size(M, 2)
+    @test allunique(sv)
 end

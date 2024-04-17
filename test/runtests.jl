@@ -13,7 +13,8 @@ using ADTypes: dense_ad,
                NoColoringAlgorithm,
                coloring_algorithm,
                column_coloring,
-               row_coloring
+               row_coloring,
+               symmetric_coloring
 using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
                       HasForwardsMode, HasReverseMode,
