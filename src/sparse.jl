@@ -53,22 +53,49 @@ Abstract supertype for Jacobian/Hessian coloring algorithms, defined for example
 
 - [`column_coloring`](@ref)
 - [`row_coloring`](@ref)
+- [`symmetric_coloring`](@ref)
+
+# Note
+
+The terminology and definitions are taken from the following paper:
+
+> "What Color Is Your Jacobian? Graph Coloring for Computing Derivatives"
+>
+> Assefaw Hadish Gebremedhin, Fredrik Manne, and Alex Pothen (2005)
+>
+> https://epubs.siam.org/doi/10.1137/S0036144504444711
 """
 abstract type AbstractColoringAlgorithm end
 
 """
     column_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
 
-Use algorithm `ca` to construct a coloring vector `c` of length `size(M, 2)` such that if two columns `j1` and `j2` satisfy `c[j1] = c[j2]`, they do not share any nonzero coefficients in `M`.
+Use algorithm `ca` to construct a structurally orthogonal partition of the columns of `M`.
+
+The result is a coloring vector `c` of length `size(M, 2)` such that for every non-zero coefficient `M[i, j]`, column `j` is the only column of its color `c[j]` with a non-zero coefficient in row `i`.
 """
 function column_coloring end
 
 """
     row_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
 
-Use algorithm `ca` to construct a coloring vector `c` of length `size(M, 1)` such that if two rows `i1` and `i2` satisfy `c[i1] = c[i2]`, they do not share any nonzero coefficients in `M`.
+Use algorithm `ca` to construct a structurally orthogonal partition of the rows of `M`.
+
+The result is a coloring vector `c` of length `size(M, 1)` such that for every non-zero coefficient `M[i, j]`, row `i` is the only row of its color `c[i]` with a non-zero coefficient in column `j`.
 """
 function row_coloring end
+
+"""
+    symmetric_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+
+Use algorithm `ca` to construct a symetrically structurally orthogonal partition of the columns (or rows) of the symmetric matrix `M`.
+
+The result is a coloring vector `c` of length `size(M, 1) == size(M, 2)` such that for every non-zero coefficient `M[i, j]`, at least one of the following conditions holds:
+
+- column `j` is the only column of its color `c[j]` with a non-zero coefficient in row `i`;
+- column `i` is the only column of its color `c[i]` with a non-zero coefficient in row `j`.
+"""
+function symmetric_coloring end
 
 """
     NoColoringAlgorithm <: AbstractColoringAlgorithm
@@ -83,6 +110,7 @@ struct NoColoringAlgorithm <: AbstractColoringAlgorithm end
 
 column_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 2)
 row_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
+symmetric_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
 
 ## Sparse backend
 
