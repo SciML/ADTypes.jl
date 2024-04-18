@@ -30,6 +30,10 @@ jobs:
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
+      - uses: julia-actions/julia-downgrade-compat@v1
+        if: ${{ matrix.version == '1.10' }}
+        with:
+          skip: Pkg, TOML
       - uses: julia-actions/cache@v1
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1

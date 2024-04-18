@@ -14,8 +14,8 @@ ADTypesChainRulesCoreExt = "ChainRulesCore"
 ADTypesEnzymeCoreExt = "EnzymeCore"
 
 [compat]
-ChainRulesCore = "1.23.0"
-EnzymeCore = "0.7.2"
+ChainRulesCore = "1.0.2"
+EnzymeCore = "0.5.3,0.6,0.7"
 julia = "1.10"
 
 [extras]
