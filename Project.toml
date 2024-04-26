@@ -3,11 +3,7 @@ uuid = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
 authors = [
     "Vaibhav Dixit <vaibhavyashdixit@gmail.com>, Guillaume Dalle and contributors",
 ]
-version = "1.1.0"
-
-[deps]
-ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
+version = "1.0.0"
 
 [weakdeps]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
@@ -20,7 +16,7 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 [compat]
 ChainRulesCore = "1.0.2"
 EnzymeCore = "0.5.3,0.6,0.7"
-julia = "1.6"
+julia = "1.10"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
