@@ -39,13 +39,6 @@ export AutoChainRules,
 
 export AutoSparse
 
-# legacy
-
-export AutoSparseFastDifferentiation,
-       AutoSparseFiniteDiff,
-       AutoSparseForwardDiff,
-       AutoSparsePolyesterForwardDiff,
-       AutoSparseReverseDiff,
-       AutoSparseZygote
+# legacy exports are taken care of by @deprecated
 
 end
