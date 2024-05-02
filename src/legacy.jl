@@ -10,3 +10,5 @@
 @deprecate AutoSparseReverseDiff(; kwargs...) AutoSparse(AutoReverseDiff(; kwargs...))
 
 @deprecate AutoSparseZygote() AutoSparse(AutoZygote())
+
+@deprecate AutoModelingToolkit(; kwargs...) AutoSparse(AutoSymbolics())
