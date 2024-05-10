@@ -1,7 +1,9 @@
 """
     AutoChainRules{RC}
 
-Chooses any AD library based on [ChainRulesCore.jl](https://github.com/JuliaDiff/ChainRulesCore.jl) (see the list [here](https://juliadiff.org/ChainRulesCore.jl/stable/index.html#ChainRules-roll-out-status)).
+Type used to select an automatic differentiation backend based on [ChainRulesCore.jl](https://github.com/JuliaDiff/ChainRulesCore.jl) (see the list [here](https://juliadiff.org/ChainRulesCore.jl/stable/index.html#ChainRules-roll-out-status)).
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
@@ -20,7 +22,9 @@ mode(::AutoChainRules) = ForwardOrReverseMode()  # specialized in the extension
 """
     AutoDiffractor
 
-Chooses [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl).
+Type indicating the use of the [Diffractor.jl](https://github.com/JuliaDiff/Diffractor.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
@@ -33,7 +37,9 @@ mode(::AutoDiffractor) = ForwardOrReverseMode()
 """
     AutoEnzyme{M}
 
-Chooses [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl).
+Type indicating the use of the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
@@ -54,7 +60,9 @@ mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
 """
     AutoFastDifferentiation
 
-Chooses [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl).
+Type indicating the use of the [FastDifferentiation.jl](https://github.com/brianguenter/FastDifferentiation.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
@@ -67,7 +75,9 @@ mode(::AutoFastDifferentiation) = SymbolicMode()
 """
     AutoFiniteDiff{T1,T2,T3}
 
-Chooses [FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl).
+Type indicating the use of the [FiniteDiff.jl](https://github.com/JuliaDiff/FiniteDiff.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
@@ -90,7 +100,9 @@ mode(::AutoFiniteDiff) = ForwardMode()
 """
     AutoFiniteDifferences{T}
 
-Chooses [FiniteDifferences.jl](https://github.com/JuliaDiff/FiniteDifferences.jl).
+Type indicating the use of the [FiniteDifferences.jl](https://github.com/JuliaDiff/FiniteDifferences.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
@@ -109,7 +121,9 @@ mode(::AutoFiniteDifferences) = ForwardMode()
 """
     AutoForwardDiff{chunksize,T}
 
-Chooses [ForwardDiff.jl](https://github.com/JuliaDiff/ForwardDiff.jl).
+Type indicating the use of the [ForwardDiff.jl](https://github.com/JuliaDiff/ForwardDiff.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Type parameters
 
@@ -136,7 +150,9 @@ mode(::AutoForwardDiff) = ForwardMode()
 """
     AutoPolyesterForwardDiff{chunksize,T}
 
-Chooses [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl).
+Type indicating the use of the [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Type parameters
 
@@ -163,7 +179,9 @@ mode(::AutoPolyesterForwardDiff) = ForwardMode()
 """
     AutoReverseDiff
 
-Chooses [ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl).
+Type indicating the use of the [ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
@@ -182,7 +200,9 @@ mode(::AutoReverseDiff) = ReverseMode()
 """
     AutoSymbolics
 
-Chooses [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl).
+Type indicating the use of the [Symbolics.jl](https://github.com/JuliaSymbolics/Symbolics.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
@@ -195,7 +215,9 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-Chooses [Tapir.jl](https://github.com/withbayes/Tapir.jl).
+Type indicating the use of the [Tapir.jl](https://github.com/withbayes/Tapir.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
@@ -208,7 +230,9 @@ mode(::AutoTapir) = ReverseMode()
 """
     AutoTracker
 
-Chooses [Tracker.jl](https://github.com/FluxML/Tracker.jl).
+Type indicating the use of the [Tracker.jl](https://github.com/FluxML/Tracker.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
@@ -221,7 +245,9 @@ mode(::AutoTracker) = ReverseMode()
 """
     AutoZygote
 
-Chooses [Zygote.jl](https://github.com/FluxML/Zygote.jl).
+Type indicating the use of the [Zygote.jl](https://github.com/FluxML/Zygote.jl) backend for automatic differentiation.
+
+Exported by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructor
 
