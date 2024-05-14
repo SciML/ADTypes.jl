@@ -172,8 +172,14 @@ mode(::AutoSymbolics) = SymbolicMode()
 Struct used to select the [Tapir.jl](https://github.com/withbayes/Tapir.jl) backend for automatic differentiation.
 
 Exported from [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Keyword Arguments
+
+- `safe_mode::Bool`: whether to run additional checks to catch errors early. On by default. Turn off to maximise performance if your code runs correctly.
 """
-struct AutoTapir <: AbstractADType end
+Base.@kwdef struct AutoTapir <: AbstractADType
+    safe_mode::Bool = true
+end
 
 mode(::AutoTapir) = ReverseMode()
 

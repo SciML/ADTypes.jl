@@ -138,6 +138,10 @@ end
     @test ad isa AbstractADType
     @test ad isa AutoTapir
     @test mode(ad) isa ReverseMode
+    @test ad.safe_mode
+    
+    ad = AutoTapir(; safe_mode=false)
+    @test !ad.safe_mode
 end
 
 @testset "AutoTracker" begin
