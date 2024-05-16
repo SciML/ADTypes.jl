@@ -36,7 +36,7 @@ mode(::AutoDiffractor) = ForwardOrReverseMode()
 
 """
     AutoEnzyme{M}
-    
+
 Struct used to select the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) backend for automatic differentiation.
     
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
