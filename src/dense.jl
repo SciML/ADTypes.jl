@@ -11,7 +11,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-- `ruleconfig::RC`: a [`ChainRulesCore.RuleConfig`](https://juliadiff.org/ChainRulesCore.jl/stable/rule_author/superpowers/ruleconfig.html) object.
+  - `ruleconfig::RC`: a [`ChainRulesCore.RuleConfig`](https://juliadiff.org/ChainRulesCore.jl/stable/rule_author/superpowers/ruleconfig.html) object.
 """
 Base.@kwdef struct AutoChainRules{RC} <: AbstractADType
     ruleconfig::RC
@@ -38,18 +38,19 @@ mode(::AutoDiffractor) = ForwardOrReverseMode()
     AutoEnzyme{M}
 
 Struct used to select the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) backend for automatic differentiation.
-    
+
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
-    
+
 # Constructors
 
     AutoEnzyme(; mode=nothing)
 
 # Fields
 
-- `mode::M`: can be either 
-  - an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
-  - `nothing` to choose the best mode automatically
+  - `mode::M`: can be either
+
+      + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
+      + `nothing` to choose the best mode automatically
 """
 Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
     mode::M = nothing
@@ -85,9 +86,9 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-- `fdtype::T1`: finite difference type
-- `fdjtype::T2`: finite difference type for the Jacobian
-- `fdhtype::T3`: finite difference type for the Hessian
+  - `fdtype::T1`: finite difference type
+  - `fdjtype::T2`: finite difference type for the Jacobian
+  - `fdhtype::T3`: finite difference type for the Hessian
 """
 Base.@kwdef struct AutoFiniteDiff{T1, T2, T3} <: AbstractADType
     fdtype::T1 = Val(:forward)
@@ -110,7 +111,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-- `fdm::T`: a [`FiniteDifferenceMethod`](https://juliadiff.org/FiniteDifferences.jl/stable/pages/api/#FiniteDifferences.FiniteDifferenceMethod)
+  - `fdm::T`: a [`FiniteDifferenceMethod`](https://juliadiff.org/FiniteDifferences.jl/stable/pages/api/#FiniteDifferences.FiniteDifferenceMethod)
 """
 Base.@kwdef struct AutoFiniteDifferences{T} <: AbstractADType
     fdm::T
@@ -131,11 +132,11 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Type parameters
 
-- `chunksize`: the preferred [chunk size](https://juliadiff.org/ForwardDiff.jl/stable/user/advanced/#Configuring-Chunk-Size) to evaluate several derivatives at once
+  - `chunksize`: the preferred [chunk size](https://juliadiff.org/ForwardDiff.jl/stable/user/advanced/#Configuring-Chunk-Size) to evaluate several derivatives at once
 
 # Fields
 
-- `tag::T`: a [custom tag](https://juliadiff.org/ForwardDiff.jl/release-0.10/user/advanced.html#Custom-tags-and-tag-checking-1) to handle nested differentiation calls (usually not necessary)
+  - `tag::T`: a [custom tag](https://juliadiff.org/ForwardDiff.jl/release-0.10/user/advanced.html#Custom-tags-and-tag-checking-1) to handle nested differentiation calls (usually not necessary)
 """
 struct AutoForwardDiff{chunksize, T} <: AbstractADType
     tag::T
@@ -149,22 +150,22 @@ mode(::AutoForwardDiff) = ForwardMode()
 
 """
     AutoPolyesterForwardDiff{chunksize,T}
-    
+
 Struct used to select the [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) backend for automatic differentiation.
-    
+
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
-    
+
 # Constructors
-    
+
     AutoPolyesterForwardDiff(; chunksize=nothing, tag=nothing)
 
 # Type parameters
 
-- `chunksize`: the preferred [chunk size](https://juliadiff.org/ForwardDiff.jl/stable/user/advanced/#Configuring-Chunk-Size) to evaluate several derivatives at once
+  - `chunksize`: the preferred [chunk size](https://juliadiff.org/ForwardDiff.jl/stable/user/advanced/#Configuring-Chunk-Size) to evaluate several derivatives at once
 
 # Fields
 
-- `tag::T`: a [custom tag](https://juliadiff.org/ForwardDiff.jl/release-0.10/user/advanced.html#Custom-tags-and-tag-checking-1) to handle nested differentiation calls (usually not necessary)
+  - `tag::T`: a [custom tag](https://juliadiff.org/ForwardDiff.jl/release-0.10/user/advanced.html#Custom-tags-and-tag-checking-1) to handle nested differentiation calls (usually not necessary)
 """
 struct AutoPolyesterForwardDiff{chunksize, T} <: AbstractADType
     tag::T
@@ -189,7 +190,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-- `compile::Bool`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
+  - `compile::Bool`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
 """
 Base.@kwdef struct AutoReverseDiff <: AbstractADType
     compile::Bool = false
@@ -225,7 +226,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-- `safe_mode::Bool`: whether to run additional checks to catch errors early. On by default. Turn off to maximise performance if your code runs correctly.
+  - `safe_mode::Bool`: whether to run additional checks to catch errors early. On by default. Turn off to maximise performance if your code runs correctly.
 """
 Base.@kwdef struct AutoTapir <: AbstractADType
     safe_mode::Bool = true

@@ -5,10 +5,10 @@ Abstract supertype for the traits identifying differentiation modes.
 
 # Subtypes
 
-- [`ForwardMode`](@ref)
-- [`ReverseMode`](@ref)
-- [`ForwardOrReverseMode`](@ref)
-- [`SymbolicMode`](@ref)
+  - [`ForwardMode`](@ref)
+  - [`ReverseMode`](@ref)
+  - [`ForwardOrReverseMode`](@ref)
+  - [`SymbolicMode`](@ref)
 """
 abstract type AbstractMode end
 
@@ -41,7 +41,8 @@ struct ReverseMode <: AbstractMode end
 Trait for AD choices that can work either in [`ForwardMode`](@ref) or [`ReverseMode`](@ref), depending on their configuration.
 
 !!! warning
-    This trait should rarely be used, because more precise dispatches to [`ForwardMode`](@ref) or [`ReverseMode`](@ref) should be defined. 
+
+    This trait should rarely be used, because more precise dispatches to [`ForwardMode`](@ref) or [`ReverseMode`](@ref) should be defined.
 """
 struct ForwardOrReverseMode <: AbstractMode end
 

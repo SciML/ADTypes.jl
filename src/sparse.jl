@@ -7,8 +7,8 @@ Abstract supertype for sparsity pattern detectors.
 
 # Required methods
 
-- [`jacobian_sparsity`](@ref)
-- [`hessian_sparsity`](@ref)
+  - [`jacobian_sparsity`](@ref)
+  - [`hessian_sparsity`](@ref)
 """
 abstract type AbstractSparsityDetector end
 
@@ -34,7 +34,7 @@ Trivial sparsity detector, which always returns a full sparsity pattern (only on
 
 # See also
 
-- [`AbstractSparsityDetector`](@ref)
+  - [`AbstractSparsityDetector`](@ref)
 """
 struct NoSparsityDetector <: AbstractSparsityDetector end
 
@@ -51,18 +51,18 @@ Abstract supertype for Jacobian/Hessian coloring algorithms, defined for example
 
 # Required methods
 
-- [`column_coloring`](@ref)
-- [`row_coloring`](@ref)
-- [`symmetric_coloring`](@ref)
+  - [`column_coloring`](@ref)
+  - [`row_coloring`](@ref)
+  - [`symmetric_coloring`](@ref)
 
 # Note
 
 The terminology and definitions are taken from the following paper:
 
 > "What Color Is Your Jacobian? Graph Coloring for Computing Derivatives"
->
+> 
 > Assefaw Hadish Gebremedhin, Fredrik Manne, and Alex Pothen (2005)
->
+> 
 > https://epubs.siam.org/doi/10.1137/S0036144504444711
 """
 abstract type AbstractColoringAlgorithm end
@@ -92,8 +92,8 @@ Use algorithm `ca` to construct a symmetrically structurally orthogonal partitio
 
 The result is a coloring vector `c` of length `size(M, 1) == size(M, 2)` such that for every non-zero coefficient `M[i, j]`, at least one of the following conditions holds:
 
-- column `j` is the only column of its color `c[j]` with a non-zero coefficient in row `i`;
-- column `i` is the only column of its color `c[i]` with a non-zero coefficient in row `j`.
+  - column `j` is the only column of its color `c[j]` with a non-zero coefficient in row `i`;
+  - column `i` is the only column of its color `c[i]` with a non-zero coefficient in row `j`.
 """
 function symmetric_coloring end
 
@@ -104,7 +104,7 @@ Trivial coloring algorithm, which always returns a different color for each matr
 
 # See also
 
-- [`AbstractColoringAlgorithm`](@ref)
+  - [`AbstractColoringAlgorithm`](@ref)
 """
 struct NoColoringAlgorithm <: AbstractColoringAlgorithm end
 
@@ -121,9 +121,9 @@ Wraps an ADTypes.jl object to deal with sparse Jacobians and Hessians.
 
 # Fields
 
-- `dense_ad::D`: the underlying AD package, subtyping [`AbstractADType`](@ref)
-- `sparsity_detector::S`: the sparsity pattern detector, subtyping [`AbstractSparsityDetector`](@ref)
-- `coloring_algorithm::C`: the coloring algorithm, subtyping [`AbstractColoringAlgorithm`](@ref)
+  - `dense_ad::D`: the underlying AD package, subtyping [`AbstractADType`](@ref)
+  - `sparsity_detector::S`: the sparsity pattern detector, subtyping [`AbstractSparsityDetector`](@ref)
+  - `coloring_algorithm::C`: the coloring algorithm, subtyping [`AbstractColoringAlgorithm`](@ref)
 
 # Constructors
 
@@ -158,10 +158,10 @@ end
     dense_ad(ad::AutoSparse)::AbstractADType
 
 Return the underlying AD package for a sparse AD choice.
-    
+
 # See also
 
-- [`AutoSparse`](@ref)
+  - [`AutoSparse`](@ref)
 """
 dense_ad(ad::AutoSparse) = ad.dense_ad
 
@@ -174,8 +174,8 @@ Return the sparsity pattern detector for a sparse AD choice.
 
 # See also
 
-- [`AutoSparse`](@ref)
-- [`AbstractSparsityDetector`](@ref)
+  - [`AutoSparse`](@ref)
+  - [`AbstractSparsityDetector`](@ref)
 """
 sparsity_detector(ad::AutoSparse) = ad.sparsity_detector
 
@@ -186,7 +186,7 @@ Return the coloring algorithm for a sparse AD choice.
 
 # See also
 
-- [`AutoSparse`](@ref)
-- [`AbstractColoringAlgorithm`](@ref)
+  - [`AutoSparse`](@ref)
+  - [`AbstractColoringAlgorithm`](@ref)
 """
 coloring_algorithm(ad::AutoSparse) = ad.coloring_algorithm
