@@ -11,4 +11,11 @@
 
 @deprecate AutoSparseZygote() AutoSparse(AutoZygote())
 
-@deprecate AutoModelingToolkit(; kwargs...) AutoSparse(AutoSymbolics())
+function AutoModelingToolkit(sparse = false, cons_sparse = false; kwargs...)
+    @warn "AutoModelingToolkit(args...) is deprecated, use AutoSymbolics() or AutoSparse(AutoSymbolics()) instead."
+    if sparse || cons_sparse
+        return AutoSparse(AutoSymbolics())
+    else
+        return AutoSymbolics()
+    end
+end
