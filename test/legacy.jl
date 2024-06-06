@@ -1,5 +1,7 @@
-@testset "AutoModelingToolkig" begin
-    ad = @test_deprecated AutoModelingToolkit()
+@testset "AutoModelingToolkit" begin
+    ad = @test_warn "AutoModelingToolkit(args...) is deprecated, use AutoSymbolics() or AutoSparse(AutoSymbolics()) instead." AutoModelingToolkit()
+    @test ad isa AbstractADType
+    ad = @test_warn "AutoModelingToolkit(args...) is deprecated, use AutoSymbolics() or AutoSparse(AutoSymbolics()) instead." AutoModelingToolkit(true)
     @test ad isa AbstractADType
     @test ad isa AutoSparse
     @test dense_ad(ad) isa AutoSymbolics
