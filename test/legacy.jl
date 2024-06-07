@@ -1,10 +1,17 @@
 @testset "AutoModelingToolkit" begin
-    ad = @test_warn "AutoModelingToolkit(args...) is deprecated, use AutoSymbolics() or AutoSparse(AutoSymbolics()) instead." AutoModelingToolkit()
-    @test ad isa AbstractADType
-    ad = @test_warn "AutoModelingToolkit(args...) is deprecated, use AutoSymbolics() or AutoSparse(AutoSymbolics()) instead." AutoModelingToolkit(true)
-    @test ad isa AbstractADType
-    @test ad isa AutoSparse
-    @test dense_ad(ad) isa AutoSymbolics
+    ad_sparse1 = @test_deprecated AutoModelingToolkit(;
+        obj_sparse = true, cons_sparse = false)
+    ad_sparse2 = @test_deprecated AutoModelingToolkit(true, false)
+
+    ad_dense1 = @test_deprecated AutoModelingToolkit(;
+        obj_sparse = false, cons_sparse = false)
+    ad_dense2 = @test_deprecated AutoModelingToolkit(false, false)
+    ad_dense3 = @test_deprecated AutoModelingToolkit()
+
+    @test all(
+        isa.((ad_sparse1, ad_sparse2, ad_dense1, ad_dense2, ad_dense3), AbstractADType))
+    @test all(isa.((ad_sparse1, ad_sparse2), AutoSparse{<:AutoSymbolics}))
+    @test all(isa.((ad_dense1, ad_dense2, ad_dense3), AutoSymbolics))
 end
 
 @testset "AutoSparseFastDifferentiation" begin
