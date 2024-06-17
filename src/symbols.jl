@@ -19,24 +19,11 @@ backend = ADTypes.Auto(:Zygote)
 ADTypes.AutoZygote()
 ```
 """
-Auto(package::Symbol) = Auto(Val(package))
+Auto(package::Symbol, args...; kws...) = Auto(Val(package), args...; kws...)
 
-Auto(::Val{:Diffractor}) = AutoDiffractor()
-Auto(::Val{:Enzyme}) = AutoEnzyme()
-Auto(::Val{:FastDifferentiation}) = AutoFastDifferentiation()
-Auto(::Val{:FiniteDiff}) = AutoFiniteDiff()
-Auto(::Val{:ForwardDiff}) = AutoForwardDiff()
-Auto(::Val{:PolyesterForwardDiff}) = AutoPolyesterForwardDiff()
-Auto(::Val{:ReverseDiff}) = AutoReverseDiff()
-Auto(::Val{:Symbolics}) = AutoSymbolics()
-Auto(::Val{:Tapir}) = AutoTapir()
-Auto(::Val{:Tracker}) = AutoTracker()
-Auto(::Val{:Zygote}) = AutoZygote()
-
-function Auto(::Val{:ChainRules})
-    throw(ArgumentError("ChainRules backend has mandatory arguments"))
+for backend in (:ChainRules, :Diffractor, :Enzyme, :FastDifferentiation,
+                :FiniteDiff, :FiniteDifferences, :ForwardDiff, :PolyesterForwardDiff,
+                :ReverseDiff, :Symbolics, :Tapir, :Tracker, :Zygote)
+    @eval Auto(::Val{$backend}, args...; kws...) = $(Symbol(:Auto, backend))(args...; kws...)
 end
 
-function Auto(::Val{:FiniteDifferences})
-    throw(ArgumentError("FiniteDifferences backend has mandatory arguments"))
-end
