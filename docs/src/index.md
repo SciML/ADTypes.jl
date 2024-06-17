@@ -92,3 +92,9 @@ ADTypes.ForwardOrReverseMode
 ADTypes.ReverseMode
 ADTypes.SymbolicMode
 ```
+
+## Miscellaneous
+
+```@docs
+ADTypes.Auto
+```

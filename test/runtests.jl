@@ -66,6 +66,9 @@ end
     @testset "Sparse" begin
         include("sparse.jl")
     end
+    @testset "Symbols" begin
+        include("symbols.jl")
+    end
     @testset "Legacy" begin
         include("legacy.jl")
     end
