@@ -24,6 +24,6 @@ Auto(package::Symbol, args...; kws...) = Auto(Val(package), args...; kws...)
 for backend in (:ChainRules, :Diffractor, :Enzyme, :FastDifferentiation,
                 :FiniteDiff, :FiniteDifferences, :ForwardDiff, :PolyesterForwardDiff,
                 :ReverseDiff, :Symbolics, :Tapir, :Tracker, :Zygote)
-    @eval Auto(::Val{$backend}, args...; kws...) = $(Symbol(:Auto, backend))(args...; kws...)
+    @eval Auto(::Val{$(QuoteNode(backend))}, args...; kws...) = $(Symbol(:Auto, backend))(args...; kws...)
 end
 
