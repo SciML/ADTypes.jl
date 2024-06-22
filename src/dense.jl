@@ -201,6 +201,15 @@ struct AutoReverseDiff{C} <: AbstractADType
     end
 end
 
+function Base.getproperty(ad::AutoReverseDiff, s::Symbol)
+    if s === :compile
+        Base.depwarn(
+            "`ad.compile` where `ad` is `AutoReverseDiff` has been deprecated and will be removed in v2. Instead it is available as a compile-time constant as `AutoReverseDiff{true}` or `AutoReverseDiff{false}`.",
+            :getproperty)
+    end
+    return getfield(ad, s)
+end
+
 mode(::AutoReverseDiff) = ReverseMode()
 
 """
