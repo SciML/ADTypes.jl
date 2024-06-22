@@ -186,14 +186,19 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoReverseDiff(; compile=false)
+    AutoReverseDiff(; compile::Union{Val, Bool} = Val(false))
 
 # Fields
 
-  - `compile::Bool`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
+  - `compile::Union{Val, Bool}`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
 """
-Base.@kwdef struct AutoReverseDiff <: AbstractADType
-    compile::Bool = false
+struct AutoReverseDiff{C} <: AbstractADType
+    compile::Bool  # this field if left for legacy reasons
+
+    function AutoReverseDiff(; compile::Union{Val, Bool} = Val(false))
+        _compile = _unwrap_val(compile)
+        return new{_compile}(_compile)
+    end
 end
 
 mode(::AutoReverseDiff) = ReverseMode()

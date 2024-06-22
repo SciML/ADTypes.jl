@@ -16,6 +16,9 @@ abstract type AbstractADType end
 
 Base.broadcastable(ad::AbstractADType) = Ref(ad)
 
+@inline _unwrap_val(::Val{T}) where {T} = T
+@inline _unwrap_val(x) = x
+
 include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
