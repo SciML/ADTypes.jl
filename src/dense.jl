@@ -186,14 +186,28 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoReverseDiff(; compile=false)
+    AutoReverseDiff(; compile::Union{Val, Bool} = Val(false))
 
 # Fields
 
-  - `compile::Bool`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
+  - `compile::Union{Val, Bool}`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
 """
-Base.@kwdef struct AutoReverseDiff <: AbstractADType
-    compile::Bool = false
+struct AutoReverseDiff{C} <: AbstractADType
+    compile::Bool  # this field if left for legacy reasons
+
+    function AutoReverseDiff(; compile::Union{Val, Bool} = Val(false))
+        _compile = _unwrap_val(compile)
+        return new{_compile}(_compile)
+    end
+end
+
+function Base.getproperty(ad::AutoReverseDiff, s::Symbol)
+    if s === :compile
+        Base.depwarn(
+            "`ad.compile` where `ad` is `AutoReverseDiff` has been deprecated and will be removed in v2. Instead it is available as a compile-time constant as `AutoReverseDiff{true}` or `AutoReverseDiff{false}`.",
+            :getproperty)
+    end
+    return getfield(ad, s)
 end
 
 mode(::AutoReverseDiff) = ReverseMode()
