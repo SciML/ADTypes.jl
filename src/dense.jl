@@ -19,6 +19,10 @@ end
 
 mode(::AutoChainRules) = ForwardOrReverseMode()  # specialized in the extension
 
+function Base.show(io::IO, backend::AutoChainRules)
+    print(io, "AutoChainRules(ruleconfig=$(backend.ruleconfig))")
+end
+
 """
     AutoDiffractor
 
@@ -57,6 +61,14 @@ Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
 end
 
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
+
+function Base.show(io::IO, backend::AutoEnzyme)
+    if isnothing(backend.mode)
+        print(io, "AutoEnzyme()")
+    else
+        print(io, "AutoEnzyme(mode=$(backend.mode))")
+    end
+end
 
 """
     AutoFastDifferentiation
@@ -98,6 +110,24 @@ end
 
 mode(::AutoFiniteDiff) = ForwardMode()
 
+function Base.show(io::IO, backend::AutoFiniteDiff)
+    s = "AutoFiniteDiff("
+    if backend.fdtype != Val(:forward)
+        s *= "fdtype=$(backend.fdtype), "
+    end
+    if backend.fdjtype != Val(:forward)
+        s *= "fdjtype=$(backend.fdjtype), "
+    end
+    if backend.fdhtype != Val(:hcentral)
+        s *= "fdhtype=$(backend.fdhtype), "
+    end
+    if endswith(s, ", ")
+        s = s[1:(end - 2)]
+    end
+    s *= ")"
+    print(io, s)
+end
+
 """
     AutoFiniteDifferences{T}
 
@@ -118,6 +148,10 @@ Base.@kwdef struct AutoFiniteDifferences{T} <: AbstractADType
 end
 
 mode(::AutoFiniteDifferences) = ForwardMode()
+
+function Base.show(io::IO, backend::AutoFiniteDifferences)
+    print(io, "AutoFiniteDifferences(fdm=$(backend.fdm))")
+end
 
 """
     AutoForwardDiff{chunksize,T}
@@ -148,6 +182,21 @@ end
 
 mode(::AutoForwardDiff) = ForwardMode()
 
+function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize}
+    s = "AutoForwardDiff("
+    if chunksize !== nothing
+        s *= "chunksize=$chunksize, "
+    end
+    if backend.tag !== nothing
+        s *= "tag=$(backend.tag), "
+    end
+    if endswith(s, ", ")
+        s = s[1:(end - 2)]
+    end
+    s *= ")"
+    print(io, s)
+end
+
 """
     AutoPolyesterForwardDiff{chunksize,T}
 
@@ -177,6 +226,21 @@ end
 
 mode(::AutoPolyesterForwardDiff) = ForwardMode()
 
+function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {chunksize}
+    s = "AutoPolyesterForwardDiff("
+    if chunksize !== nothing
+        s *= "chunksize=$chunksize, "
+    end
+    if backend.tag !== nothing
+        s *= "tag=$(backend.tag), "
+    end
+    if endswith(s, ", ")
+        s = s[1:(end - 2)]
+    end
+    s *= ")"
+    print(io, s)
+end
+
 """
     AutoReverseDiff
 
@@ -193,7 +257,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
   - `compile::Union{Val, Bool}`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
 """
 struct AutoReverseDiff{C} <: AbstractADType
-    compile::Bool  # this field if left for legacy reasons
+    compile::Bool  # this field is left for legacy reasons
 
     function AutoReverseDiff(; compile::Union{Val, Bool} = Val(false))
         _compile = _unwrap_val(compile)
@@ -211,6 +275,14 @@ function Base.getproperty(ad::AutoReverseDiff, s::Symbol)
 end
 
 mode(::AutoReverseDiff) = ReverseMode()
+
+function Base.show(io::IO, ::AutoReverseDiff{compile}) where {compile}
+    if !compile
+        print(io, "AutoReverseDiff()")
+    else
+        print(io, "AutoReverseDiff(compile=true)")
+    end
+end
 
 """
     AutoSymbolics
@@ -247,6 +319,14 @@ Base.@kwdef struct AutoTapir <: AbstractADType
 end
 
 mode(::AutoTapir) = ReverseMode()
+
+function Base.show(io::IO, backend::AutoTapir)
+    if backend.safe_mode
+        print(io, "AutoTapir()")
+    else
+        print(io, "AutoTapir(safe_mode=false)")
+    end
+end
 
 """
     AutoTracker

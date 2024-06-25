@@ -31,6 +31,9 @@ struct ForwardRuleConfig <: RuleConfig{Union{HasForwardsMode, NoReverseMode}} en
 struct ReverseRuleConfig <: RuleConfig{Union{NoForwardsMode, HasReverseMode}} end
 struct ForwardOrReverseRuleConfig <: RuleConfig{Union{HasForwardsMode, HasReverseMode}} end
 
+struct FakeSparsityDetector <: ADTypes.AbstractSparsityDetector end
+struct FakeColoringAlgorithm <: ADTypes.AbstractColoringAlgorithm end
+
 function every_ad()
     return [
         AutoChainRules(; ruleconfig = :rc),
@@ -44,6 +47,30 @@ function every_ad()
         AutoReverseDiff(),
         AutoSymbolics(),
         AutoTapir(),
+        AutoTracker(),
+        AutoZygote()
+    ]
+end
+
+function every_ad_with_options()
+    return [
+        AutoChainRules(; ruleconfig = :rc),
+        AutoDiffractor(),
+        AutoEnzyme(),
+        AutoEnzyme(mode = :forward),
+        AutoFastDifferentiation(),
+        AutoFiniteDiff(),
+        AutoFiniteDiff(fdtype = :fd, fdjtype = :fdj, fdhtype = :fdh),
+        AutoFiniteDifferences(; fdm = :fdm),
+        AutoForwardDiff(),
+        AutoForwardDiff(chunksize = 3, tag = :tag),
+        AutoPolyesterForwardDiff(),
+        AutoPolyesterForwardDiff(chunksize = 3, tag = :tag),
+        AutoReverseDiff(),
+        AutoReverseDiff(compile = true),
+        AutoSymbolics(),
+        AutoTapir(),
+        AutoTapir(safe_mode = false),
         AutoTracker(),
         AutoZygote()
     ]

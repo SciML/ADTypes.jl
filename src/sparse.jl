@@ -154,6 +154,18 @@ function AutoSparse(
     }(dense_ad, sparsity_detector, coloring_algorithm)
 end
 
+function Base.show(io::IO, backend::AutoSparse)
+    s = "AutoSparse(dense_ad=$(backend.dense_ad), "
+    if backend.sparsity_detector != NoSparsityDetector()
+        s *= "sparsity_detector=$(backend.sparsity_detector), "
+    end
+    if backend.coloring_algorithm != NoColoringAlgorithm()
+        s *= "coloring_algorithm=$(backend.coloring_algorithm)), "
+    end
+    s = s[1:(end - 2)] * ")"
+    print(io, s)
+end
+
 """
     dense_ad(ad::AutoSparse)::AbstractADType
 
