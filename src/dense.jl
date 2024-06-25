@@ -20,7 +20,7 @@ end
 mode(::AutoChainRules) = ForwardOrReverseMode()  # specialized in the extension
 
 function Base.show(io::IO, backend::AutoChainRules)
-    print(io, "AutoChainRules(ruleconfig=$(backend.ruleconfig))")
+    print(io, "AutoChainRules(ruleconfig=$(repr(backend.ruleconfig, context=io)))")
 end
 
 """
@@ -66,7 +66,7 @@ function Base.show(io::IO, backend::AutoEnzyme)
     if isnothing(backend.mode)
         print(io, "AutoEnzyme()")
     else
-        print(io, "AutoEnzyme(mode=$(backend.mode))")
+        print(io, "AutoEnzyme(mode=$(repr(backend.mode, context=io)))")
     end
 end
 
@@ -113,13 +113,13 @@ mode(::AutoFiniteDiff) = ForwardMode()
 function Base.show(io::IO, backend::AutoFiniteDiff)
     s = "AutoFiniteDiff("
     if backend.fdtype != Val(:forward)
-        s *= "fdtype=$(backend.fdtype), "
+        s *= "fdtype=$(repr(backend.fdtype, context=io)), "
     end
     if backend.fdjtype != backend.fdtype
-        s *= "fdjtype=$(backend.fdjtype), "
+        s *= "fdjtype=$(repr(backend.fdjtype, context=io)), "
     end
     if backend.fdhtype != Val(:hcentral)
-        s *= "fdhtype=$(backend.fdhtype), "
+        s *= "fdhtype=$(repr(backend.fdhtype, context=io)), "
     end
     if endswith(s, ", ")
         s = s[1:(end - 2)]
@@ -150,7 +150,7 @@ end
 mode(::AutoFiniteDifferences) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoFiniteDifferences)
-    print(io, "AutoFiniteDifferences(fdm=$(backend.fdm))")
+    print(io, "AutoFiniteDifferences(fdm=$(repr(backend.fdm, context=io)))")
 end
 
 """
@@ -188,7 +188,7 @@ function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize
         s *= "chunksize=$chunksize, "
     end
     if backend.tag !== nothing
-        s *= "tag=$(backend.tag), "
+        s *= "tag=$(repr(backend.tag, context=io)), "
     end
     if endswith(s, ", ")
         s = s[1:(end - 2)]
@@ -232,7 +232,7 @@ function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {
         s *= "chunksize=$chunksize, "
     end
     if backend.tag !== nothing
-        s *= "tag=$(backend.tag), "
+        s *= "tag=$(repr(backend.tag, context=io)), "
     end
     if endswith(s, ", ")
         s = s[1:(end - 2)]
