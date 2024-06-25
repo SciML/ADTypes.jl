@@ -115,7 +115,7 @@ function Base.show(io::IO, backend::AutoFiniteDiff)
     if backend.fdtype != Val(:forward)
         s *= "fdtype=$(backend.fdtype), "
     end
-    if backend.fdjtype != Val(:forward)
+    if backend.fdjtype != backend.fdtype
         s *= "fdjtype=$(backend.fdjtype), "
     end
     if backend.fdhtype != Val(:hcentral)
