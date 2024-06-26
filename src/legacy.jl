@@ -11,6 +11,8 @@
 
 @deprecate AutoSparseZygote() AutoSparse(AutoZygote())
 
+@deprecate AutoReverseDiff(compile) AutoReverseDiff(; compile)
+
 function mtk_to_symbolics(obj_sparse::Bool, cons_sparse::Bool)
     if obj_sparse || cons_sparse
         return AutoSparse(AutoSymbolics())

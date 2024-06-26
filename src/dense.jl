@@ -20,7 +20,7 @@ end
 mode(::AutoChainRules) = ForwardOrReverseMode()  # specialized in the extension
 
 function Base.show(io::IO, backend::AutoChainRules)
-    print(io, "AutoChainRules(ruleconfig=$(repr(backend.ruleconfig, context=io)))")
+    print(io, AutoChainRules, "(ruleconfig=", repr(backend.ruleconfig; context = io), ")")
 end
 
 """
@@ -63,11 +63,9 @@ end
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
 
 function Base.show(io::IO, backend::AutoEnzyme)
-    if isnothing(backend.mode)
-        print(io, "AutoEnzyme()")
-    else
-        print(io, "AutoEnzyme(mode=$(repr(backend.mode, context=io)))")
-    end
+    print(io, AutoEnzyme, "(")
+    !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io))
+    print(io, ")")
 end
 
 """
@@ -111,21 +109,14 @@ end
 mode(::AutoFiniteDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoFiniteDiff)
-    s = "AutoFiniteDiff("
-    if backend.fdtype != Val(:forward)
-        s *= "fdtype=$(repr(backend.fdtype, context=io)), "
-    end
-    if backend.fdjtype != backend.fdtype
-        s *= "fdjtype=$(repr(backend.fdjtype, context=io)), "
-    end
-    if backend.fdhtype != Val(:hcentral)
-        s *= "fdhtype=$(repr(backend.fdhtype, context=io)), "
-    end
-    if endswith(s, ", ")
-        s = s[1:(end - 2)]
-    end
-    s *= ")"
-    print(io, s)
+    print(io, AutoFiniteDiff, "(")
+    backend.fdtype != Val(:forward) &&
+        print(io, "fdtype=", repr(backend.fdtype; context = io), ",")
+    backend.fdjtype != backend.fdtype &&
+        print(io, "fdjtype=", repr(backend.fdjtype; context = io), ",")
+    backend.fdhtype != Val(:hcentral) &&
+        print(io, "fdhtype=", repr(backend.fdhtype; context = io), ",")
+    print(io, ")")
 end
 
 """
@@ -150,7 +141,7 @@ end
 mode(::AutoFiniteDifferences) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoFiniteDifferences)
-    print(io, "AutoFiniteDifferences(fdm=$(repr(backend.fdm, context=io)))")
+    print(io, AutoFiniteDifferences, "(fdm=", repr(backend.fdm; context = io), ")")
 end
 
 """
@@ -183,18 +174,10 @@ end
 mode(::AutoForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize}
-    s = "AutoForwardDiff("
-    if chunksize !== nothing
-        s *= "chunksize=$chunksize, "
-    end
-    if backend.tag !== nothing
-        s *= "tag=$(repr(backend.tag, context=io)), "
-    end
-    if endswith(s, ", ")
-        s = s[1:(end - 2)]
-    end
-    s *= ")"
-    print(io, s)
+    print(io, AutoForwardDiff, "(")
+    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io), ",")
+    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io), ",")
+    print(io, ")")
 end
 
 """
@@ -227,18 +210,10 @@ end
 mode(::AutoPolyesterForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {chunksize}
-    s = "AutoPolyesterForwardDiff("
-    if chunksize !== nothing
-        s *= "chunksize=$chunksize, "
-    end
-    if backend.tag !== nothing
-        s *= "tag=$(repr(backend.tag, context=io)), "
-    end
-    if endswith(s, ", ")
-        s = s[1:(end - 2)]
-    end
-    s *= ")"
-    print(io, s)
+    print(io, AutoPolyesterForwardDiff, "(")
+    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io), ",")
+    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io), ",")
+    print(io, ")")
 end
 
 """
@@ -277,11 +252,9 @@ end
 mode(::AutoReverseDiff) = ReverseMode()
 
 function Base.show(io::IO, ::AutoReverseDiff{compile}) where {compile}
-    if !compile
-        print(io, "AutoReverseDiff()")
-    else
-        print(io, "AutoReverseDiff(compile=true)")
-    end
+    print(io, AutoReverseDiff, "(")
+    compile && print(io, "compile=true")
+    print(io, ")")
 end
 
 """
@@ -321,11 +294,9 @@ end
 mode(::AutoTapir) = ReverseMode()
 
 function Base.show(io::IO, backend::AutoTapir)
-    if backend.safe_mode
-        print(io, "AutoTapir()")
-    else
-        print(io, "AutoTapir(safe_mode=false)")
-    end
+    print(io, AutoReverseDiff, "(")
+    !(backend.safe_mode) && print(io, "safe_mode=false")
+    print(io, ")")
 end
 
 """

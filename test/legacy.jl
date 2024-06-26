@@ -58,3 +58,8 @@ end
     @test ad isa AbstractADType
     @test dense_ad(ad) isa AutoZygote
 end
+
+@testset "AutoReverseDiff without kwarg" begin
+    ad = @test_deprecated AutoReverseDiff(true)
+    @test ad.compile
+end
