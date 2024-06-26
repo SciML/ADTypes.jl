@@ -111,11 +111,11 @@ mode(::AutoFiniteDiff) = ForwardMode()
 function Base.show(io::IO, backend::AutoFiniteDiff)
     print(io, AutoFiniteDiff, "(")
     backend.fdtype != Val(:forward) &&
-        print(io, "fdtype=", repr(backend.fdtype; context = io), ",")
+        print(io, "fdtype=", repr(backend.fdtype; context = io), ", ")
     backend.fdjtype != backend.fdtype &&
-        print(io, "fdjtype=", repr(backend.fdjtype; context = io), ",")
+        print(io, "fdjtype=", repr(backend.fdjtype; context = io), ", ")
     backend.fdhtype != Val(:hcentral) &&
-        print(io, "fdhtype=", repr(backend.fdhtype; context = io), ",")
+        print(io, "fdhtype=", repr(backend.fdhtype; context = io))
     print(io, ")")
 end
 
@@ -175,8 +175,9 @@ mode(::AutoForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize}
     print(io, AutoForwardDiff, "(")
-    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io), ",")
-    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io), ",")
+    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io),
+        (backend.tag !== nothing ? ", " : ""))
+    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io))
     print(io, ")")
 end
 
@@ -211,8 +212,9 @@ mode(::AutoPolyesterForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {chunksize}
     print(io, AutoPolyesterForwardDiff, "(")
-    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io), ",")
-    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io), ",")
+    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io),
+        (backend.tag !== nothing ? ", " : ""))
+    backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io))
     print(io, ")")
 end
 
