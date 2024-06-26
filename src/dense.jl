@@ -296,7 +296,7 @@ end
 mode(::AutoTapir) = ReverseMode()
 
 function Base.show(io::IO, backend::AutoTapir)
-    print(io, AutoReverseDiff, "(")
+    print(io, AutoTapir, "(")
     !(backend.safe_mode) && print(io, "safe_mode=false")
     print(io, ")")
 end
