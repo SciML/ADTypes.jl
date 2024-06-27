@@ -155,15 +155,15 @@ function AutoSparse(
 end
 
 function Base.show(io::IO, backend::AutoSparse)
-    s = "AutoSparse(dense_ad=$(repr(backend.dense_ad, context=io)), "
+    print(io, AutoSparse, "(dense_ad=", repr(backend.dense_ad, context = io))
     if backend.sparsity_detector != NoSparsityDetector()
-        s *= "sparsity_detector=$(repr(backend.sparsity_detector, context=io)), "
+        print(io, ", sparsity_detector=", repr(backend.sparsity_detector, context = io))
     end
     if backend.coloring_algorithm != NoColoringAlgorithm()
-        s *= "coloring_algorithm=$(repr(backend.coloring_algorithm, context=io))), "
+        print(
+            io, ", coloring_algorithm=", repr(backend.coloring_algorithm, context = io))
     end
-    s = s[1:(end - 2)] * ")"
-    print(io, s)
+    print(io, ")")
 end
 
 """
