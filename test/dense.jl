@@ -115,21 +115,21 @@ end
 @testset "AutoReverseDiff" begin
     ad = @inferred AutoReverseDiff()
     @test ad isa AbstractADType
-    @test ad isa AutoReverseDiff
+    @test ad isa AutoReverseDiff{false}
     @test mode(ad) isa ReverseMode
     @test !ad.compile
     @test_deprecated ad.compile
 
     ad = AutoReverseDiff(; compile = true)
     @test ad isa AbstractADType
-    @test ad isa AutoReverseDiff
+    @test ad isa AutoReverseDiff{true}
     @test mode(ad) isa ReverseMode
     @test ad.compile
     @test_deprecated ad.compile
 
     ad = @inferred AutoReverseDiff(; compile = Val(true))
     @test ad isa AbstractADType
-    @test ad isa AutoReverseDiff
+    @test ad isa AutoReverseDiff{true}
     @test mode(ad) isa ReverseMode
     @test ad.compile
     @test_deprecated ad.compile
