@@ -219,7 +219,7 @@ function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {
 end
 
 """
-    AutoReverseDiff
+    AutoReverseDiff{compile}
 
 Struct used to select the [ReverseDiff.jl](https://github.com/JuliaDiff/ReverseDiff.jl) backend for automatic differentiation.
 
@@ -231,7 +231,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `compile::Union{Val, Bool}`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation
+  - `compile::Union{Val, Bool}`: whether to [compile the tape](https://juliadiff.org/ReverseDiff.jl/api/#ReverseDiff.compile) prior to differentiation (the boolean version is also the type parameter)
 """
 struct AutoReverseDiff{C} <: AbstractADType
     compile::Bool  # this field is left for legacy reasons
