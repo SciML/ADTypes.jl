@@ -51,6 +51,11 @@ end
     @test ad isa AbstractADType
     @test dense_ad(ad) isa AutoReverseDiff
     @test dense_ad(ad).compile
+
+    ad = @test_deprecated AutoSparseReverseDiff(true)
+    @test ad isa AbstractADType
+    @test dense_ad(ad) isa AutoReverseDiff
+    @test dense_ad(ad).compile
 end
 
 @testset "AutoSparseZygote" begin
