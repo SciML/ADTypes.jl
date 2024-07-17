@@ -39,7 +39,7 @@ struct AutoDiffractor <: AbstractADType end
 mode(::AutoDiffractor) = ForwardOrReverseMode()
 
 """
-    AutoEnzyme{M}
+    AutoEnzyme{M,constant_function}
 
 Struct used to select the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) backend for automatic differentiation.
 
@@ -47,7 +47,10 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoEnzyme(; mode=nothing)
+    AutoEnzyme(; mode=nothing, constant_function::Bool=false)
+
+The `constant_function` keyword argument (and type parameter) determines whether the function object itself should be considered constant or not during differentiation with Enzyme.jl.
+For simple functions, this should usually be set to `false`, but in the case of closures or callable structs which contain differentiated data, it should be set to `true`.
 
 # Fields
 
@@ -56,8 +59,16 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
       + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
       + `nothing` to choose the best mode automatically
 """
-Base.@kwdef struct AutoEnzyme{M} <: AbstractADType
-    mode::M = nothing
+struct AutoEnzyme{M, constant_function} <: AbstractADType
+    mode::M
+end
+
+function AutoEnzyme(mode::M; constant_function::Bool = false) where {M}
+    return AutoEnzyme{M, constant_function}(mode)
+end
+
+function AutoEnzyme(; mode::M = nothing, constant_function::Bool = false) where {M}
+    return AutoEnzyme{M, constant_function}(mode)
 end
 
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension

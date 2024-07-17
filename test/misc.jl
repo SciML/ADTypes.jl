@@ -21,11 +21,6 @@ end
     @test length(string(sparse_backend1)) < length(string(sparse_backend2))
 end
 
-import ADTypes
-
-struct FakeSparsityDetector <: ADTypes.AbstractSparsityDetector end
-struct FakeColoringAlgorithm <: ADTypes.AbstractColoringAlgorithm end
-
 for backend in [
     # dense
     ADTypes.AutoChainRules(; ruleconfig = :rc),
