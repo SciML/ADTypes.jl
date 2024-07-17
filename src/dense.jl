@@ -50,7 +50,8 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
     AutoEnzyme(; mode=nothing, constant_function::Bool=false)
 
 The `constant_function` keyword argument (and type parameter) determines whether the function object itself should be considered constant or not during differentiation with Enzyme.jl.
-For simple functions, `constant_function` should usually be set to `false`, but in the case of closures or callable structs which contain differentiated data that can be treated as constant, `constant_function` should be set to `true` for increased performance (more details below).
+For simple functions, `constant_function` should usually be set to `true`, which leads to increased performance.
+However, in the case of closures or callable structs which contain differentiated data, `constant_function` should be set to `false` to ensure correctness (more details below).
 
 # Fields
 
