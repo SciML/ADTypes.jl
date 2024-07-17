@@ -62,30 +62,39 @@ However, in the case of closures or callable structs which contain differentiate
 
 # Notes
 
-If `constant_function = true` but the enclosed data is not truly constant, then Enzyme.jl will not compute the correct derivative values.
-An example of such a function is:
+We now give several examples of functions.
+For each one, we explain how `constant_function` should be set in order to compute the correct derivative with respect to the input `x`.
 
 ```julia
-cache = [0.0]
-function f(x)
-    cache[1] = x[1]^2
-    cache[1] + x[1]
+function f1(x)
+    return x[1]
 end
 ```
 
-In this case, the enclosed cache is a function of the differentiated input, and thus its values are non-constant with respect to the input.
-Thus, in order to compute the correct derivative of the output, the derivative must propagate through the `cache` value, and said `cache` must not be treated as constant.
-
-Conversely, the following function can treat `parameter` as a constant, because `parameter` is never modified based on the input `x`:
+The function `f1` is not a closure, it does not contain any data.
+Thus `f1` can be differentiated with `AutoEnzyme(constant_function=true)`.
 
 ```julia
 parameter = [0.0]
-function f(x)
-    parameter[1] + x[1]
+function f2(x)
+    return parameter[1] + x[1]
 end
 ```
 
-In this case, `constant_function = true` would allow the chosen differentiation system to perform extra memory and compute optimizations, under the assumption that `parameter` is kept constant.
+The function `f2` is a closure over `parameter`, but `parameter` is never modified based on the input `x`.
+Thus, `f2` can be differentiated with `AutoEnzyme(constant_function=true)`.
+
+```julia
+cache = [0.0]
+function f3(x)
+    cache[1] = x[1]
+    return cache[1] + x[1]
+end
+```
+
+The function `f3` is a closure over `cache`, and `cache` is modified based on the input `x`.
+That means `cache` cannot be treated as constant, since derivative values must be propagated through it.
+Thus `f3` must be differentiated with `AutoEnzyme(constant_function=false)`.
 """
 struct AutoEnzyme{M, constant_function} <: AbstractADType
     mode::M
