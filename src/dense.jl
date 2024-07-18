@@ -72,7 +72,7 @@ end
 ```
 
 The function `f1` is not a closure, it does not contain any data.
-Thus `f1` can be differentiated with `AutoEnzyme(constant_function=true)`.
+Thus `f1` can be differentiated with `AutoEnzyme(constant_function=true)` (although here setting `constant_function=false` would change neither correctness nor performance).
 
 ```julia
 parameter = [0.0]
@@ -82,7 +82,7 @@ end
 ```
 
 The function `f2` is a closure over `parameter`, but `parameter` is never modified based on the input `x`.
-Thus, `f2` can be differentiated with `AutoEnzyme(constant_function=true)`.
+Thus, `f2` can be differentiated with `AutoEnzyme(constant_function=true)` (setting `constant_function=false` would not change correctness but would hinder performance).
 
 ```julia
 cache = [0.0]
@@ -94,7 +94,7 @@ end
 
 The function `f3` is a closure over `cache`, and `cache` is modified based on the input `x`.
 That means `cache` cannot be treated as constant, since derivative values must be propagated through it.
-Thus `f3` must be differentiated with `AutoEnzyme(constant_function=false)`.
+Thus `f3` must be differentiated with `AutoEnzyme(constant_function=false)` (setting `constant_function=true` would make the result incorrect).
 """
 struct AutoEnzyme{M, constant_function} <: AbstractADType
     mode::M
