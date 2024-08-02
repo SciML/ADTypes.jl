@@ -155,9 +155,13 @@ end
     @test mode(ad) isa ReverseMode
     @test ad.safe_mode
 
-    @test_warn "" AutoTapir(; safe_mode = false)
-    ad = AutoTapir(; debug_mode = false)
+    ad = AutoTapir(; safe_mode = false)
     @test !ad.safe_mode
+
+    # Check that new interface works as intended.
+    @test_throws ArgumentError AutoTapir(; debug_mode=false, safe_mode=true)
+    @test !AutoTapir(; debug_mode=false).safe_mode
+    @test AutoTapir(; debug_mode=true).safe_mode
 end
 
 @testset "AutoTracker" begin
