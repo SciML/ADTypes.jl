@@ -325,33 +325,31 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-Struct used to select the [Tapir.jl](https://github.com/withbayes/Tapir.jl) backend for automatic differentiation.
+Struct used to select the [Tapir.jl](https://github.com/compintell/Tapir.jl) backend for automatic differentiation.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoTapir(; safe_mode=true)
+    AutoTapir(; debug_mode::Bool)
 
 # Fields
 
-  - `safe_mode::Bool`: whether to run additional checks to catch errors early. While this is
-    on by default to ensure that users are aware of this option, you should generally turn
-    it off for actual use, as it has substantial performance implications.
-    If you encounter a problem with using Tapir (it fails to differentiate a function, or
-    something truly nasty like a segfault occurs), then you should try switching `safe_mode`
-    on and look at what happens. Often errors are caught earlier and the error messages are
-    more useful.
+  - `debug_mode::Bool`: whether to run additional checks to catch errors early. This should
+    be set to `false` in general use of the package. If you encounter a problem when using
+    Tapir.jl (it fails to differentiate a function, or something truly nasty like a segfault
+    occurs), then you should switch `debug_mode` on. This often results in errors being
+    caught earlier in execution, and the associated error messages being more useful.
 """
 Base.@kwdef struct AutoTapir <: AbstractADType
-    safe_mode::Bool = true
+    debug_mode::Bool
 end
 
 mode(::AutoTapir) = ReverseMode()
 
 function Base.show(io::IO, backend::AutoTapir)
     print(io, AutoTapir, "(")
-    !(backend.safe_mode) && print(io, "safe_mode=false")
+    print(io, "debug_mode=$(backend.debug_mode)")
     print(io, ")")
 end
 
