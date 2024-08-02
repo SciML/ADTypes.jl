@@ -331,11 +331,12 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoTapir(; safe_mode=true)
+    AutoTapir(; debug_mode::Bool)
 
 # Fields
 
-  - `safe_mode::Bool`: whether to run additional checks to catch errors early. While this is
+  - `safe_mode::Bool`: (to be renamed to `debug_mode` in the next breaking release)
+    whether to run additional checks to catch errors early. While this is
     on by default to ensure that users are aware of this option, you should generally turn
     it off for actual use, as it has substantial performance implications.
     If you encounter a problem with using Tapir (it fails to differentiate a function, or
@@ -343,15 +344,17 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
     on and look at what happens. Often errors are caught earlier and the error messages are
     more useful.
 """
-Base.@kwdef struct AutoTapir <: AbstractADType
-    safe_mode::Bool = true
+struct AutoTapir <: AbstractADType
+    safe_mode::Bool
 end
+
+AutoTapir(; debug_mode::Bool) = AutoTapir(debug_mode)
 
 mode(::AutoTapir) = ReverseMode()
 
 function Base.show(io::IO, backend::AutoTapir)
     print(io, AutoTapir, "(")
-    !(backend.safe_mode) && print(io, "safe_mode=false")
+    !(backend.safe_mode) && print(io, "debug_mode=false")
     print(io, ")")
 end
 
