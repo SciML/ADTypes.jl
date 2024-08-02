@@ -348,7 +348,34 @@ struct AutoTapir <: AbstractADType
     safe_mode::Bool
 end
 
-AutoTapir(; debug_mode::Bool) = AutoTapir(debug_mode)
+# This is a really awkward function to deprecate, because Julia does not dispatch on kwargs.
+function AutoTapir(;
+    debug_mode::Union{Bool, Nothing}=nothing, safe_mode::Union{Bool, Nothing}=nothing,
+)
+    if debug_mode !== nothing && safe_mode !== nothing
+        throw(ArgumentError(
+            "Both `debug_mode` and `safe_mode` have been set. Please only set `debug_mode`."
+        ))
+    end
+
+    if safe_mode !== nothing
+        Base.depwarn(
+            "AutoTapir(; safe_mode) is deprecated, use AutoTapir(; debug_mode) instead.",
+            ((Base.Core).Typeof(AutoTapir)).name.mt.name,
+        )
+        return AutoTapir(safe_mode)
+    end
+
+    if debug_mode === nothing
+        Base.depwarn(
+            "AutoTapir() is deprecated, use AutoTapir(; debug_mode=true) instead.",
+            ((Base.Core).Typeof(AutoTapir)).name.mt.name,
+        )
+        return AutoTapir(true)
+    else
+        return AutoTapir(debug_mode)
+    end
+end
 
 mode(::AutoTapir) = ReverseMode()
 

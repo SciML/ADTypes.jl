@@ -15,8 +15,6 @@
 
 @deprecate AutoReverseDiff(compile) AutoReverseDiff(; compile)
 
-@deprecate AutoTapir() AutoTapir(; debug_mode=true)
-
 function mtk_to_symbolics(obj_sparse::Bool, cons_sparse::Bool)
     if obj_sparse || cons_sparse
         return AutoSparse(AutoSymbolics())
