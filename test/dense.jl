@@ -149,14 +149,14 @@ end
 end
 
 @testset "AutoTapir" begin
-    ad = AutoTapir()
+    ad = AutoTapir(debug_mode=true)
     @test ad isa AbstractADType
     @test ad isa AutoTapir
     @test mode(ad) isa ReverseMode
-    @test ad.safe_mode
+    @test ad.debug_mode
 
-    ad = AutoTapir(; safe_mode = false)
-    @test !ad.safe_mode
+    ad = AutoTapir(; debug_mode = false)
+    @test !ad.debug_mode
 end
 
 @testset "AutoTracker" begin

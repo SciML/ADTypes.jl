@@ -38,8 +38,8 @@ for backend in [
     ADTypes.AutoReverseDiff(),
     ADTypes.AutoReverseDiff(compile = true),
     ADTypes.AutoSymbolics(),
-    ADTypes.AutoTapir(),
-    ADTypes.AutoTapir(safe_mode = false),
+    ADTypes.AutoTapir(debug_mode = true),
+    ADTypes.AutoTapir(debug_mode = false),
     ADTypes.AutoTracker(),
     ADTypes.AutoZygote(),
     # sparse
