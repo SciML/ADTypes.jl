@@ -155,7 +155,8 @@ end
     @test mode(ad) isa ReverseMode
     @test ad.safe_mode
 
-    ad = AutoTapir(; safe_mode = false)
+    @test_warn "" AutoTapir(; safe_mode = false)
+    ad = AutoTapir(; debug_mode = false)
     @test !ad.safe_mode
 end
 
