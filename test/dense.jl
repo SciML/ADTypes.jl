@@ -28,25 +28,25 @@ end
 @testset "AutoEnzyme" begin
     ad = AutoEnzyme()
     @test ad isa AbstractADType
-    @test ad isa AutoEnzyme{Nothing, false}
+    @test ad isa AutoEnzyme{Nothing}
     @test mode(ad) isa ForwardOrReverseMode
     @test ad.mode === nothing
 
-    ad = AutoEnzyme(EnzymeCore.Forward; constant_function = true)
+    ad = AutoEnzyme(EnzymeCore.Forward)
     @test ad isa AbstractADType
-    @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward), true}
+    @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward)}
     @test mode(ad) isa ForwardMode
     @test ad.mode == EnzymeCore.Forward
 
     ad = AutoEnzyme(; mode = EnzymeCore.Forward)
     @test ad isa AbstractADType
-    @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward), false}
+    @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward)}
     @test mode(ad) isa ForwardMode
     @test ad.mode == EnzymeCore.Forward
 
-    ad = AutoEnzyme(; mode = EnzymeCore.Reverse, constant_function = true)
+    ad = AutoEnzyme(; mode = EnzymeCore.Reverse)
     @test ad isa AbstractADType
-    @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse), true}
+    @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse)}
     @test mode(ad) isa ReverseMode
     @test ad.mode == EnzymeCore.Reverse
 end
