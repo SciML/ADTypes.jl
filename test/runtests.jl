@@ -46,7 +46,8 @@ function every_ad()
         AutoPolyesterForwardDiff(),
         AutoReverseDiff(),
         AutoSymbolics(),
-        AutoTapir(),
+        AutoTapir(debug_mode = true),
+        AutoTapir(debug_mode = false),
         AutoTracker(),
         AutoZygote()
     ]
@@ -69,8 +70,8 @@ function every_ad_with_options()
         AutoReverseDiff(),
         AutoReverseDiff(compile = true),
         AutoSymbolics(),
-        AutoTapir(),
-        AutoTapir(safe_mode = false),
+        AutoTapir(debug_mode = true),
+        AutoTapir(debug_mode = false),
         AutoTracker(),
         AutoZygote()
     ]
