@@ -350,7 +350,7 @@ end
 
 # This is a really awkward function to deprecate, because Julia does not dispatch on kwargs.
 function AutoTapir(;
-    debug_mode::Union{Bool, Nothing}=nothing, safe_mode::Union{Bool, Nothing}=nothing,
+    debug_mode::Union{Bool, Nothing}=nothing, safe_mode::Union{Bool, Nothing}=nothing
 )
     if debug_mode !== nothing && safe_mode !== nothing
         throw(ArgumentError(
