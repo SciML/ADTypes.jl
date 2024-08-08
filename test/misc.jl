@@ -21,6 +21,11 @@ end
     @test length(string(sparse_backend1)) < length(string(sparse_backend2))
 end
 
+#=
+The following tests are only for visual assessment of the printing behavior.
+They do not correspond to proper use of ADTypes constructors.
+Please refer to the docstrings for that.
+=#
 for backend in [
     # dense
     ADTypes.AutoChainRules(; ruleconfig = :rc),
