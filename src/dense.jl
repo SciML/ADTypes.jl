@@ -76,8 +76,9 @@ mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
 
 function Base.show(io::IO, backend::AutoEnzyme{M, A}) where {M, A}
     print(io, AutoEnzyme, "(")
-    !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io), ", ")
-    print(io, "function_annotation=", repr(A; context = io))
+    !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io))
+    !isnothing(backend.mode) && !(A <: Nothing) && print(io, ", ")
+    !(A <: Nothing) && print(io, "function_annotation=", repr(A; context = io))
     print(io, ")")
 end
 
