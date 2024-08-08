@@ -104,6 +104,20 @@ end
     @test ad.tag == CustomTag()
 end
 
+@testset "AutoGTPSA" begin
+    ad = AutoGTPSA(; descriptor = nothing)
+    @test ad isa AbstractADType
+    @test ad isa AutoGTPSA{Nothing}
+    @test mode(ad) isa ForwardMode
+    @test ad.descriptor === nothing
+
+    ad = AutoGTPSA(; descriptor = Val(:descriptor))
+    @test ad isa AbstractADType
+    @test ad isa AutoGTPSA{Val{:descriptor}}
+    @test mode(ad) isa ForwardMode
+    @test ad.descriptor == Val(:descriptor)
+end
+
 @testset "AutoPolyesterForwardDiff" begin
     ad = AutoPolyesterForwardDiff()
     @test ad isa AbstractADType

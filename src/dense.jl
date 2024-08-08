@@ -185,6 +185,42 @@ function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize
     print(io, ")")
 end
 
+
+"""
+    AutoGTPSA{D}
+
+Struct used to select the [GTPSA.jl](https://github.com/bmad-sim/GTPSA.jl) backend for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoGTPSA(; descriptor=nothing)
+
+# Fields
+
+  - `descriptor::D`: can be either
+
+      + a GTPSA `Descriptor` specifying the number of variables/parameters, parameter 
+        order, individual variable/parameter truncation orders, and maximum order. See 
+        the [GTPSA.jl documentation](https://bmad-sim.github.io/GTPSA.jl/stable/man/c_descriptor/) for more details.
+      + `nothing` to automatically use a `Descriptor` given the context.
+      
+"""
+Base.@kwdef struct AutoGTPSA{D} <: AbstractADType
+    descriptor::D = nothing
+end
+
+mode(::AutoGTPSA) = ForwardMode()
+
+function Base.show(io::IO, backend::AutoGTPSA{D}) where {D}
+    print(io, AutoGTPSA, "(")
+    D != Nothing && print(io, "descriptor=\n", repr(backend.descriptor; context = io))
+    print(io, ")")
+end
+
+
+
 """
     AutoPolyesterForwardDiff{chunksize,T}
 
