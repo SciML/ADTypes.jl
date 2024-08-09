@@ -21,12 +21,19 @@ end
     @test length(string(sparse_backend1)) < length(string(sparse_backend2))
 end
 
+#=
+The following tests are only for visual assessment of the printing behavior.
+They do not correspond to proper use of ADTypes constructors.
+Please refer to the docstrings for that.
+=#
 for backend in [
     # dense
     ADTypes.AutoChainRules(; ruleconfig = :rc),
     ADTypes.AutoDiffractor(),
     ADTypes.AutoEnzyme(),
     ADTypes.AutoEnzyme(mode = :forward),
+    ADTypes.AutoEnzyme(function_annotation = Val{:forward}),
+    ADTypes.AutoEnzyme(mode = :reverse, function_annotation = Val{:duplicated}),
     ADTypes.AutoFastDifferentiation(),
     ADTypes.AutoFiniteDiff(),
     ADTypes.AutoFiniteDiff(fdtype = :fd, fdjtype = :fdj, fdhtype = :fdh),
