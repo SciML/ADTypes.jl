@@ -30,6 +30,12 @@ AutoFiniteDiff
 AutoFiniteDifferences
 ```
 
+Taylor mode:
+
+```@docs
+AutoGTPSA
+```
+
 ### Reverse mode
 
 ```@docs
