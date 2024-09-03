@@ -42,6 +42,57 @@ jacobian_sparsity(f, x, ::NoSparsityDetector) = trues(length(f(x)), length(x))
 jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = trues(length(y), length(x))
 hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
+"""
+    KnownSparsityDetector(; jacobian_sparsity=nothing, hessian_sparsity=nothing) <: AbstractSparsityDetector
+
+Trivial sparsity detector used to return known sparsity patterns `jacobian_sparsity` and/or `hessian_sparsity`
+
+# See also
+
+  - [`AbstractSparsityDetector`](@ref)
+"""
+struct KnownSparsityDetector{
+    J <: Union{Nothing, AbstractMatrix},
+    H <: Union{Nothing, AbstractMatrix}
+} <: AbstractSparsityDetector
+    jacobian_sparsity::J
+    hessian_sparsity::H
+
+    function KnownSparsityDetector(j, h)
+        if !isnothing(j) && !isnothing(h)
+end
+function KnownSparsityDetector(; jacobian_sparsity = nothing, hessian_sparsity = nothing)
+    return KnownSparsityDetector(jacobian_sparsity, hessian_sparsity)
+end
+
+function jacobian_sparsity(f, x, sd::KnownSparsityDetector)
+    isnothing(sd.jacobian_sparsity) &&
+        error("KnownSparsityDetector doesn't contain a Jacobian sparsity pattern.")
+    sz = size(sd.jacobian_sparsity)
+    sz_expected = (length(f(x)), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Jacobian size $sz of KnownSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.jacobian_sparsity
+end
+function jacobian_sparsity(f!, y, x, sd::KnownSparsityDetector)
+    isnothing(sd.jacobian_sparsity) &&
+        error("KnownSparsityDetector doesn't contain a Jacobian sparsity pattern.")
+    sz = size(sd.jacobian_sparsity)
+    sz_expected = (length(y), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Jacobian size $sz of KnownSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.jacobian_sparsity
+end
+function hessian_sparsity(f, x, sd::KnownSparsityDetector)
+    isnothing(sd.hessian_sparsity) &&
+        error("KnownSparsityDetector doesn't contain a Hessian sparsity pattern.")
+    sz = size(sd.hessian_sparsity)
+    sz_expected = (length(x), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Hessian size $sz of KnownSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.hessian_sparsity
+end
+
 ## Coloring algorithm
 
 """
