@@ -75,7 +75,7 @@ function hessian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
 end
 
 """
-    KnownHessianSparsityDetector(jacobian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
+    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Hessian sparsity pattern.
 

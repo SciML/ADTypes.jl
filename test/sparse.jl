@@ -62,7 +62,6 @@ end
                 @test Js === Jref
             end
         end
-
         @testset "In-place functions" begin
             for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
                 x, y = rand(sx...), rand(sy...)
@@ -75,8 +74,16 @@ end
                 @test Js === Jref
             end
         end
-
-        @testset "Exceptions" begin
+        @testset "Exceptions: hessian_sparsity not supported" begin
+            for sx in ((2,), (2, 3))
+                x = rand(sx...)
+                nx = length(x)
+                Href = rand(Bool, nx, nx)
+                sd = KnownJacobianSparsityDetector(Href)
+                @test_throws ErrorException hessian_sparsity(f_hess, x, sd)
+            end
+        end
+        @testset "Exceptions: DimensionMismatch" begin
             sd = KnownJacobianSparsityDetector(rand(Bool, 6, 7)) # wrong Jacobian size
             for x in (rand(2), rand(2, 3)), f in (f_jac1, f_jac2)
                 @test_throws DimensionMismatch jacobian_sparsity(f, x, sd)
@@ -87,23 +94,38 @@ end
         end
     end
     @testset "KnownHessianSparsityDetector" begin
-        x = rand(2)
-        Href = rand(Bool, 2, 2)
-        sd = KnownHessianSparsityDetector(Href)
-        Hs = hessian_sparsity(f_hess, x, sd)
-        @test Hs isa AbstractMatrix
-        @test size(Hs) == (length(x), length(x))
-        @test Hs === Href
+        for sx in ((2,), (2, 3))
+            x = rand(sx...)
+            nx = length(x)
+            Href = rand(Bool, nx, nx)
+            sd = KnownHessianSparsityDetector(Href)
 
-        x = rand(2, 3)
-        Href = rand(Bool, 6, 6)
-        sd = KnownHessianSparsityDetector(Href)
-        Hs = hessian_sparsity(f_hess, x, sd)
-        @test Hs isa AbstractMatrix
-        @test size(Hs) == (length(x), length(x))
-        @test Hs === Href
-
-        @testset "Exceptions" begin
+            Hs = hessian_sparsity(f_hess, x, sd)
+            @test Hs isa AbstractMatrix
+            @test size(Hs) == (nx, nx)
+            @test Hs === Href
+        end
+        @testset "Exceptions: jacobian_sparsity not supported" begin
+            @testset "Out-of-place functions" begin
+                for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
+                    x = rand(sx...)
+                    nx = length(x)
+                    Jref = rand(Bool, 2 * nx, nx)
+                    sd = KnownHessianSparsityDetector(Jref)
+                    @test_throws ErrorException jacobian_sparsity(f, x, sd)
+                end
+            end
+            @testset "In-place functions" begin
+                for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
+                    x, y = rand(sx...), rand(sy...)
+                    nx, ny = length(x), length(y)
+                    Jref = rand(Bool, ny, nx)
+                    sd = KnownHessianSparsityDetector(Jref)
+                    @test_throws ErrorException jacobian_sparsity(f_jac!, y, x, sd)
+                end
+            end
+        end
+        @testset "Exceptions: DimensionMismatch" begin
             sd = KnownHessianSparsityDetector(rand(Bool, 2, 3)) #wrong Hessian size
             for x in (rand(2), rand(2, 3))
                 @test_throws DimensionMismatch hessian_sparsity(f_hess, x, sd)
