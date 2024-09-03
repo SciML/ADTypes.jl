@@ -69,6 +69,8 @@ ADTypes.AbstractSparsityDetector
 ADTypes.jacobian_sparsity
 ADTypes.hessian_sparsity
 ADTypes.NoSparsityDetector
+ADTypes.KnownJacobianSparsityDetector
+ADTypes.KnownHessianSparsityDetector
 ```
 
 ### Coloring algorithm
