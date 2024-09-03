@@ -71,7 +71,7 @@ function jacobian_sparsity(f!, y, x, sd::KnownJacobianSparsityDetector)
     return sd.jacobian_sparsity
 end
 function hessian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
-    error("KnownJacobianSparsityDetector can't be used to compute Hessian sparsity.")
+    throw(ArgumentError("KnownJacobianSparsityDetector can't be used to compute Hessian sparsity."))
 end
 
 """
@@ -97,10 +97,10 @@ function hessian_sparsity(f, x, sd::KnownHessianSparsityDetector)
 end
 
 function jacobian_sparsity(f, x, sd::KnownHessianSparsityDetector)
-    error("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity.")
+    throw(ArgumentError("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity."))
 end
 function jacobian_sparsity(f!, y, x, sd::KnownHessianSparsityDetector)
-    error("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity.")
+    throw(ArgumentError("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity."))
 end
 
 ## Coloring algorithm

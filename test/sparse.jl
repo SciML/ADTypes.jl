@@ -80,7 +80,7 @@ end
                 nx = length(x)
                 Href = rand(Bool, nx, nx)
                 sd = KnownJacobianSparsityDetector(Href)
-                @test_throws ErrorException hessian_sparsity(f_hess, x, sd)
+                @test_throws ArgumentError hessian_sparsity(f_hess, x, sd)
             end
         end
         @testset "Exceptions: DimensionMismatch" begin
@@ -112,7 +112,7 @@ end
                     nx = length(x)
                     Jref = rand(Bool, 2 * nx, nx)
                     sd = KnownHessianSparsityDetector(Jref)
-                    @test_throws ErrorException jacobian_sparsity(f, x, sd)
+                    @test_throws ArgumentError jacobian_sparsity(f, x, sd)
                 end
             end
             @testset "In-place functions" begin
@@ -121,7 +121,7 @@ end
                     nx, ny = length(x), length(y)
                     Jref = rand(Bool, ny, nx)
                     sd = KnownHessianSparsityDetector(Jref)
-                    @test_throws ErrorException jacobian_sparsity(f_jac!, y, x, sd)
+                    @test_throws ArgumentError jacobian_sparsity(f_jac!, y, x, sd)
                 end
             end
         end
