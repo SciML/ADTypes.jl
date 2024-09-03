@@ -50,31 +50,33 @@ end
     end
 
     @testset "KnownJacobianSparsityDetector" begin
-        @testset "Out-of-place functions" begin
-            for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
-                x = rand(sx...)
-                nx = length(x)
-                Jref = rand(Bool, 2 * nx, nx)
-                sd = KnownJacobianSparsityDetector(Jref)
-                Js = jacobian_sparsity(f, x, sd)
-                @test Js isa AbstractMatrix
-                @test size(Js) == (2 * nx, nx)
-                @test Js === Jref
+        @testset "Jacobian sparsity detection" begin
+            @testset "Out-of-place functions" begin
+                for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
+                    x = rand(sx...)
+                    nx = length(x)
+                    Jref = rand(Bool, 2 * nx, nx)
+                    sd = KnownJacobianSparsityDetector(Jref)
+                    Js = jacobian_sparsity(f, x, sd)
+                    @test Js isa AbstractMatrix
+                    @test size(Js) == (2 * nx, nx)
+                    @test Js === Jref
+                end
+            end
+            @testset "In-place functions" begin
+                for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
+                    x, y = rand(sx...), rand(sy...)
+                    nx, ny = length(x), length(y)
+                    Jref = rand(Bool, ny, nx)
+                    sd = KnownJacobianSparsityDetector(Jref)
+                    Js = jacobian_sparsity(f_jac!, y, x, sd)
+                    @test Js isa AbstractMatrix
+                    @test size(Js) == (ny, nx)
+                    @test Js === Jref
+                end
             end
         end
-        @testset "In-place functions" begin
-            for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
-                x, y = rand(sx...), rand(sy...)
-                nx, ny = length(x), length(y)
-                Jref = rand(Bool, ny, nx)
-                sd = KnownJacobianSparsityDetector(Jref)
-                Js = jacobian_sparsity(f_jac!, y, x, sd)
-                @test Js isa AbstractMatrix
-                @test size(Js) == (ny, nx)
-                @test Js === Jref
-            end
-        end
-        @testset "Exceptions: hessian_sparsity not supported" begin
+        @testset "Exceptions: Hessian sparsity detection not supported" begin
             for sx in ((2,), (2, 3))
                 x = rand(sx...)
                 nx = length(x)
@@ -93,19 +95,22 @@ end
             end
         end
     end
-    @testset "KnownHessianSparsityDetector" begin
-        for sx in ((2,), (2, 3))
-            x = rand(sx...)
-            nx = length(x)
-            Href = rand(Bool, nx, nx)
-            sd = KnownHessianSparsityDetector(Href)
 
-            Hs = hessian_sparsity(f_hess, x, sd)
-            @test Hs isa AbstractMatrix
-            @test size(Hs) == (nx, nx)
-            @test Hs === Href
+    @testset "KnownHessianSparsityDetector" begin
+        @testset "Hessian sparsity detection" begin
+            for sx in ((2,), (2, 3))
+                x = rand(sx...)
+                nx = length(x)
+                Href = rand(Bool, nx, nx)
+                sd = KnownHessianSparsityDetector(Href)
+
+                Hs = hessian_sparsity(f_hess, x, sd)
+                @test Hs isa AbstractMatrix
+                @test size(Hs) == (nx, nx)
+                @test Hs === Href
+            end
         end
-        @testset "Exceptions: jacobian_sparsity not supported" begin
+        @testset "Exceptions: Jacobian sparsity detection not supported" begin
             @testset "Out-of-place functions" begin
                 for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
                     x = rand(sx...)
