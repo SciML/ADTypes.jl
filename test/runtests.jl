@@ -7,6 +7,8 @@ using ADTypes: AbstractADType,
                SymbolicMode
 using ADTypes: dense_ad,
                NoSparsityDetector,
+               KnownJacobianSparsityDetector,
+               KnownHessianSparsityDetector,
                sparsity_detector,
                jacobian_sparsity,
                hessian_sparsity,

@@ -42,6 +42,67 @@ jacobian_sparsity(f, x, ::NoSparsityDetector) = trues(length(f(x)), length(x))
 jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = trues(length(y), length(x))
 hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
+"""
+    KnownJacobianSparsityDetector(jacobian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
+
+Trivial sparsity detector used to return a known Jacobian sparsity pattern.
+
+# See also
+
+  - [`AbstractSparsityDetector`](@ref)
+  - [`KnownHessianSparsityDetector`](@ref)
+"""
+struct KnownJacobianSparsityDetector{J <: AbstractMatrix} <: AbstractSparsityDetector
+    jacobian_sparsity::J
+end
+
+function jacobian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
+    sz = size(sd.jacobian_sparsity)
+    sz_expected = (length(f(x)), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Jacobian size $sz of KnownJacobianSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.jacobian_sparsity
+end
+function jacobian_sparsity(f!, y, x, sd::KnownJacobianSparsityDetector)
+    sz = size(sd.jacobian_sparsity)
+    sz_expected = (length(y), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Jacobian size $sz of KnownJacobianSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.jacobian_sparsity
+end
+function hessian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
+    throw(ArgumentError("KnownJacobianSparsityDetector can't be used to compute Hessian sparsity."))
+end
+
+"""
+    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
+
+Trivial sparsity detector used to return a known Hessian sparsity pattern.
+
+# See also
+
+  - [`AbstractSparsityDetector`](@ref)
+  - [`KnownJacobianSparsityDetector`](@ref)
+"""
+struct KnownHessianSparsityDetector{H <: AbstractMatrix} <: AbstractSparsityDetector
+    hessian_sparsity::H
+end
+
+function hessian_sparsity(f, x, sd::KnownHessianSparsityDetector)
+    sz = size(sd.hessian_sparsity)
+    sz_expected = (length(x), length(x))
+    sz != sz_expected &&
+        throw(DimensionMismatch("Hessian size $sz of KnownHessianSparsityDetector doesn't match expected size $sz_expected."))
+    return sd.hessian_sparsity
+end
+
+function jacobian_sparsity(f, x, sd::KnownHessianSparsityDetector)
+    throw(ArgumentError("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity."))
+end
+function jacobian_sparsity(f!, y, x, sd::KnownHessianSparsityDetector)
+    throw(ArgumentError("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity."))
+end
+
 ## Coloring algorithm
 
 """
