@@ -47,7 +47,14 @@ export AutoChainRules,
        AutoTapir,
        AutoTracker,
        AutoZygote
+@compat public AbstractMode
+@compat public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
+@compat public mode
+@compat public Auto
+
+# Sparse Automatic Differentiation
 export AutoSparse
+@compat public dense_ad
 
 # Sparsity detection
 export AbstractSparsityDetector
