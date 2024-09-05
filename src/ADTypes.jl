@@ -19,6 +19,7 @@ Base.broadcastable(ad::AbstractADType) = Ref(ad)
 @inline _unwrap_val(::Val{T}) where {T} = T
 @inline _unwrap_val(x) = x
 
+include("compat.jl") # @public macro
 include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
@@ -46,42 +47,29 @@ export AutoChainRules,
        AutoTapir,
        AutoTracker,
        AutoZygote
+@public AbstractMode
+@public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
+@public mode
+@public Auto
 
 # Sparse Automatic Differentiation
 export AutoSparse
+@public dense_ad
 
 # Sparsity detection
 export AbstractSparsityDetector
 export jacobian_sparsity, hessian_sparsity
+@public sparsity_detector
+@public NoSparsityDetector
+@public KnownJacobianSparsityDetector
+@public KnownHessianSparsityDetector
 
 # Matrix coloring
 export AbstractColoringAlgorithm
 export column_coloring, row_coloring, symmetric_coloring
+@public coloring_algorithm
+@public NoColoringAlgorithm
 
 # legacy exports are taken care of by @deprecated
-
-# Define public interface
-# To avoid a dependency on Compat.jl, this uses a trick suggested by Lilith Hafner:
-# https://discourse.julialang.org/t/is-compat-jl-worth-it-for-the-public-keyword/119041/2
-if VERSION >= v"1.11.0-DEV.469"
-    # Automatic Differentiation
-    eval(Meta.parse("public AbstractMode"))
-    eval(Meta.parse("public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode"))
-    eval(Meta.parse("public mode"))
-    eval(Meta.parse("public Auto"))
-
-    # Sparse Automatic Differentiation
-    eval(Meta.parse("public dense_ad"))
-
-    # Sparsity detection
-    eval(Meta.parse("public sparsity_detector"))
-    eval(Meta.parse("public NoSparsityDetector"))
-    eval(Meta.parse("public KnownJacobianSparsityDetector"))
-    eval(Meta.parse("public KnownHessianSparsityDetector"))
-
-    # Matrix coloring
-    eval(Meta.parse("public NoColoringAlgorithm"))
-    eval(Meta.parse("public coloring_algorithm"))
-end
 
 end
