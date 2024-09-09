@@ -19,6 +19,7 @@ Base.broadcastable(ad::AbstractADType) = Ref(ad)
 @inline _unwrap_val(::Val{T}) where {T} = T
 @inline _unwrap_val(x) = x
 
+include("compat.jl") # @public macro
 include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
@@ -30,8 +31,8 @@ if !isdefined(Base, :get_extension)
     include("../ext/ADTypesEnzymeCoreExt.jl")
 end
 
+# Automatic Differentiation
 export AbstractADType
-
 export AutoChainRules,
        AutoDiffractor,
        AutoEnzyme,
@@ -46,8 +47,28 @@ export AutoChainRules,
        AutoTapir,
        AutoTracker,
        AutoZygote
+@public AbstractMode
+@public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
+@public mode
+@public Auto
 
+# Sparse Automatic Differentiation
 export AutoSparse
+@public dense_ad
+
+# Sparsity detection
+export AbstractSparsityDetector
+export jacobian_sparsity, hessian_sparsity
+@public sparsity_detector
+@public NoSparsityDetector
+@public KnownJacobianSparsityDetector
+@public KnownHessianSparsityDetector
+
+# Matrix coloring
+export AbstractColoringAlgorithm
+export column_coloring, row_coloring, symmetric_coloring
+@public coloring_algorithm
+@public NoColoringAlgorithm
 
 # legacy exports are taken care of by @deprecated
 
