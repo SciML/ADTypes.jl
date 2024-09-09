@@ -104,4 +104,9 @@ end
     @testset "Miscellaneous" begin
         include("misc.jl")
     end
+    if VERSION >= v"1.11.0-DEV.469"
+        @testset "Public" begin
+            include("public.jl")
+        end
+    end
 end
