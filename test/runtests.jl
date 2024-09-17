@@ -66,7 +66,7 @@ function every_ad_with_options()
         AutoForwardDiff(),
         AutoForwardDiff(chunksize = 3, tag = :tag),
         AutoGTPSA(),
-        AutoGTPSA(descriptor=:descriptor),
+        AutoGTPSA(descriptor = Val(:descriptor)),
         AutoPolyesterForwardDiff(),
         AutoPolyesterForwardDiff(chunksize = 3, tag = :tag),
         AutoReverseDiff(),
