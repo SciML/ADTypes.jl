@@ -40,6 +40,8 @@ for backend in [
     ADTypes.AutoFiniteDifferences(; fdm = :fdm),
     ADTypes.AutoForwardDiff(),
     ADTypes.AutoForwardDiff(chunksize = 3, tag = :tag),
+    ADTypes.AutoGTPSA(),
+    ADTypes.AutoGTPSA(; descriptor = Val(:descriptor)),
     ADTypes.AutoPolyesterForwardDiff(),
     ADTypes.AutoPolyesterForwardDiff(chunksize = 3, tag = :tag),
     ADTypes.AutoReverseDiff(),
