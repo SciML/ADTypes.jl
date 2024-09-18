@@ -1,7 +1,7 @@
 name = "ADTypes"
 uuid = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
 authors = ["Vaibhav Dixit <vaibhavyashdixit@gmail.com>, Guillaume Dalle and contributors"]
-version = "1.8.0"
+version = "1.8.1"
 
 [deps]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
@@ -17,7 +17,7 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 
 [compat]
 ChainRulesCore = "1.0.2"
-EnzymeCore = "0.5.3,0.6,0.7"
+EnzymeCore = "0.5.3,0.6,0.7,0.8"
 julia = "1.6"
 
 [extras]
