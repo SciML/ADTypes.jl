@@ -42,6 +42,7 @@ AutoGTPSA
 AutoMooncake
 AutoReverseDiff
 AutoTracker
+AutoTapir
 AutoZygote
 ```
 
