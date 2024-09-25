@@ -39,7 +39,7 @@ end
 
 function AutoTapir(; safe_mode=true)
     Base.depwarn(
-        "AutoTapir is deprecated in favour of AutoMooncake.", :AutoTapir; force=false
+        "`AutoTapir` is deprecated in favour of `AutoMooncake`.", :AutoTapir; force=false
     )
     return AutoTapir(safe_mode)
 end

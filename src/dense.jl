@@ -230,8 +230,7 @@ end
 """
     AutoMooncake
 
-Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend
-for automatic differentiation.
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
@@ -241,9 +240,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring for
-    `Mooncake.Config` for more information. `AutoMooncake(; config=nothing)` is equivalent
-    to `AutoMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
+  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoMooncake(; config=nothing)` is equivalent to `AutoMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
 """
 Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
     config::Tconfig
@@ -347,7 +344,9 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-This ADType is deprecated. `AutoMooncake` should be used instead.
+!!! danger
+
+    `AutoTapir` is deprecated following a package renaming, please use [`AutoMooncake`](@ref) instead.
 """
 struct AutoTapir <: AbstractADType
     safe_mode::Bool

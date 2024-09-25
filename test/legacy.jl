@@ -71,4 +71,5 @@ end
 
 @testset "AutoTapir" begin
     @test_deprecated AutoTapir()
+    @test_deprecated AutoTapir(; safe_mode=false)
 end
