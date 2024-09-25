@@ -42,7 +42,6 @@ AutoGTPSA
 AutoMooncake
 AutoReverseDiff
 AutoTracker
-AutoTapir
 AutoZygote
 ```
 
@@ -106,4 +105,10 @@ ADTypes.SymbolicMode
 
 ```@docs
 ADTypes.Auto
+```
+
+## Deprecated
+
+```@docs
+AutoTapir
 ```
