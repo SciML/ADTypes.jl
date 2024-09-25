@@ -235,17 +235,15 @@ for automatic differentiation.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
-Note: Tapir.jl was renamed to Mooncake.jl due to a naming conflict. You should use this type
-instead of `AutoTapir`.
-
 # Constructors
 
     AutoMooncake(; config)
 
 # Fields
 
-  - `config`: an instance of `Mooncake.Config` -- see the docstring for `Mooncake.Config`
-    for more information.
+  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring for
+    `Mooncake.Config` for more information. `AutoMooncake(; config=nothing)` is equivalent
+    to `AutoMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
 """
 Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
     config::Tconfig
