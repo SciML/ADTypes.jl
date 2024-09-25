@@ -349,7 +349,7 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-Tapir.jl has been renamed to Mooncake.jl. Please use `AutoMooncake` instead of this type.
+This ADType is deprecated. `AutoMooncake` should be used instead.
 """
 struct AutoTapir <: AbstractADType
     safe_mode::Bool
