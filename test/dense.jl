@@ -119,6 +119,14 @@ end
     @test ad.descriptor == Val(:descriptor)
 end
 
+@testset "AutoMooncake" begin
+    ad = AutoMooncake(; config=nothing)
+    @test ad isa AbstractADType
+    @test ad isa AutoMooncake
+    @test mode(ad) isa ReverseMode
+    @test ad.config === nothing
+end
+
 @testset "AutoPolyesterForwardDiff" begin
     ad = AutoPolyesterForwardDiff()
     @test ad isa AbstractADType
