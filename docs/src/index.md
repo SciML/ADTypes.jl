@@ -39,8 +39,8 @@ AutoGTPSA
 ### Reverse mode
 
 ```@docs
+AutoMooncake
 AutoReverseDiff
-AutoTapir
 AutoTracker
 AutoZygote
 ```
