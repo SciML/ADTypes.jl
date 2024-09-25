@@ -349,23 +349,7 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-Struct used to select the [Tapir.jl](https://github.com/withbayes/Tapir.jl) backend for automatic differentiation.
-
-Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
-
-# Constructors
-
-    AutoTapir(; safe_mode=true)
-
-# Fields
-
-  - `safe_mode::Bool`: whether to run additional checks to catch errors early. While this is
-    on by default to ensure that users are aware of this option, you should generally turn
-    it off for actual use, as it has substantial performance implications.
-    If you encounter a problem with using Tapir (it fails to differentiate a function, or
-    something truly nasty like a segfault occurs), then you should try switching `safe_mode`
-    on and look at what happens. Often errors are caught earlier and the error messages are
-    more useful.
+Tapir.jl has been renamed to Mooncake.jl. Please use `AutoMooncake` instead of this type.
 """
 Base.@kwdef struct AutoTapir <: AbstractADType
     safe_mode::Bool = true
