@@ -228,6 +228,27 @@ function Base.show(io::IO, backend::AutoGTPSA{D}) where {D}
 end
 
 """
+    AutoMooncake
+
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoMooncake(; config)
+
+# Fields
+
+  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoMooncake(; config=nothing)` is equivalent to `AutoMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
+"""
+Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
+    config::Tconfig
+end
+
+mode(::AutoMooncake) = ReverseMode()
+
+"""
     AutoPolyesterForwardDiff{chunksize,T}
 
 Struct used to select the [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) backend for automatic differentiation.
@@ -323,7 +344,11 @@ mode(::AutoSymbolics) = SymbolicMode()
 """
     AutoTapir
 
-Struct used to select the [Tapir.jl](https://github.com/withbayes/Tapir.jl) backend for automatic differentiation.
+!!! danger
+
+    `AutoTapir` is deprecated following a package renaming, please use [`AutoMooncake`](@ref) instead.
+
+Struct used to select the [Tapir.jl](https://github.com/compintell/Tapir.jl) backend for automatic differentiation.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
@@ -333,16 +358,10 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `safe_mode::Bool`: whether to run additional checks to catch errors early. While this is
-    on by default to ensure that users are aware of this option, you should generally turn
-    it off for actual use, as it has substantial performance implications.
-    If you encounter a problem with using Tapir (it fails to differentiate a function, or
-    something truly nasty like a segfault occurs), then you should try switching `safe_mode`
-    on and look at what happens. Often errors are caught earlier and the error messages are
-    more useful.
+  - `safe_mode::Bool`: whether to run additional checks to catch errors early.
 """
-Base.@kwdef struct AutoTapir <: AbstractADType
-    safe_mode::Bool = true
+struct AutoTapir <: AbstractADType
+    safe_mode::Bool
 end
 
 mode(::AutoTapir) = ReverseMode()

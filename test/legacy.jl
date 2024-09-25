@@ -68,3 +68,8 @@ end
     ad = @test_deprecated AutoReverseDiff(true)
     @test ad.compile
 end
+
+@testset "AutoTapir" begin
+    @test_deprecated AutoTapir()
+    @test_deprecated AutoTapir(; safe_mode=false)
+end

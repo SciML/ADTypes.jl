@@ -36,3 +36,10 @@ function AutoModelingToolkit(; obj_sparse::Bool = false, cons_sparse::Bool = fal
         :AutoModelingToolkit; force = false)
     return mtk_to_symbolics(obj_sparse, cons_sparse)
 end
+
+function AutoTapir(; safe_mode=true)
+    Base.depwarn(
+        "`AutoTapir` is deprecated in favour of `AutoMooncake`.", :AutoTapir; force=false
+    )
+    return AutoTapir(safe_mode)
+end
