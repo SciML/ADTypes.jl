@@ -228,6 +228,32 @@ function Base.show(io::IO, backend::AutoGTPSA{D}) where {D}
 end
 
 """
+    AutoMooncake
+
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend
+for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+Note: Tapir.jl was renamed to Mooncake.jl due to a naming conflict. You should use this type
+instead of `AutoTapir`.
+
+# Constructors
+
+    AutoMooncake(; config)
+
+# Fields
+
+  - `config`: an instance of `Mooncake.Config` -- see the docstring for `Mooncake.Config`
+    for more information.
+"""
+Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
+    config::Tconfig
+end
+
+mode(::AutoMooncake) = ReverseMode()
+
+"""
     AutoPolyesterForwardDiff{chunksize,T}
 
 Struct used to select the [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) backend for automatic differentiation.
