@@ -351,8 +351,8 @@ mode(::AutoSymbolics) = SymbolicMode()
 
 Tapir.jl has been renamed to Mooncake.jl. Please use `AutoMooncake` instead of this type.
 """
-Base.@kwdef struct AutoTapir <: AbstractADType
-    safe_mode::Bool = true
+struct AutoTapir <: AbstractADType
+    safe_mode::Bool
 end
 
 mode(::AutoTapir) = ReverseMode()
