@@ -55,6 +55,14 @@ for backend in [
     ADTypes.AutoSparse(ADTypes.AutoForwardDiff()),
     ADTypes.AutoSparse(
         ADTypes.AutoForwardDiff();
+        sparsity_detector = FakeSparsityDetector()
+    ),
+    ADTypes.AutoSparse(
+        ADTypes.AutoForwardDiff();
+        coloring_algorithm = FakeColoringAlgorithm()
+    ),
+    ADTypes.AutoSparse(
+        ADTypes.AutoForwardDiff();
         sparsity_detector = FakeSparsityDetector(),
         coloring_algorithm = FakeColoringAlgorithm()
     )
