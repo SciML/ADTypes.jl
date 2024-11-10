@@ -162,7 +162,7 @@ Use algorithm `ca` to construct a structurally orthogonal partition of both the 
 
 The result is a tuple of coloring vectors `(cr, cc)` of lengths `size(M, 1)` and `size(M, 2)`, respectively.
 The vector `cr` provides a color assignment for each row, and `cc` provides a color assignment for each column.
-For each non-zero entry `M[i, j]` in `M`, the following conditions are met:
+For each non-zero entry `M[i, j]` in `M`, at least one of the following conditions holds:
 
   - row `i` is the only row with color `cr[i]` that has a non-zero entry in column `j`;
   - column `j` is the only column with color `cc[j]` that has a non-zero entry in row `i`.
