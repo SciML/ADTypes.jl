@@ -159,4 +159,13 @@ end
     @test sv isa AbstractVector{<:Integer}
     @test length(sv) == size(M, 1) == size(M, 2)
     @test allunique(sv)
+
+    M = rand(3, 4)
+    brv, bcv = bicoloring(M, ca)
+    @test brv isa AbstractVector{<:Integer}
+    @test bcv isa AbstractVector{<:Integer}
+    @test length(brv) == size(M, 1)
+    @test length(bcv) == size(M, 2)
+    @test allunique(brv)
+    @test allunique(bcv)
 end
