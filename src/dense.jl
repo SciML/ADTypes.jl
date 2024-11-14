@@ -69,7 +69,7 @@ end
 
 function AutoEnzyme(;
         mode::M = nothing, function_annotation::Type{A} = Nothing) where {M, A}
-    return AutoEnzyme{A}(mode)
+    return AutoEnzyme{M, A}(mode)
 end
 
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
