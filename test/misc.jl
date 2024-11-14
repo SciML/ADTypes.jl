@@ -61,3 +61,36 @@ for backend in [
 ]
     println(backend)
 end
+
+using Setfield
+
+@testset "Setfield compatibility" begin
+    ad = AutoEnzyme()
+    @test ad.mode === nothing
+    @set! ad.mode = EnzymeCore.Reverse
+    @test ad.mode isa EnzymeCore.ReverseMode
+
+    struct CustomTestTag end
+
+    ad = AutoForwardDiff()
+    @test ad.tag === nothing
+    @set! ad.tag = CustomTestTag()
+    @test ad.tag isa CustomTestTag
+
+    ad = AutoForwardDiff(; chunksize = 10)
+    @test ad.tag === nothing
+    @set! ad.tag = CustomTestTag()
+    @test ad.tag isa CustomTestTag
+    @test ad isa AutoForwardDiff{10}
+
+    ad = AutoPolyesterForwardDiff()
+    @test ad.tag === nothing
+    @set! ad.tag = CustomTestTag()
+    @test ad.tag isa CustomTestTag
+
+    ad = AutoPolyesterForwardDiff(; chunksize = 10)
+    @test ad.tag === nothing
+    @set! ad.tag = CustomTestTag()
+    @test ad.tag isa CustomTestTag
+    @test ad isa AutoPolyesterForwardDiff{10}
+end

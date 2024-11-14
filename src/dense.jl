@@ -181,8 +181,10 @@ struct AutoForwardDiff{chunksize, T} <: AbstractADType
     tag::T
 end
 
+AutoForwardDiff{chunksize}(tag::T) where {chunksize, T} = AutoForwardDiff{chunksize, T}(tag)
+
 function AutoForwardDiff(; chunksize = nothing, tag = nothing)
-    AutoForwardDiff{chunksize, typeof(tag)}(tag)
+    return AutoForwardDiff{chunksize}(tag)
 end
 
 mode(::AutoForwardDiff) = ForwardMode()
@@ -271,8 +273,12 @@ struct AutoPolyesterForwardDiff{chunksize, T} <: AbstractADType
     tag::T
 end
 
+function AutoPolyesterForwardDiff{chunksize}(tag::T) where {chunksize, T}
+    return AutoPolyesterForwardDiff{chunksize, T}(tag)
+end
+
 function AutoPolyesterForwardDiff(; chunksize = nothing, tag = nothing)
-    AutoPolyesterForwardDiff{chunksize, typeof(tag)}(tag)
+    return AutoPolyesterForwardDiff{chunksize}(tag)
 end
 
 mode(::AutoPolyesterForwardDiff) = ForwardMode()
