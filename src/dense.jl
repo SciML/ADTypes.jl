@@ -67,8 +67,6 @@ struct AutoEnzyme{M, A} <: AbstractADType
     mode::M
 end
 
-AutoEnzyme{A}(mode::M) where {M, A} = AutoEnzyme{M, A}(mode)
-
 function AutoEnzyme(;
         mode::M = nothing, function_annotation::Type{A} = Nothing) where {M, A}
     return AutoEnzyme{A}(mode)
