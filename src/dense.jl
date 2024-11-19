@@ -207,7 +207,6 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 # Constructors
 
     AutoTaylorDiff(; order = 1)
-    AutoTaylorDiff{order}()
 
 # Type parameters
 
@@ -223,7 +222,7 @@ mode(::AutoTaylorDiff) = ForwardMode()
 
 function Base.show(io::IO, ::AutoTaylorDiff{order}) where {order}
     print(io, AutoTaylorDiff, "(")
-    print(io, "tag=", repr(order; context = io))
+    print(io, "order=", repr(order; context = io))
     print(io, ")")
 end
 
