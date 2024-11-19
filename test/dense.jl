@@ -183,7 +183,7 @@ end
 end
 
 @testset "AutoTaylorDiff" begin
-    ad = AutoTaylorDiff{2}()
+    ad = AutoTaylorDiff(; order = 2)
     @test ad isa AbstractADType
     @test ad isa AutoTaylorDiff{2}
     @test mode(ad) isa ForwardMode
