@@ -182,6 +182,18 @@ end
     @test !ad.safe_mode
 end
 
+@testset "AutoTaylorDiff" begin
+    ad = AutoTaylorDiff{2}()
+    @test ad isa AbstractADType
+    @test ad isa AutoTaylorDiff{2}
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoTaylorDiff()
+    @test ad isa AbstractADType
+    @test ad isa AutoTaylorDiff{1}
+    @test mode(ad) isa ForwardMode
+end
+
 @testset "AutoTracker" begin
     ad = AutoTracker()
     @test ad isa AbstractADType
