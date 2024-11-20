@@ -34,6 +34,7 @@ Taylor mode:
 
 ```@docs
 AutoGTPSA
+AutoTaylorDiff
 ```
 
 ### Reverse mode

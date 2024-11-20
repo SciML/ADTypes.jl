@@ -198,6 +198,35 @@ function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize
 end
 
 """
+    AutoTaylorDiff{order}
+
+Struct used to select the [TaylorDiff.jl](https://github.com/JuliaDiff/TaylorDiff.jl) backend for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoTaylorDiff(; order = 1)
+
+# Type parameters
+
+  - `order`: the order of the Taylor-mode automatic differentiation
+"""
+struct AutoTaylorDiff{order} <: AbstractADType end
+
+function AutoTaylorDiff(; order = 1)
+    return AutoTaylorDiff{order}()
+end
+
+mode(::AutoTaylorDiff) = ForwardMode()
+
+function Base.show(io::IO, ::AutoTaylorDiff{order}) where {order}
+    print(io, AutoTaylorDiff, "(")
+    print(io, "order=", repr(order; context = io))
+    print(io, ")")
+end
+
+"""
     AutoGTPSA{D}
 
 Struct used to select the [GTPSA.jl](https://github.com/bmad-sim/GTPSA.jl) backend for automatic differentiation.
