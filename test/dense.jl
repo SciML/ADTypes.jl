@@ -78,7 +78,7 @@ end
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
     @test ad.relstep == 1e-3
-    @test ad.absstep == 1e-3
+    @test ad.absstep == 1e-4
 end
 
 @testset "AutoFiniteDifferences" begin
