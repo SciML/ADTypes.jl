@@ -67,14 +67,18 @@ end
     @test ad.fdtype === Val(:forward)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
+    @test ad.relstep === nothing
+    @test ad.absstep === nothing
 
-    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward))
+    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward), relstep = 1e-3, absstep = 1e-3)
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
     @test mode(ad) isa ForwardMode
     @test ad.fdtype === Val(:central)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
+    @test ad.relstep == 1e-3
+    @test ad.absstep == 1e-3
 end
 
 @testset "AutoFiniteDifferences" begin
