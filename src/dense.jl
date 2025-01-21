@@ -118,6 +118,8 @@ Base.@kwdef struct AutoFiniteDiff{T1, T2, T3} <: AbstractADType
     fdtype::T1 = Val(:forward)
     fdjtype::T2 = fdtype
     fdhtype::T3 = Val(:hcentral)
+    relstep = nothing
+    absstep = nothing
 end
 
 mode(::AutoFiniteDiff) = ForwardMode()
@@ -129,7 +131,11 @@ function Base.show(io::IO, backend::AutoFiniteDiff)
     backend.fdjtype != backend.fdtype &&
         print(io, "fdjtype=", repr(backend.fdjtype; context = io), ", ")
     backend.fdhtype != Val(:hcentral) &&
-        print(io, "fdhtype=", repr(backend.fdhtype; context = io))
+        print(io, "fdhtype=", repr(backend.fdhtype; context = io), ", ")
+    !isnothing(backend.relstep) &&
+        print(io, "relstep=", repr(backend.relstep; context = io), ", ")
+    !isnothing(backend.absstep) &&
+        print(io, "absstep=", repr(backend.absstep; context = io))
     print(io, ")")
 end
 
