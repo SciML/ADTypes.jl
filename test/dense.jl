@@ -70,7 +70,7 @@ end
     @test ad.relstep === nothing
     @test ad.absstep === nothing
 
-    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward), relstep = 1e-3, absstep = 1e-3)
+    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward), relstep = 1e-3, absstep = 1e-4)
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
     @test mode(ad) isa ForwardMode
