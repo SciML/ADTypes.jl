@@ -116,12 +116,12 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
   - `relstep`: relative finite difference step size
   - `absstep`: absolute finite difference step size
 """
-Base.@kwdef struct AutoFiniteDiff{T1, T2, T3} <: AbstractADType
+Base.@kwdef struct AutoFiniteDiff{T1, T2, T3, S1, S2} <: AbstractADType
     fdtype::T1 = Val(:forward)
     fdjtype::T2 = fdtype
     fdhtype::T3 = Val(:hcentral)
-    relstep = nothing
-    absstep = nothing
+    relstep::S1 = nothing
+    absstep::S2 = nothing
 end
 
 mode(::AutoFiniteDiff) = ForwardMode()
