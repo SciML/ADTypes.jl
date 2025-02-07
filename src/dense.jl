@@ -115,6 +115,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
   - `fdhtype::T3`: finite difference type for the Hessian
   - `relstep`: relative finite difference step size
   - `absstep`: absolute finite difference step size
+  - `dir`: direction of the finite difference step
 """
 Base.@kwdef struct AutoFiniteDiff{T1, T2, T3, S1, S2, S3} <: AbstractADType
     fdtype::T1 = Val(:forward)
