@@ -139,7 +139,7 @@ function Base.show(io::IO, backend::AutoFiniteDiff)
     !isnothing(backend.relstep) &&
         print(io, "relstep=", repr(backend.relstep; context = io), ", ")
     !isnothing(backend.absstep) &&
-        print(io, "absstep=", repr(backend.absstep; context = io))
+        print(io, "absstep=", repr(backend.absstep; context = io), ", ")
     !backend.dir &&
         print(io, "dir=", repr(backend.dir; context = io))
     print(io, ")")
