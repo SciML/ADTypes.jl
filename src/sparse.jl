@@ -227,7 +227,7 @@ end
     dense_ad(ad::AutoSparse)::AbstractADType
     dense_ad(ad::AbstractADType)::AbstractADType
 
-Return the underlying AD package for a sparse AD choice, acts as the identity on a dense AD choice.
+Return the underlying AD package for a sparse AD choice, act as the identity on a dense AD choice.
 
 # See also
 
