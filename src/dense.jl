@@ -106,7 +106,10 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoFiniteDiff(; fdtype=Val(:forward), fdjtype=fdtype, fdhtype=Val(:hcentral), relstep=nothing, absstep=nothing)
+    AutoFiniteDiff(;
+        fdtype=Val(:forward), fdjtype=fdtype, fdhtype=Val(:hcentral),
+        relstep=nothing, absstep=nothing, dir=true
+    )
 
 # Fields
 
