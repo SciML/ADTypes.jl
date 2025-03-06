@@ -11,6 +11,7 @@
         elseif mode(ad) isa SymbolicMode
             @test mode(sparse_ad) isa SymbolicMode
         end
+        @test dense_ad(ad) == ad
         @test dense_ad(sparse_ad) == ad
         @test sparsity_detector(sparse_ad) == NoSparsityDetector()
         @test coloring_algorithm(sparse_ad) == NoColoringAlgorithm()
