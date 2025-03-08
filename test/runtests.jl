@@ -16,7 +16,8 @@ using ADTypes: dense_ad,
                coloring_algorithm,
                column_coloring,
                row_coloring,
-               symmetric_coloring
+               symmetric_coloring,
+               bicoloring
 using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
                       HasForwardsMode, HasReverseMode,
