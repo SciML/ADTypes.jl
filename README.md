@@ -1,7 +1,7 @@
 # ADTypes.jl: Multi-Valued Logic for Automatic Differentiation Choices
 
-[![Docs stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://SciML.github.io/ADTypes.jl/stable/)
-[![Docs dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://SciML.github.io/ADTypes.jl/dev/)
+[![Docs stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://docs.sciml.ai/ADTypes/stable/)
+[![Docs dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://docs.sciml.ai/ADTypes/dev/)
 [![Build Status](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SciML/ADTypes.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/SciML/ADTypes.jl/branch/main/graph/badge.svg)](https://app.codecov.io/gh/SciML/ADTypes.jl)
 
