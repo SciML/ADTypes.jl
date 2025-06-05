@@ -70,6 +70,8 @@ function every_ad_with_options()
         AutoForwardDiff(chunksize = 3, tag = :tag),
         AutoGTPSA(),
         AutoGTPSA(descriptor = Val(:descriptor)),
+        AutoMooncake(; config = :config),
+        AutoMooncakeForward(; config = :config),
         AutoPolyesterForwardDiff(),
         AutoPolyesterForwardDiff(chunksize = 3, tag = :tag),
         AutoReverseDiff(),

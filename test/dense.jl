@@ -71,7 +71,8 @@ end
     @test ad.absstep === nothing
     @test ad.dir
 
-    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward), relstep = 1e-3, absstep = 1e-4, dir = false)
+    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward),
+        relstep = 1e-3, absstep = 1e-4, dir = false)
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
     @test mode(ad) isa ForwardMode
@@ -126,10 +127,18 @@ end
 end
 
 @testset "AutoMooncake" begin
-    ad = AutoMooncake(; config=nothing)
+    ad = AutoMooncake(; config = nothing)
     @test ad isa AbstractADType
     @test ad isa AutoMooncake
     @test mode(ad) isa ReverseMode
+    @test ad.config === nothing
+end
+
+@testset "AutoMooncakeForward" begin
+    ad = AutoMooncakeForward(; config = nothing)
+    @test ad isa AbstractADType
+    @test ad isa AutoMooncakeForward
+    @test mode(ad) isa ForwardMode
     @test ad.config === nothing
 end
 
