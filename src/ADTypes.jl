@@ -69,7 +69,7 @@ export jacobian_sparsity, hessian_sparsity
 
 # Matrix coloring
 export AbstractColoringAlgorithm
-export column_coloring, row_coloring, symmetric_coloring
+export column_coloring, row_coloring, symmetric_coloring, bicoloring
 @public coloring_algorithm
 @public NoColoringAlgorithm
 
