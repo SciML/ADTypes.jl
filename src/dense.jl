@@ -282,14 +282,14 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoMooncake(; config)
+    AutoMooncake(; config=nothing)
 
 # Fields
 
   - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoMooncake(; config=nothing)` is equivalent to `AutoMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
 """
 Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
-    config::Tconfig
+    config::Tconfig = nothing
 end
 
 mode(::AutoMooncake) = ReverseMode()
