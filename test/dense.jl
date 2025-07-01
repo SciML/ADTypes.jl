@@ -136,6 +136,16 @@ end
     @test ad.config === nothing
 end
 
+@testset "AutoMooncakeForward" begin
+    ad = AutoMooncakeForward(; config = :config)
+    @test ad isa AbstractADType
+    @test ad isa AutoMooncakeForward
+    @test mode(ad) isa ForwardMode
+    @test ad.config === :config
+    ad = AutoMooncakeForward()
+    @test ad.config === nothing
+end
+
 @testset "AutoPolyesterForwardDiff" begin
     ad = AutoPolyesterForwardDiff()
     @test ad isa AbstractADType
