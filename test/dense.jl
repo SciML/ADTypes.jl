@@ -127,18 +127,22 @@ end
 end
 
 @testset "AutoMooncake" begin
-    ad = AutoMooncake(; config = nothing)
+    ad = AutoMooncake(; config = :config)
     @test ad isa AbstractADType
     @test ad isa AutoMooncake
     @test mode(ad) isa ReverseMode
+    @test ad.config == :config
+    ad = AutoMooncake()
     @test ad.config === nothing
 end
 
 @testset "AutoMooncakeForward" begin
-    ad = AutoMooncakeForward(; config = nothing)
+    ad = AutoMooncakeForward(; config = :config)
     @test ad isa AbstractADType
     @test ad isa AutoMooncakeForward
     @test mode(ad) isa ForwardMode
+    @test ad.config === :config
+    ad = AutoMooncakeForward()
     @test ad.config === nothing
 end
 
