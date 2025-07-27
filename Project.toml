@@ -22,7 +22,7 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 ChainRulesCore = "1.0.2"
 ConstructionBase = "1.5"
 EnzymeCore = "0.5.3,0.6,0.7,0.8"
-julia = "1.6"
+julia = "1.10"
 
 [extras]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
