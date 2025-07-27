@@ -26,11 +26,6 @@ include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
 
-if !isdefined(Base, :get_extension)
-    include("../ext/ADTypesChainRulesCoreExt.jl")
-    include("../ext/ADTypesEnzymeCoreExt.jl")
-end
-
 # Automatic Differentiation
 export AbstractADType
 export AutoChainRules,
