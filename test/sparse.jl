@@ -28,6 +28,7 @@ end
         sd = NoSparsityDetector()
 
         for x in (rand(2), rand(2, 3)), f in (f_jac1, f_jac2)
+
             y = f(x)
             Js = jacobian_sparsity(f, x, sd)
             @test Js isa AbstractMatrix
@@ -36,6 +37,7 @@ end
         end
 
         for x in (rand(2), rand(2, 3)), y in (rand(5), rand(5, 6))
+
             Js = jacobian_sparsity(f_jac!, y, x, sd)
             @test Js isa AbstractMatrix
             @test size(Js) == (length(y), length(x))
@@ -54,6 +56,7 @@ end
         @testset "Jacobian sparsity detection" begin
             @testset "Out-of-place functions" begin
                 for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
+
                     x = rand(sx...)
                     nx = length(x)
                     Jref = rand(Bool, 2 * nx, nx)
@@ -66,6 +69,7 @@ end
             end
             @testset "In-place functions" begin
                 for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
+
                     x, y = rand(sx...), rand(sy...)
                     nx, ny = length(x), length(y)
                     Jref = rand(Bool, ny, nx)
@@ -89,9 +93,11 @@ end
         @testset "Exceptions: DimensionMismatch" begin
             sd = KnownJacobianSparsityDetector(rand(Bool, 6, 7)) # wrong Jacobian size
             for x in (rand(2), rand(2, 3)), f in (f_jac1, f_jac2)
+
                 @test_throws DimensionMismatch jacobian_sparsity(f, x, sd)
             end
             for x in (rand(2), rand(2, 3)), y in (rand(5), rand(5, 6))
+
                 @test_throws DimensionMismatch jacobian_sparsity(f_jac!, y, x, sd)
             end
         end
@@ -114,6 +120,7 @@ end
         @testset "Exceptions: Jacobian sparsity detection not supported" begin
             @testset "Out-of-place functions" begin
                 for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
+
                     x = rand(sx...)
                     nx = length(x)
                     Jref = rand(Bool, 2 * nx, nx)
@@ -123,6 +130,7 @@ end
             end
             @testset "In-place functions" begin
                 for sx in ((2,), (2, 3)), sy in ((5,), (5, 6))
+
                     x, y = rand(sx...), rand(sy...)
                     nx, ny = length(x), length(y)
                     Jref = rand(Bool, ny, nx)
