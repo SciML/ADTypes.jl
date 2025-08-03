@@ -88,6 +88,7 @@ ADTypes.AbstractColoringAlgorithm
 ADTypes.column_coloring
 ADTypes.row_coloring
 ADTypes.symmetric_coloring
+ADTypes.bicoloring
 ADTypes.NoColoringAlgorithm
 ```
 
