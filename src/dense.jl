@@ -276,9 +276,15 @@ end
 """
     AutoMooncake
 
-Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation.
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation in reverse mode.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+!!! info
+
+    When forward mode became available in Mooncake.jl v0.4.147, another struct called [`AutoMooncakeForward`](@ref) was introduced.
+    It was kept separate to avoid a breaking release of ADTypes.jl.
+    [`AutoMooncake`](@ref) remains for reverse mode only.
 
 # Constructors
 
@@ -293,6 +299,33 @@ Base.@kwdef struct AutoMooncake{Tconfig} <: AbstractADType
 end
 
 mode(::AutoMooncake) = ReverseMode()
+
+"""
+    AutoMooncakeForward
+
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation in forward mode.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+!!! info
+
+    This struct was introduced when forward mode became available in Mooncake.jl v0.4.147.
+    It was kept separate from [`AutoMooncake`](@ref) to avoid a breaking release of ADTypes.jl.
+    [`AutoMooncake`](@ref) remains for reverse mode only.
+
+# Constructors
+
+    AutoMooncakeForward(; config=nothing)
+
+# Fields
+
+  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoForwardMooncake(; config=nothing)` is equivalent to `AutoForwardMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
+"""
+Base.@kwdef struct AutoMooncakeForward{Tconfig} <: AbstractADType
+    config::Tconfig = nothing
+end
+
+mode(::AutoMooncakeForward) = ForwardMode()
 
 """
     AutoPolyesterForwardDiff{chunksize,T}

@@ -21,6 +21,7 @@ Algorithmic differentiation:
 ```@docs
 AutoForwardDiff
 AutoPolyesterForwardDiff
+AutoMooncakeForward
 ```
 
 Finite differences:
