@@ -303,7 +303,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 !!! info
 
-    This type was introduced when forward mode became available in Mooncake.jl. It was kept separate from [`AutoMooncake`](@ref) in order to avoid requiring a breaking release of ADTypes.jl.
+    This type was introduced when forward mode became available in Mooncake.jl v0.4.147. It was kept separate from [`AutoMooncake`](@ref) in order to avoid requiring a breaking release of ADTypes.jl.
 
 # Constructors
 
