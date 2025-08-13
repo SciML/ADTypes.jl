@@ -276,9 +276,15 @@ end
 """
     AutoMooncake
 
-Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation.
+Struct used to select the [Mooncake.jl](https://github.com/compintell/Mooncake.jl) backend for automatic differentiation in reverse mode.
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+!!! info
+
+    When forward mode became available in Mooncake.jl v0.4.147, another struct called [`AutoMooncakeForward`](@ref) was introduced.
+    It was kept separate to avoid a breaking release of ADTypes.jl.
+    [`AutoMooncake`](@ref) remains for reverse mode only.
 
 # Constructors
 
@@ -303,7 +309,9 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 !!! info
 
-    This type was introduced when forward mode became available in Mooncake.jl v0.4.147. It was kept separate from [`AutoMooncake`](@ref) in order to avoid requiring a breaking release of ADTypes.jl.
+    This struct was introduced when forward mode became available in Mooncake.jl v0.4.147.
+    It was kept separate from [`AutoMooncake`](@ref) to avoid a breaking release of ADTypes.jl.
+    [`AutoMooncake`](@ref) remains for reverse mode only.
 
 # Constructors
 
