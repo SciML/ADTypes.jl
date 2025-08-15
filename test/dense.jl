@@ -25,12 +25,17 @@ end
     @test mode(ad) isa ForwardOrReverseMode
 end
 
+get_runtime_activity(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = R
+get_chunksize(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = C
+
 @testset "AutoEnzyme" begin
     ad = AutoEnzyme()
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{Nothing, Nothing}
     @test mode(ad) isa ForwardOrReverseMode
     @test ad.mode === nothing
+    @test get_runtime_activity(ad) === nothing
+    @test get_chunksize(ad) === nothing
 
     ad = AutoEnzyme(; mode = EnzymeCore.Forward)
     @test ad isa AbstractADType
@@ -50,6 +55,21 @@ end
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse), EnzymeCore.Duplicated}
     @test mode(ad) isa ReverseMode
     @test ad.mode == EnzymeCore.Reverse
+
+    ad = AutoEnzyme(; mode = ForwardMode(), runtime_activity = true, chunksize = Inf)
+    @test mode(ad) isa ForwardMode
+    @test get_runtime_activity(ad)
+    @test get_chunksize(ad) == Inf
+
+    ad = AutoEnzyme(; mode = ReverseMode(), runtime_activity = false, chunksize = 3)
+    @test mode(ad) isa ReverseMode
+    @test !get_runtime_activity(ad)
+    @test get_chunksize(ad) == 3
+
+    @test_throws TypeError AutoEnzyme(; runtime_activity = :yes)
+    @test_throws TypeError AutoEnzyme(; chunksize = :big)
+    @test_throws AssertionError AutoEnzyme(; chunksize = 0)
+    @test_throws AssertionError AutoEnzyme(; chunksize = 1.3)
 end
 
 @testset "AutoFastDifferentiation" begin
