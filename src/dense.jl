@@ -39,7 +39,7 @@ struct AutoDiffractor <: AbstractADType end
 mode(::AutoDiffractor) = ForwardOrReverseMode()
 
 """
-    AutoEnzyme{M,A}
+    AutoEnzyme{M,A,R,C}
 
 Struct used to select the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) backend for automatic differentiation.
 
@@ -47,38 +47,69 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoEnzyme(; mode::M=nothing, function_annotation::Type{A}=Nothing)
-
-# Type parameters
-
-  - `A` determines how the function `f` to differentiate is passed to Enzyme. It can be:
-
-      + a subtype of `EnzymeCore.Annotation` (like `EnzymeCore.Const` or `EnzymeCore.Duplicated`) to enforce a given annotation
-      + `Nothing` to simply pass `f` and let Enzyme choose the most appropriate annotation
-
-# Fields
+    AutoEnzyme(;
+        mode::Union{EnzymeCore.Mode,ADTypes.AbstractMode,Nothing}=nothing,
+        function_annotation::Type{<:Union{EnzymeCore.Annotation,Nothing}}=Nothing,
+        runtime_activity::Union{Bool,Nothing}=nothing,
+        chunksize::Union{Int,Float64,Nothing}=nothing,
+    )
 
   - `mode::M` determines the autodiff mode (forward or reverse). It can be:
 
-      + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
+      + a mode object from EnzymeCore.jl, like `EnzymeCore.Forward` or `EnzymeCore.Reverse` (possibly modified with additional settings like runtime activity)
+      + a mode object from ADTypes.jl, either [`ADTypes.ForwardMode`](@ref) or [`ADTypes.ReverseMode`](@ref)
       + `nothing` to choose the best mode automatically
+
+  - `A=function_annotation` determines how the function `f` to differentiate is passed to Enzyme. It can be:
+
+      + a subtype of `EnzymeCore.Annotation` (like `EnzymeCore.Const` or `EnzymeCore.Duplicated`) to enforce a given annotation
+
+      + `Nothing` (the type, not the object) to simply pass `f` and let Enzyme choose the most appropriate annotation
+  - `R=runtime_activity` determines whether [runtime activity](https://enzymead.github.io/Enzyme.jl/stable/faq/#faq-runtime-activity) is activated by Enzyme. It can be:
+
+      + a `Bool` to force a given setting
+
+      + `nothing` to fall back on the setting of the `mode` object
+  - `C=chunksize` determines the number of derivatives evaluated simultaneously when computing operators like a Jacobian or a forward-mode gradient. It can be:
+
+      + a positive `Int` to fix a constant chunk size
+      + `Inf` to pick the maximum chunk size, corresponding to the array length
+      + `nothing` to choose a good chunk size automatically®
 """
-struct AutoEnzyme{M, A} <: AbstractADType
+struct AutoEnzyme{M, A, R, C} <: AbstractADType
     mode::M
+
+    function AutoEnzyme{M, A, R, C}(mode::M) where {M, A, R, C}
+        @assert R isa Union{Nothing, Bool}
+        @assert C isa Union{Nothing, Int, Float64}
+        if C isa Int
+            @assert C > 0
+        elseif C isa Float64
+            @assert C == Inf
+        end
+        return new{M, A, R, C}(mode)
+    end
 end
 
 function AutoEnzyme(;
-        mode::M = nothing, function_annotation::Type{A} = Nothing) where {M, A}
-    return AutoEnzyme{M, A}(mode)
+        mode::M = nothing,
+        function_annotation::Type{A} = Nothing,
+        runtime_activity::Union{Nothing, Bool} = nothing,
+        chunksize::Union{Nothing, Int, Float64} = nothing
+) where {M, A}
+    return AutoEnzyme{M, A, runtime_activity, chunksize}(mode)
 end
 
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
+mode(::AutoEnzyme{<:ForwardMode}) = ForwardMode()
+mode(::AutoEnzyme{<:ReverseMode}) = ReverseMode()
 
-function Base.show(io::IO, backend::AutoEnzyme{M, A}) where {M, A}
+function Base.show(io::IO, backend::AutoEnzyme{M, A, R, C}) where {M, A, R, C}
     print(io, AutoEnzyme, "(")
-    !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io))
-    !isnothing(backend.mode) && !(A <: Nothing) && print(io, ", ")
-    !(A <: Nothing) && print(io, "function_annotation=", repr(A; context = io))
+    !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io), ", ")
+    !(A <: Nothing) && print(io, "function_annotation=", repr(A; context = io), ", ")
+    !(R === nothing) && print(io, "runtime_activity=", repr(R; context = io), ", ")
+    !(C === nothing) && print(io, "chunksize=", repr(C; context = io))
     print(io, ")")
 end
 
