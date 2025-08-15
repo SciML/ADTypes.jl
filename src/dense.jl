@@ -300,6 +300,13 @@ end
 
 mode(::AutoMooncake) = ReverseMode()
 
+function Base.show(io::IO, backend::AutoMooncake)
+    print(io, AutoMooncake, "(")
+    backend.config !== nothing &&
+        print(io, "config=", repr(backend.config; context = io))
+    print(io, ")")
+end
+
 """
     AutoMooncakeForward
 
@@ -326,6 +333,13 @@ Base.@kwdef struct AutoMooncakeForward{Tconfig} <: AbstractADType
 end
 
 mode(::AutoMooncakeForward) = ForwardMode()
+
+function Base.show(io::IO, backend::AutoMooncakeForward)
+    print(io, AutoMooncakeForward, "(")
+    backend.config !== nothing &&
+        print(io, "config=", repr(backend.config; context = io))
+    print(io, ")")
+end
 
 """
     AutoPolyesterForwardDiff{chunksize,T}
