@@ -25,8 +25,7 @@ end
     @test mode(ad) isa ForwardOrReverseMode
 end
 
-get_runtime_activity(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = R
-get_chunksize(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = C
+get_chunksize(::AutoEnzyme{M, A, C}) where {M, A, C} = C
 
 @testset "AutoEnzyme" begin
     ad = AutoEnzyme()
@@ -34,7 +33,6 @@ get_chunksize(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = C
     @test ad isa AutoEnzyme{Nothing, Nothing}
     @test mode(ad) isa ForwardOrReverseMode
     @test ad.mode === nothing
-    @test get_runtime_activity(ad) === nothing
     @test get_chunksize(ad) === nothing
 
     ad = AutoEnzyme(; mode = EnzymeCore.Forward)
@@ -56,15 +54,18 @@ get_chunksize(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = C
     @test mode(ad) isa ReverseMode
     @test ad.mode == EnzymeCore.Reverse
 
-    ad = AutoEnzyme(; runtime_activity = true, chunksize = Inf)
-    @test get_runtime_activity(ad)
-    @test get_chunksize(ad) == Inf
+    ad = AutoEnzyme(; chunksize = nothing)
+    @test get_chunksize(ad) === nothing
 
-    ad = AutoEnzyme(; runtime_activity = false, chunksize = 3)
-    @test !get_runtime_activity(ad)
+    ad = AutoEnzyme(; chunksize = 3)
     @test get_chunksize(ad) == 3
 
-    @test_throws TypeError AutoEnzyme(; runtime_activity = :yes)
+    ad = AutoEnzyme(; chunksize = Inf)
+    @test get_chunksize(ad) == Inf
+
+    ad = AutoEnzyme(; chunksize = 3)
+    @test get_chunksize(ad) == 3
+
     @test_throws TypeError AutoEnzyme(; chunksize = :big)
     @test_throws AssertionError AutoEnzyme(; chunksize = 0)
     @test_throws AssertionError AutoEnzyme(; chunksize = 1.3)

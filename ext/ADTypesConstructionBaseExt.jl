@@ -3,14 +3,14 @@ module ADTypesConstructionBaseExt
 using ADTypes: AutoEnzyme, AutoForwardDiff, AutoPolyesterForwardDiff
 using ConstructionBase: ConstructionBase
 
-struct InternalAutoEnzymeReconstructor{A, R, C} end
+struct InternalAutoEnzymeReconstructor{A, C} end
 
-function InternalAutoEnzymeReconstructor{A, R, C}(mode::M) where {M, A, R, C}
-    AutoEnzyme{M, A, R, C}(mode)
+function InternalAutoEnzymeReconstructor{A, C}(mode::M) where {M, A, C}
+    AutoEnzyme{M, A, C}(mode)
 end
 
-function ConstructionBase.constructorof(::Type{<:AutoEnzyme{M, A, R, C}}) where {M, A, R, C}
-    return InternalAutoEnzymeReconstructor{A, R, C}
+function ConstructionBase.constructorof(::Type{<:AutoEnzyme{M, A, C}}) where {M, A, C}
+    return InternalAutoEnzymeReconstructor{A, C}
 end
 
 function ConstructionBase.constructorof(::Type{<:AutoForwardDiff{chunksize}}) where {chunksize}
