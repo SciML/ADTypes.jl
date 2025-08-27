@@ -56,13 +56,11 @@ get_chunksize(::AutoEnzyme{M, A, R, C}) where {M, A, R, C} = C
     @test mode(ad) isa ReverseMode
     @test ad.mode == EnzymeCore.Reverse
 
-    ad = AutoEnzyme(; mode = ForwardMode(), runtime_activity = true, chunksize = Inf)
-    @test mode(ad) isa ForwardMode
+    ad = AutoEnzyme(; runtime_activity = true, chunksize = Inf)
     @test get_runtime_activity(ad)
     @test get_chunksize(ad) == Inf
 
-    ad = AutoEnzyme(; mode = ReverseMode(), runtime_activity = false, chunksize = 3)
-    @test mode(ad) isa ReverseMode
+    ad = AutoEnzyme(; runtime_activity = false, chunksize = 3)
     @test !get_runtime_activity(ad)
     @test get_chunksize(ad) == 3
 

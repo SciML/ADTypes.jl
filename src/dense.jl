@@ -48,7 +48,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 # Constructors
 
     AutoEnzyme(;
-        mode::Union{EnzymeCore.Mode,ADTypes.AbstractMode,Nothing}=nothing,
+        mode::Union{EnzymeCore.Mode,Nothing}=nothing,
         function_annotation::Type{<:Union{EnzymeCore.Annotation,Nothing}}=Nothing,
         runtime_activity::Union{Bool,Nothing}=nothing,
         chunksize::Union{Int,Float64,Nothing}=nothing,
@@ -57,7 +57,6 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
   - `mode::M` determines the autodiff mode (forward or reverse). It can be:
 
       + a mode object from EnzymeCore.jl, like `EnzymeCore.Forward` or `EnzymeCore.Reverse` (possibly modified with additional settings like runtime activity)
-      + a mode object from ADTypes.jl, either [`ADTypes.ForwardMode`](@ref) or [`ADTypes.ReverseMode`](@ref)
       + `nothing` to choose the best mode automatically
 
   - `A=function_annotation` determines how the function `f` to differentiate is passed to Enzyme. It can be:
@@ -101,8 +100,6 @@ function AutoEnzyme(;
 end
 
 mode(::AutoEnzyme) = ForwardOrReverseMode()  # specialized in the extension
-mode(::AutoEnzyme{<:ForwardMode}) = ForwardMode()
-mode(::AutoEnzyme{<:ReverseMode}) = ReverseMode()
 
 function Base.show(io::IO, backend::AutoEnzyme{M, A, R, C}) where {M, A, R, C}
     print(io, AutoEnzyme, "(")
