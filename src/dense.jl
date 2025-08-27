@@ -74,7 +74,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
       + a positive `Int` to fix a constant chunk size
       + `Inf` to pick the maximum chunk size, corresponding to the array length
-      + `nothing` to choose a good chunk size automatically®
+      + `nothing` to choose a good chunk size automatically
 """
 struct AutoEnzyme{M, A, R, C} <: AbstractADType
     mode::M
