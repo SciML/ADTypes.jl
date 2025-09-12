@@ -530,17 +530,17 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 struct NoAutoDiff <: AbstractADType end
 
 """
-    NoAutoDiffSelected <: Exception
+    NoAutoDiffSelectedError <: Exception
 
 Signifies that code tried to use automatic differentiation, but
 `NoAutoDiff`(@ref) was specified.
 """
-struct NoAutoDiffSelected <: Exception
+struct NoAutoDiffSelectedError <: Exception
     msg::AbstractString
 end
 
-NoAutoDiffSelected() = NoAutoDiffSelected("Automatic differentiation can not be used with NoAutoDiff()")
+NoAutoDiffSelectedError() = NoAutoDiffSelectedError("Automatic differentiation can not be used with NoAutoDiff()")
 
 function mode(::NoAutoDiff)
-    throw(NoAutoDiffSelected())
+    throw(NoAutoDiffSelectedError())
 end

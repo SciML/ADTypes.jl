@@ -231,5 +231,5 @@ end
     ad = NoAutoDiff()
     @test ad isa AbstractADType
     @test ad isa NoAutoDiff
-    @test_throws NoAutoDiffSelected mode(ad)
+    @test_throws NoAutoDiffSelectedError mode(ad)
 end
