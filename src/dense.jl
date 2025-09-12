@@ -529,6 +529,18 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 """
 struct NoAutoDiff <: AbstractADType end
 
+"""
+    NoAutoDiffAvailable <: Exception
+
+Signifies that code tried to use automatic differentiation, but
+`NoAutoDiff`(@ref) was specified.
+"""
+struct NoAutoDiffAvailable <: Exception
+    msg::AbstractString
+end
+
+NoAutoDiffAvailable() = NoAutoDiffAvailable("Automatic differentiation can not be used with NoAutoDiff()")
+
 function mode(::NoAutoDiff)
-    throw(ArgumentError("No ADTypes.AbstractMode defined for NoAutoDiff()"))
+    throw(NoAutoDiffAvailable())
 end
