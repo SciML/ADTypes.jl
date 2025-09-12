@@ -15,6 +15,7 @@ using Test
 @test ADTypes.Auto(:Tapir) isa AutoTapir
 @test ADTypes.Auto(:Tracker) isa AutoTracker
 @test ADTypes.Auto(:Zygote) isa AutoZygote
+@test ADTypes.Auto(nothing) isa NoAutoDiff
 
 @test_throws MethodError ADTypes.Auto(:ThisPackageDoesNotExist)
 @test_throws UndefKeywordError ADTypes.Auto(:ChainRules)

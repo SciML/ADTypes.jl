@@ -45,7 +45,8 @@ export AutoChainRules,
        AutoTapir,
        AutoTaylorDiff,
        AutoTracker,
-       AutoZygote
+       AutoZygote,
+       NoAutoDiff
 @public AbstractMode
 @public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
 @public mode

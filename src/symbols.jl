@@ -1,5 +1,6 @@
 """
     ADTypes.Auto(package::Symbol)
+    ADTypes.Auto(nothing)::NoAutoDiff
 
 A shortcut that converts an AD package name into an instance of [`AbstractADType`](@ref), with all parameters set to their default values.
 
@@ -27,3 +28,5 @@ for backend in (:ChainRules, :Diffractor, :Enzyme, :FastDifferentiation,
     @eval Auto(::Val{$(QuoteNode(backend))}, args...; kws...) = $(Symbol(:Auto, backend))(
         args...; kws...)
 end
+
+Auto(::Nothing) = NoAutoDiff()

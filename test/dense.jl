@@ -226,3 +226,10 @@ end
     @test ad isa AutoZygote
     @test mode(ad) isa ReverseMode
 end
+
+@testset "NoAutoDiff" begin
+    ad = NoAutoDiff()
+    @test ad isa AbstractADType
+    @test ad isa NoAutoDiff
+    @test_throws ArgumentError mode(ad)
+end
