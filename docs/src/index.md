@@ -96,7 +96,7 @@ ADTypes.NoColoringAlgorithm
 
 ```@docs
 NoAutoDiff
-NoAutoDiffAvailable
+NoAutoDiffSelected
 ```
 
 ## Modes
