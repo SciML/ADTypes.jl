@@ -92,6 +92,13 @@ ADTypes.symmetric_coloring
 ADTypes.NoColoringAlgorithm
 ```
 
+## No automatic differentiation
+
+```@docs
+NoAutoDiff
+NoAutoDiffSelectedError
+```
+
 ## Modes
 
 ```@docs

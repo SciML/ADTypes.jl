@@ -515,3 +515,35 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 struct AutoZygote <: AbstractADType end
 
 mode(::AutoZygote) = ReverseMode()
+
+"""
+    NoAutoDiff
+
+Struct used to select no automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    NoAutoDiff()
+"""
+struct NoAutoDiff <: AbstractADType end
+
+"""
+    NoAutoDiffSelectedError <: Exception
+
+Signifies that code tried to use automatic differentiation, but [`NoAutoDiff`](@ref) was specified.
+
+# Constructor
+
+    NoAutoDiffSelectedError(msg::String)
+"""
+struct NoAutoDiffSelectedError <: Exception
+    msg::String
+end
+
+NoAutoDiffSelectedError() = NoAutoDiffSelectedError("Automatic differentiation can not be used with NoAutoDiff()")
+
+function mode(::NoAutoDiff)
+    throw(NoAutoDiffSelectedError())
+end
