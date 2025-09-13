@@ -532,11 +532,14 @@ struct NoAutoDiff <: AbstractADType end
 """
     NoAutoDiffSelectedError <: Exception
 
-Signifies that code tried to use automatic differentiation, but
-`NoAutoDiff`(@ref) was specified.
+Signifies that code tried to use automatic differentiation, but [`NoAutoDiff`](@ref) was specified.
+
+# Constructor
+
+    NoAutoDiffSelectedError(msg::String)
 """
 struct NoAutoDiffSelectedError <: Exception
-    msg::AbstractString
+    msg::String
 end
 
 NoAutoDiffSelectedError() = NoAutoDiffSelectedError("Automatic differentiation can not be used with NoAutoDiff()")
