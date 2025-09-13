@@ -34,6 +34,7 @@ for backend in [
     ADTypes.AutoEnzyme(mode = :forward),
     ADTypes.AutoEnzyme(function_annotation = Val{:forward}),
     ADTypes.AutoEnzyme(mode = :reverse, function_annotation = Val{:duplicated}),
+    ADTypes.AutoEnzyme(chunksize = 2),
     ADTypes.AutoFastDifferentiation(),
     ADTypes.AutoFiniteDiff(),
     ADTypes.AutoFiniteDiff(fdtype = :fd, fdjtype = :fdj, fdhtype = :fdh),
