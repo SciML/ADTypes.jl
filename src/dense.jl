@@ -107,7 +107,7 @@ end
 
 function AutoReactant(;
         mode::Union{AutoEnzyme,Nothing} = nothing)
-    if mode == nothing
+    if mode === nothing
         mode = AutoEnzyme()
     end
     return AutoReactant(mode)
