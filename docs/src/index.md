@@ -53,6 +53,7 @@ AutoZygote
 AutoEnzyme
 AutoChainRules
 AutoDiffractor
+AutoReactant{<:AutoEnzyme}
 ```
 
 ### Symbolic mode
@@ -67,6 +68,7 @@ AutoSymbolics
 ```@docs
 AutoSparse
 ADTypes.dense_ad
+AutoReactant{<:AutoEnzyme}
 ```
 
 ### Sparsity detector

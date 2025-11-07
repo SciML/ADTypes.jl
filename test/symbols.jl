@@ -11,6 +11,7 @@ using Test
 @test ADTypes.Auto(:Mooncake) isa AutoMooncake
 @test ADTypes.Auto(:PolyesterForwardDiff) isa AutoPolyesterForwardDiff
 @test ADTypes.Auto(:ReverseDiff) isa AutoReverseDiff
+@test ADTypes.Auto(:Reactant) isa AutoReactant
 @test ADTypes.Auto(:Symbolics) isa AutoSymbolics
 @test ADTypes.Auto(:Tapir) isa AutoTapir
 @test ADTypes.Auto(:Tracker) isa AutoTracker

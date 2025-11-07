@@ -82,6 +82,45 @@ function Base.show(io::IO, backend::AutoEnzyme{M, A}) where {M, A}
     print(io, ")")
 end
 
+
+"""
+    AutoReactant{M<:AutoEnzyme}
+
+Struct used to select the [Reactant.jl](https://github.com/EnzymeAD/Reactant.jl) compilation atop Enzyme for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoReactant(; mode::Union{AutoEnzyme,Nothing}=nothing)
+
+# Fields
+
+  - `mode::M` specifies the Enzyme mode of differentiation
+
+      + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
+      + `nothing` to choose the best mode automatically
+"""
+struct AutoReactant{M<:AutoEnzyme} <: AbstractADType
+    mode::M
+end
+
+function AutoReactant(;
+        mode::Union{AutoEnzyme,Nothing} = nothing)
+    if mode == nothing
+        mode = AutoEnzyme()
+    end
+    return AutoReactant(mode)
+end
+
+mode(r::AutoReactant) = mode(r.mode)
+
+function Base.show(io::IO, backend::AutoReactant)
+    print(io, AutoReactant, "(")
+    print(io, "mode=", repr(backend.mode; context = io))
+    print(io, ")")
+end
+
 """
     AutoFastDifferentiation
 

@@ -52,6 +52,34 @@ end
     @test ad.mode == EnzymeCore.Reverse
 end
 
+@testset "AutoReactant" begin
+    ad = AutoReactant()
+    @test ad isa AbstractADType
+    @test ad isa AutoReactant{<:AutoEnzyme}
+    @test ad.mode isa AutoEnzyme
+    @test ad.mode.mode === nothing
+    @test mode(ad) isa ForwardOrReverseMode
+
+    ad = AutoReactant(; mode=AutoEnzyme(; mode = EnzymeCore.Forward))
+    @test ad isa AbstractADType
+    @test ad isa AutoReactant{<:AutoEnzyme{typeof(EnzymeCore.Forward), Nothing}}
+    @test mode(ad) isa ForwardMode
+    @test ad.mode.mode == EnzymeCore.Forward
+
+    ad = AutoReactant(; mode=AutoEnzyme(; function_annotation = EnzymeCore.Const))
+    @test ad isa AbstractADType
+    @test ad isa AutoReactant{<:AutoEnzyme{Nothing, EnzymeCore.Const}}
+    @test mode(ad) isa ForwardOrReverseMode
+    @test ad.mode.mode === nothing
+
+    ad = AutoReactant(; mode=AutoEnzyme(;
+        mode = EnzymeCore.Reverse, function_annotation = EnzymeCore.Duplicated))
+    @test ad isa AbstractADType
+    @test ad isa AutoReactant{<:AutoEnzyme{typeof(EnzymeCore.Reverse), EnzymeCore.Duplicated}}
+    @test mode(ad) isa ReverseMode
+    @test ad.mode.mode == EnzymeCore.Reverse
+end
+
 @testset "AutoFastDifferentiation" begin
     ad = AutoFastDifferentiation()
     @test ad isa AbstractADType
