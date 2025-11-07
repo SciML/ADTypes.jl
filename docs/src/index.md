@@ -53,6 +53,11 @@ AutoZygote
 AutoEnzyme
 AutoChainRules
 AutoDiffractor
+```
+
+### Forward, reverse, or sparse mode
+
+```@docs
 AutoReactant{<:AutoEnzyme}
 ```
 
@@ -68,7 +73,6 @@ AutoSymbolics
 ```@docs
 AutoSparse
 ADTypes.dense_ad
-AutoReactant{<:AutoEnzyme}
 ```
 
 ### Sparsity detector
