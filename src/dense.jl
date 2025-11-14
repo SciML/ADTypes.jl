@@ -96,9 +96,9 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `mode::M` specifies the Enzyme mode of differentiation
+  - `mode::M` specifies the paramterization of differentiation
 
-      + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
+      + an AutoEnzyme object if a specific mode is required
       + `nothing` to choose the best mode automatically
 """
 struct AutoReactant{M<:AutoEnzyme} <: AbstractADType
