@@ -96,7 +96,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `mode::M` specifies the parametrization of differentiation
+  - `mode::M` specifies the parameterization of differentiation.  It can be:
 
       + an AutoEnzyme object if a specific mode is required
       + `nothing` to choose the best mode automatically
