@@ -98,7 +98,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
   - `mode::M` specifies the parameterization of differentiation.  It can be:
 
-      + an AutoEnzyme object if a specific mode is required
+      + an [`AutoEnzyme`](@ref) object if a specific mode is required
       + `nothing` to choose the best mode automatically
 """
 struct AutoReactant{M<:AutoEnzyme} <: AbstractADType
