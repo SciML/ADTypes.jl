@@ -55,6 +55,12 @@ AutoChainRules
 AutoDiffractor
 ```
 
+### Forward, reverse, or sparse mode
+
+```@docs
+AutoReactant{<:AutoEnzyme}
+```
+
 ### Symbolic mode
 
 ```@docs
