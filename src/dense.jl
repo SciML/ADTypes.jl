@@ -365,7 +365,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Fields
 
-  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoForwardMooncake(; config=nothing)` is equivalent to `AutoForwardMooncake(; config=Mooncake.Config())`, i.e. the default configuration.
+  - `config`: either `nothing` or an instance of `Mooncake.Config` -- see the docstring of `Mooncake.Config` for more information. `AutoMooncakeForward(; config=nothing)` is equivalent to `AutoMooncakeForward(; config=Mooncake.Config())`, i.e. the default configuration.
 """
 Base.@kwdef struct AutoMooncakeForward{Tconfig} <: AbstractADType
     config::Tconfig = nothing
@@ -573,7 +573,7 @@ struct NoAutoDiff <: AbstractADType end
 
 Signifies that code tried to use automatic differentiation, but [`NoAutoDiff`](@ref) was specified.
 
-# Constructor
+# Constructors
 
     NoAutoDiffSelectedError(msg::String)
 """

@@ -23,8 +23,8 @@ ADTypes.AutoZygote()
 Auto(package::Symbol, args...; kws...) = Auto(Val(package), args...; kws...)
 
 for backend in (:ChainRules, :Diffractor, :Enzyme, :Reactant, :FastDifferentiation,
-    :FiniteDiff, :FiniteDifferences, :ForwardDiff, :Mooncake, :PolyesterForwardDiff,
-    :ReverseDiff, :Symbolics, :Tapir, :Tracker, :Zygote)
+    :FiniteDiff, :FiniteDifferences, :ForwardDiff, :GTPSA, :Mooncake, :PolyesterForwardDiff,
+    :ReverseDiff, :Symbolics, :Tapir, :TaylorDiff, :Tracker, :Zygote)
     @eval Auto(::Val{$(QuoteNode(backend))}, args...; kws...) = $(Symbol(:Auto, backend))(
         args...; kws...)
 end
