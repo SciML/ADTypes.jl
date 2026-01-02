@@ -26,3 +26,4 @@ A more involved struct is thus required, with package-specific parameters.
 If every AD user develops their own version of said struct, it will ruin interoperability.
 This is why ADTypes.jl provides a single set of shared types for this task, as an extremely lightweight dependency.
 They are types and not enums because we need AD choice information statically to use it for dispatch.
+
