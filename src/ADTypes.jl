@@ -23,7 +23,6 @@ include("compat.jl") # @public macro
 include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
-include("di.jl")
 include("legacy.jl")
 include("symbols.jl")
 
