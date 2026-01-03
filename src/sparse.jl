@@ -115,6 +115,7 @@ Abstract supertype for Jacobian/Hessian coloring algorithms.
   - [`column_coloring`](@ref)
   - [`row_coloring`](@ref)
   - [`symmetric_coloring`](@ref)
+  - [`bicoloring`](@ref)
 
 # Note
 
@@ -155,6 +156,23 @@ The result is a coloring vector `c` of length `size(M, 1) == size(M, 2)` such th
 function symmetric_coloring end
 
 """
+    bicoloring(M::AbstractMatrix, ca::ColoringAlgorithm)::Tuple{AbstractVector{<:Integer},AbstractVector{<:Integer}}
+
+Use algorithm `ca` to construct a structurally orthogonal partition of both the rows and columns of the matrix `M`, ensuring no two non-zero entries in the same row or column share the same color.
+
+The result is a tuple of coloring vectors `(cr, cc)` of lengths `size(M, 1)` and `size(M, 2)`, respectively.
+The vector `cr` provides a color assignment for each row, and `cc` provides a color assignment for each column.
+For each non-zero entry `M[i, j]` in `M`, at least one of the following conditions holds:
+
+  - row `i` is the only row with color `cr[i]` that has a non-zero entry in column `j`;
+  - column `j` is the only column with color `cc[j]` that has a non-zero entry in row `i`.
+
+A neutral color `0` may be assigned to rows or columns, indicating that they are not needed to retrieve all non-zero entries in `M`.
+This occurs when the entries in a row (or column) are fully determined by the non-zero entries in the columns (or rows).
+"""
+function bicoloring end
+
+"""
     NoColoringAlgorithm <: AbstractColoringAlgorithm
 
 Trivial coloring algorithm, which always returns a different color for each matrix column/row.
@@ -168,6 +186,7 @@ struct NoColoringAlgorithm <: AbstractColoringAlgorithm end
 column_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 2)
 row_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
 symmetric_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
+bicoloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1), 1:size(M, 2)
 
 ## Sparse backend
 
