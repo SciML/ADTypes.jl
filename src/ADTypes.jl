@@ -23,6 +23,7 @@ include("compat.jl") # @public macro
 include("mode.jl")
 include("dense.jl")
 include("sparse.jl")
+include("di.jl")
 include("legacy.jl")
 include("symbols.jl")
 
@@ -57,6 +58,10 @@ export AutoChainRules,
 # Sparse Automatic Differentiation
 export AutoSparse
 @public dense_ad
+
+# DI Automatic Differentiation
+export AutoDI
+@public inner_ad
 
 # Sparsity detection
 export AbstractSparsityDetector

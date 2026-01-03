@@ -6,6 +6,7 @@ using ADTypes: AbstractADType,
                ReverseMode,
                SymbolicMode
 using ADTypes: dense_ad,
+               inner_ad,
                NoSparsityDetector,
                KnownJacobianSparsityDetector,
                KnownHessianSparsityDetector,
@@ -100,6 +101,9 @@ end
     end
     @testset "Sparse" begin
         include("sparse.jl")
+    end
+    @testset "DI" begin
+        include("di.jl")
     end
     @testset "Symbols" begin
         include("symbols.jl")
