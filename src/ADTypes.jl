@@ -58,6 +58,10 @@ export AutoChainRules,
 export AutoSparse
 @public dense_ad
 
+# DI Automatic Differentiation
+export AutoDI
+@public inner_ad
+
 # Sparsity detection
 export AbstractSparsityDetector
 export jacobian_sparsity, hessian_sparsity
