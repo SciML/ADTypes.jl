@@ -9,7 +9,7 @@
         di_ad = AutoDI(ad)
         @test di_ad isa AbstractADType
         @test di_ad isa AutoDI
-        
+
         # Test mode propagation
         if mode(ad) isa ForwardMode
             @test mode(di_ad) isa ForwardMode
@@ -20,7 +20,7 @@
         elseif mode(ad) isa SymbolicMode
             @test mode(di_ad) isa SymbolicMode
         end
-        
+
         # Test inner_ad accessor
         @test inner_ad(ad) == ad
         @test inner_ad(di_ad) == ad
