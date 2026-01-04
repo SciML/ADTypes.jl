@@ -191,10 +191,10 @@ Wraps an ADTypes.jl object to deal with sparse Jacobians and Hessians.
     )
 """
 struct AutoSparse{
-    D <: AbstractADType,
-    S <: AbstractSparsityDetector,
-    C <: AbstractColoringAlgorithm
-} <: AbstractADType
+        D <: AbstractADType,
+        S <: AbstractSparsityDetector,
+        C <: AbstractColoringAlgorithm,
+    } <: AbstractADType
     dense_ad::D
     sparsity_detector::S
     coloring_algorithm::C
@@ -203,11 +203,12 @@ end
 function AutoSparse(
         dense_ad;
         sparsity_detector = NoSparsityDetector(),
-        coloring_algorithm = NoColoringAlgorithm())
+        coloring_algorithm = NoColoringAlgorithm()
+    )
     return AutoSparse{
         typeof(dense_ad),
         typeof(sparsity_detector),
-        typeof(coloring_algorithm)
+        typeof(coloring_algorithm),
     }(dense_ad, sparsity_detector, coloring_algorithm)
 end
 
@@ -218,9 +219,10 @@ function Base.show(io::IO, backend::AutoSparse)
     end
     if backend.coloring_algorithm != NoColoringAlgorithm()
         print(
-            io, ", coloring_algorithm=", repr(backend.coloring_algorithm, context = io))
+            io, ", coloring_algorithm=", repr(backend.coloring_algorithm, context = io)
+        )
     end
-    print(io, ")")
+    return print(io, ")")
 end
 
 """

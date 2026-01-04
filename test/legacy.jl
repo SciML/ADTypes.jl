@@ -1,15 +1,18 @@
 @testset "AutoModelingToolkit" begin
     ad_sparse1 = @test_deprecated AutoModelingToolkit(;
-        obj_sparse = true, cons_sparse = false)
+        obj_sparse = true, cons_sparse = false
+    )
     ad_sparse2 = @test_deprecated AutoModelingToolkit(true, false)
 
     ad_dense1 = @test_deprecated AutoModelingToolkit(;
-        obj_sparse = false, cons_sparse = false)
+        obj_sparse = false, cons_sparse = false
+    )
     ad_dense2 = @test_deprecated AutoModelingToolkit(false, false)
     ad_dense3 = @test_deprecated AutoModelingToolkit()
 
     @test all(
-        isa.((ad_sparse1, ad_sparse2, ad_dense1, ad_dense2, ad_dense3), AbstractADType))
+        isa.((ad_sparse1, ad_sparse2, ad_dense1, ad_dense2, ad_dense3), AbstractADType)
+    )
     @test all(isa.((ad_sparse1, ad_sparse2), AutoSparse{<:AutoSymbolics}))
     @test all(isa.((ad_dense1, ad_dense2, ad_dense3), AutoSymbolics))
 end
@@ -41,7 +44,8 @@ end
 
 @testset "AutoSparsePolyesterForwardDiff" begin
     ad = @test_deprecated AutoSparsePolyesterForwardDiff(;
-        chunksize = 10, tag = CustomTag())
+        chunksize = 10, tag = CustomTag()
+    )
     @test ad isa AbstractADType
     @test dense_ad(ad) isa AutoPolyesterForwardDiff{10, CustomTag}
 end

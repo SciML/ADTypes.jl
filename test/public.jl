@@ -18,6 +18,6 @@ public_symbols = (
     :KnownHessianSparsityDetector,
     # Matrix coloring
     :coloring_algorithm,
-    :NoColoringAlgorithm
+    :NoColoringAlgorithm,
 )
 @test public_symbols ⊆ names(ADTypes)
