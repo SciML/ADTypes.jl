@@ -45,7 +45,8 @@ end
     @test ad.mode === nothing
 
     ad = AutoEnzyme(;
-        mode = EnzymeCore.Reverse, function_annotation = EnzymeCore.Duplicated)
+        mode = EnzymeCore.Reverse, function_annotation = EnzymeCore.Duplicated
+    )
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse), EnzymeCore.Duplicated}
     @test mode(ad) isa ReverseMode
@@ -60,20 +61,23 @@ end
     @test ad.mode.mode === nothing
     @test mode(ad) isa ForwardOrReverseMode
 
-    ad = AutoReactant(; mode=AutoEnzyme(; mode = EnzymeCore.Forward))
+    ad = AutoReactant(; mode = AutoEnzyme(; mode = EnzymeCore.Forward))
     @test ad isa AbstractADType
     @test ad isa AutoReactant{<:AutoEnzyme{typeof(EnzymeCore.Forward), Nothing}}
     @test mode(ad) isa ForwardMode
     @test ad.mode.mode == EnzymeCore.Forward
 
-    ad = AutoReactant(; mode=AutoEnzyme(; function_annotation = EnzymeCore.Const))
+    ad = AutoReactant(; mode = AutoEnzyme(; function_annotation = EnzymeCore.Const))
     @test ad isa AbstractADType
     @test ad isa AutoReactant{<:AutoEnzyme{Nothing, EnzymeCore.Const}}
     @test mode(ad) isa ForwardOrReverseMode
     @test ad.mode.mode === nothing
 
-    ad = AutoReactant(; mode=AutoEnzyme(;
-        mode = EnzymeCore.Reverse, function_annotation = EnzymeCore.Duplicated))
+    ad = AutoReactant(;
+        mode = AutoEnzyme(;
+            mode = EnzymeCore.Reverse, function_annotation = EnzymeCore.Duplicated
+        )
+    )
     @test ad isa AbstractADType
     @test ad isa AutoReactant{<:AutoEnzyme{typeof(EnzymeCore.Reverse), EnzymeCore.Duplicated}}
     @test mode(ad) isa ReverseMode
@@ -99,16 +103,18 @@ end
     @test ad.absstep === nothing
     @test ad.dir
 
-    ad = AutoFiniteDiff(; fdtype = Val(:central), fdjtype = Val(:forward),
-        relstep = 1e-3, absstep = 1e-4, dir = false)
+    ad = AutoFiniteDiff(;
+        fdtype = Val(:central), fdjtype = Val(:forward),
+        relstep = 1.0e-3, absstep = 1.0e-4, dir = false
+    )
     @test ad isa AbstractADType
     @test ad isa AutoFiniteDiff
     @test mode(ad) isa ForwardMode
     @test ad.fdtype === Val(:central)
     @test ad.fdjtype === Val(:forward)
     @test ad.fdhtype === Val(:hcentral)
-    @test ad.relstep == 1e-3
-    @test ad.absstep == 1e-4
+    @test ad.relstep == 1.0e-3
+    @test ad.absstep == 1.0e-4
     @test !ad.dir
 end
 

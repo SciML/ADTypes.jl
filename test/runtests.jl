@@ -1,26 +1,26 @@
 using ADTypes
 using ADTypes: AbstractADType,
-               mode,
-               ForwardMode,
-               ForwardOrReverseMode,
-               ReverseMode,
-               SymbolicMode
+    mode,
+    ForwardMode,
+    ForwardOrReverseMode,
+    ReverseMode,
+    SymbolicMode
 using ADTypes: dense_ad,
-               NoSparsityDetector,
-               KnownJacobianSparsityDetector,
-               KnownHessianSparsityDetector,
-               sparsity_detector,
-               jacobian_sparsity,
-               hessian_sparsity,
-               NoColoringAlgorithm,
-               coloring_algorithm,
-               column_coloring,
-               row_coloring,
-               symmetric_coloring
+    NoSparsityDetector,
+    KnownJacobianSparsityDetector,
+    KnownHessianSparsityDetector,
+    sparsity_detector,
+    jacobian_sparsity,
+    hessian_sparsity,
+    NoColoringAlgorithm,
+    coloring_algorithm,
+    column_coloring,
+    row_coloring,
+    symmetric_coloring
 using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
-                      HasForwardsMode, HasReverseMode,
-                      NoForwardsMode, NoReverseMode
+    HasForwardsMode, HasReverseMode,
+    NoForwardsMode, NoReverseMode
 using EnzymeCore: EnzymeCore
 using JET: JET
 using Test
@@ -51,7 +51,7 @@ function every_ad()
         AutoSymbolics(),
         AutoTapir(),
         AutoTracker(),
-        AutoZygote()
+        AutoZygote(),
     ]
 end
 
@@ -63,8 +63,10 @@ function every_ad_with_options()
         AutoEnzyme(mode = :forward),
         AutoFastDifferentiation(),
         AutoFiniteDiff(),
-        AutoFiniteDiff(fdtype = :fd, fdjtype = :fdj, fdhtype = :fdh,
-            relstep = 1, absstep = 2, dir = false),
+        AutoFiniteDiff(
+            fdtype = :fd, fdjtype = :fdj, fdhtype = :fdh,
+            relstep = 1, absstep = 2, dir = false
+        ),
         AutoFiniteDifferences(; fdm = :fdm),
         AutoForwardDiff(),
         AutoForwardDiff(chunksize = 3, tag = :tag),
@@ -80,13 +82,13 @@ function every_ad_with_options()
         AutoTapir(),
         AutoTapir(safe_mode = false),
         AutoTracker(),
-        AutoZygote()
+        AutoZygote(),
     ]
 end
 
 ## Tests
 
-@testset verbose=true "ADTypes.jl" begin
+@testset verbose = true "ADTypes.jl" begin
     if VERSION >= v"1.10"
         @testset "Aqua.jl" begin
             Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))

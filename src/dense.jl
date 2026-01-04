@@ -20,7 +20,7 @@ end
 mode(::AutoChainRules) = ForwardOrReverseMode()  # specialized in the extension
 
 function Base.show(io::IO, backend::AutoChainRules)
-    print(io, AutoChainRules, "(ruleconfig=", repr(backend.ruleconfig; context = io), ")")
+    return print(io, AutoChainRules, "(ruleconfig=", repr(backend.ruleconfig; context = io), ")")
 end
 
 """
@@ -68,7 +68,8 @@ struct AutoEnzyme{M, A} <: AbstractADType
 end
 
 function AutoEnzyme(;
-        mode::M = nothing, function_annotation::Type{A} = Nothing) where {M, A}
+        mode::M = nothing, function_annotation::Type{A} = Nothing
+    ) where {M, A}
     return AutoEnzyme{M, A}(mode)
 end
 
@@ -79,7 +80,7 @@ function Base.show(io::IO, backend::AutoEnzyme{M, A}) where {M, A}
     !isnothing(backend.mode) && print(io, "mode=", repr(backend.mode; context = io))
     !isnothing(backend.mode) && !(A <: Nothing) && print(io, ", ")
     !(A <: Nothing) && print(io, "function_annotation=", repr(A; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 
@@ -101,12 +102,13 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
       + an [`AutoEnzyme`](@ref) object if a specific mode is required
       + `nothing` to choose the best mode automatically
 """
-struct AutoReactant{M<:AutoEnzyme} <: AbstractADType
+struct AutoReactant{M <: AutoEnzyme} <: AbstractADType
     mode::M
 end
 
 function AutoReactant(;
-        mode::Union{AutoEnzyme,Nothing} = nothing)
+        mode::Union{AutoEnzyme, Nothing} = nothing
+    )
     if mode === nothing
         mode = AutoEnzyme()
     end
@@ -118,7 +120,7 @@ mode(r::AutoReactant) = mode(r.mode)
 function Base.show(io::IO, backend::AutoReactant)
     print(io, AutoReactant, "(")
     print(io, "mode=", repr(backend.mode; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -184,7 +186,7 @@ function Base.show(io::IO, backend::AutoFiniteDiff)
         print(io, "absstep=", repr(backend.absstep; context = io), ", ")
     backend.dir != true &&
         print(io, "dir=", repr(backend.dir; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -209,7 +211,7 @@ end
 mode(::AutoFiniteDifferences) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoFiniteDifferences)
-    print(io, AutoFiniteDifferences, "(fdm=", repr(backend.fdm; context = io), ")")
+    return print(io, AutoFiniteDifferences, "(fdm=", repr(backend.fdm; context = io), ")")
 end
 
 """
@@ -245,10 +247,12 @@ mode(::AutoForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoForwardDiff{chunksize}) where {chunksize}
     print(io, AutoForwardDiff, "(")
-    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io),
-        (backend.tag !== nothing ? ", " : ""))
+    chunksize !== nothing && print(
+        io, "chunksize=", repr(chunksize; context = io),
+        (backend.tag !== nothing ? ", " : "")
+    )
     backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -277,7 +281,7 @@ mode(::AutoTaylorDiff) = ForwardMode()
 function Base.show(io::IO, ::AutoTaylorDiff{order}) where {order}
     print(io, AutoTaylorDiff, "(")
     print(io, "order=", repr(order; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -309,7 +313,7 @@ mode(::AutoGTPSA) = ForwardMode()
 function Base.show(io::IO, backend::AutoGTPSA{D}) where {D}
     print(io, AutoGTPSA, "(")
     D != Nothing && print(io, "descriptor=", repr(backend.descriptor; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -343,7 +347,7 @@ function Base.show(io::IO, backend::AutoMooncake)
     print(io, AutoMooncake, "(")
     backend.config !== nothing &&
         print(io, "config=", repr(backend.config; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -377,7 +381,7 @@ function Base.show(io::IO, backend::AutoMooncakeForward)
     print(io, AutoMooncakeForward, "(")
     backend.config !== nothing &&
         print(io, "config=", repr(backend.config; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -415,10 +419,12 @@ mode(::AutoPolyesterForwardDiff) = ForwardMode()
 
 function Base.show(io::IO, backend::AutoPolyesterForwardDiff{chunksize}) where {chunksize}
     print(io, AutoPolyesterForwardDiff, "(")
-    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io),
-        (backend.tag !== nothing ? ", " : ""))
+    chunksize !== nothing && print(
+        io, "chunksize=", repr(chunksize; context = io),
+        (backend.tag !== nothing ? ", " : "")
+    )
     backend.tag !== nothing && print(io, "tag=", repr(backend.tag; context = io))
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -466,7 +472,8 @@ function Base.getproperty(ad::AutoReverseDiff, s::Symbol)
     if s === :compile
         Base.depwarn(
             "`ad.compile` where `ad` is `AutoReverseDiff` has been deprecated and will be removed in v2. Instead it is available as a compile-time constant as `AutoReverseDiff{true}` or `AutoReverseDiff{false}`.",
-            :getproperty)
+            :getproperty
+        )
     end
     return getfield(ad, s)
 end
@@ -476,7 +483,7 @@ mode(::AutoReverseDiff) = ReverseMode()
 function Base.show(io::IO, ::AutoReverseDiff{compile}) where {compile}
     print(io, AutoReverseDiff, "(")
     compile && print(io, "compile=true")
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
@@ -522,7 +529,7 @@ mode(::AutoTapir) = ReverseMode()
 function Base.show(io::IO, backend::AutoTapir)
     print(io, AutoTapir, "(")
     !(backend.safe_mode) && print(io, "safe_mode=false")
-    print(io, ")")
+    return print(io, ")")
 end
 
 """
