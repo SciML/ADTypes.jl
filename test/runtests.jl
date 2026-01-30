@@ -1,27 +1,27 @@
 using ADTypes
 using ADTypes: AbstractADType,
-               mode,
-               ForwardMode,
-               ForwardOrReverseMode,
-               ReverseMode,
-               SymbolicMode
+    mode,
+    ForwardMode,
+    ForwardOrReverseMode,
+    ReverseMode,
+    SymbolicMode
 using ADTypes: dense_ad,
-               inner_ad,
-               NoSparsityDetector,
-               KnownJacobianSparsityDetector,
-               KnownHessianSparsityDetector,
-               sparsity_detector,
-               jacobian_sparsity,
-               hessian_sparsity,
-               NoColoringAlgorithm,
-               coloring_algorithm,
-               column_coloring,
-               row_coloring,
-               symmetric_coloring
+    inner_ad,
+    NoSparsityDetector,
+    KnownJacobianSparsityDetector,
+    KnownHessianSparsityDetector,
+    sparsity_detector,
+    jacobian_sparsity,
+    hessian_sparsity,
+    NoColoringAlgorithm,
+    coloring_algorithm,
+    column_coloring,
+    row_coloring,
+    symmetric_coloring
 using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
-                      HasForwardsMode, HasReverseMode,
-                      NoForwardsMode, NoReverseMode
+    HasForwardsMode, HasReverseMode,
+    NoForwardsMode, NoReverseMode
 using EnzymeCore: EnzymeCore
 using JET: JET
 using Test
