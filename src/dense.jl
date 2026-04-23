@@ -563,6 +563,38 @@ struct AutoZygote <: AbstractADType end
 mode(::AutoZygote) = ReverseMode()
 
 """
+    AutoHyperHessians{chunksize}
+
+Struct used to select the [HyperHessians.jl](https://github.com/KristofferC/HyperHessians.jl) backend for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoHyperHessians(; chunksize=nothing)
+
+# Type parameters
+
+  - `chunksize`: the preferred chunk size to evaluate several derivatives at once. If `nothing`, HyperHessians chooses automatically.
+"""
+struct AutoHyperHessians{chunksize} <: AbstractADType end
+
+function AutoHyperHessians(; chunksize::Union{Nothing, Int} = nothing)
+    if chunksize isa Int
+        chunksize > 0 || throw(ArgumentError("chunksize must be positive, got $chunksize"))
+    end
+    return AutoHyperHessians{chunksize}()
+end
+
+mode(::AutoHyperHessians) = ForwardMode()
+
+function Base.show(io::IO, ::AutoHyperHessians{chunksize}) where {chunksize}
+    print(io, AutoHyperHessians, "(")
+    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io))
+    return print(io, ")")
+end
+
+"""
     NoAutoDiff
 
 Struct used to select no automatic differentiation.

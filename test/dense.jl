@@ -160,6 +160,20 @@ end
     @test ad.descriptor == Val(:descriptor)
 end
 
+@testset "AutoHyperHessians" begin
+    ad = AutoHyperHessians()
+    @test ad isa AbstractADType
+    @test ad isa AutoHyperHessians{nothing}
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoHyperHessians(; chunksize = 8)
+    @test ad isa AbstractADType
+    @test ad isa AutoHyperHessians{8}
+    @test mode(ad) isa ForwardMode
+
+    @test_throws ArgumentError AutoHyperHessians(; chunksize = -1)
+end
+
 @testset "AutoMooncake" begin
     ad = AutoMooncake(; config = :config)
     @test ad isa AbstractADType

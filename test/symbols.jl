@@ -8,6 +8,7 @@ using Test
 @test ADTypes.Auto(:FiniteDiff) isa AutoFiniteDiff
 @test ADTypes.Auto(:FiniteDifferences, 1.0) isa AutoFiniteDifferences{Float64}
 @test ADTypes.Auto(:ForwardDiff) isa AutoForwardDiff
+@test ADTypes.Auto(:HyperHessians) isa AutoHyperHessians
 @test ADTypes.Auto(:Mooncake) isa AutoMooncake
 @test ADTypes.Auto(:PolyesterForwardDiff) isa AutoPolyesterForwardDiff
 @test ADTypes.Auto(:ReverseDiff) isa AutoReverseDiff
