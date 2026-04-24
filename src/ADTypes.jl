@@ -25,6 +25,7 @@ include("dense.jl")
 include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
+include("gradient_api.jl")
 
 # Automatic Differentiation
 export AbstractADType
@@ -54,6 +55,12 @@ export AutoChainRules,
 @public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
 @public mode
 @public Auto
+
+# Gradient API (minimal interface for backends to implement)
+@public GradientOrder
+@public gradient_order
+@public value_and_gradient!!
+@public value_and_jacobian!!
 
 # Sparse Automatic Differentiation
 export AutoSparse

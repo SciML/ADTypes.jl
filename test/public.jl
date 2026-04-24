@@ -19,5 +19,10 @@ public_symbols = (
     # Matrix coloring
     :coloring_algorithm,
     :NoColoringAlgorithm,
+    # Gradient API
+    :GradientOrder,
+    :gradient_order,
+    :value_and_gradient!!,
+    :value_and_jacobian!!,
 )
 @test public_symbols ⊆ names(ADTypes)
