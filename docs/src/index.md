@@ -36,6 +36,7 @@ Taylor mode:
 ```@docs
 AutoGTPSA
 AutoTaylorDiff
+AutoHyperHessians
 ```
 
 ### Reverse mode
