@@ -123,6 +123,15 @@ ADTypes.SymbolicMode
 ADTypes.Auto
 ```
 
+## Gradient API
+
+```@docs
+ADTypes.GradientOrder
+ADTypes.gradient_order
+ADTypes.value_and_gradient!!
+ADTypes.value_and_jacobian!!
+```
+
 ## Deprecated
 
 ```@docs
