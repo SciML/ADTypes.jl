@@ -45,6 +45,11 @@ Struct used to select the [Enzyme.jl](https://github.com/EnzymeAD/Enzyme.jl) bac
 
 Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
+!!! warning
+    `AutoEnzyme` can be used by [DifferentiationInterface.jl](https://github.com/JuliaDiff/DifferentiationInterface.jl) to access a restricted subset of Enzyme.jl functionality.
+    If your code or one of its dependencies computes derivatives through DifferentiationInterface.jl, you might experience slowdowns or errors that would not happen with Enzyme.jl's native API.
+    In that case, please refer to the [Enzyme.jl documentation](https://enzymead.github.io/Enzyme.jl/stable/) for details on how to call its native API.
+
 # Constructors
 
     AutoEnzyme(; mode::M=nothing, function_annotation::Type{A}=Nothing)
