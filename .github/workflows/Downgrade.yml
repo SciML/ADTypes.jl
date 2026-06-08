@@ -17,10 +17,9 @@ jobs:
       matrix:
         group:
           - Core
-        julia-version: ['1.10', '1']
+        julia-version: ['lts', '1']
     uses: "SciML/.github/.github/workflows/downgrade.yml@v1"
     with:
       julia-version: ${{ matrix.julia-version }}
       group: ${{ matrix.group }}
-      skip: "Pkg,TOML"
     secrets: "inherit"
