@@ -11,22 +11,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 jobs:
-  test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        version:
-          - 'lts'
-          - '1'
-          - 'pre'
-        os:
-          - ubuntu-latest
-        arch:
-          - x64
-    uses: "SciML/.github/.github/workflows/tests.yml@v1"
-    with:
-      julia-version: ${{ matrix.version }}
-      julia-arch: ${{ matrix.arch }}
-      os: ${{ matrix.os }}
+  tests:
+    uses: "SciML/.github/.github/workflows/grouped-tests.yml@v1"
     secrets: "inherit"

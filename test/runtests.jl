@@ -1,3 +1,4 @@
+using Pkg
 using ADTypes
 using ADTypes: AbstractADType,
     mode,
@@ -17,13 +18,23 @@ using ADTypes: dense_ad,
     column_coloring,
     row_coloring,
     symmetric_coloring
-using Aqua: Aqua
 using ChainRulesCore: ChainRulesCore, RuleConfig,
     HasForwardsMode, HasReverseMode,
     NoForwardsMode, NoReverseMode
 using EnzymeCore: EnzymeCore
-using JET: JET
 using Test
+
+const GROUP = get(ENV, "GROUP", "All")
+
+function activate_qa_env()
+    Pkg.activate(joinpath(@__DIR__, "qa"))
+    # On Julia < 1.11 the [sources] section in the qa Project.toml is not honored,
+    # so Pkg.develop the package root path explicitly to test the PR branch code.
+    if VERSION < v"1.11.0-DEV.0"
+        Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
+    end
+    return Pkg.instantiate()
+end
 
 ## Backend-specific
 
@@ -91,33 +102,34 @@ end
 
 ## Tests
 
-@testset verbose = true "ADTypes.jl" begin
-    if VERSION >= v"1.10"
-        @testset "Aqua.jl" begin
-            Aqua.test_all(ADTypes; deps_compat = (check_extras = false,))
+if GROUP == "All" || GROUP == "Core"
+    @testset verbose = true "ADTypes.jl" begin
+        @testset "Dense" begin
+            include("dense.jl")
         end
-        @testset "JET.jl" begin
-            JET.test_package(ADTypes, target_defined_modules = true)
+        @testset "Sparse" begin
+            include("sparse.jl")
+        end
+        @testset "Symbols" begin
+            include("symbols.jl")
+        end
+        @testset "Legacy" begin
+            include("legacy.jl")
+        end
+        @testset "Miscellaneous" begin
+            include("misc.jl")
+        end
+        if VERSION >= v"1.11.0-DEV.469"
+            @testset "Public" begin
+                include("public.jl")
+            end
         end
     end
-    @testset "Dense" begin
-        include("dense.jl")
-    end
-    @testset "Sparse" begin
-        include("sparse.jl")
-    end
-    @testset "Symbols" begin
-        include("symbols.jl")
-    end
-    @testset "Legacy" begin
-        include("legacy.jl")
-    end
-    @testset "Miscellaneous" begin
-        include("misc.jl")
-    end
-    if VERSION >= v"1.11.0-DEV.469"
-        @testset "Public" begin
-            include("public.jl")
-        end
+end
+
+if GROUP == "QA"
+    activate_qa_env()
+    @testset "Quality Assurance" begin
+        include(joinpath(@__DIR__, "qa", "qa.jl"))
     end
 end
