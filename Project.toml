@@ -17,14 +17,17 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 ChainRulesCore = "1.0.2"
 ConstructionBase = "1.5"
 EnzymeCore = "0.5.3,0.6,0.7,0.8"
+SafeTestsets = "0.1, 1"
+SciMLTesting = "1"
 julia = "1.10"
 
 [extras]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
 EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
+SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["ChainRulesCore", "EnzymeCore", "Pkg", "Setfield", "Test"]
+test = ["ChainRulesCore", "EnzymeCore", "SafeTestsets", "SciMLTesting", "Setfield", "Test"]

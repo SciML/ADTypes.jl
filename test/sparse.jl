@@ -1,3 +1,5 @@
+include(joinpath(@__DIR__, "shared", "test_setup.jl"))
+
 @testset "Subtyping" begin
     for ad in every_ad()
         sparse_ad = AutoSparse(ad)
