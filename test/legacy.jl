@@ -1,3 +1,5 @@
+include("test_setup.jl")
+
 @testset "AutoModelingToolkit" begin
     ad_sparse1 = @test_deprecated AutoModelingToolkit(;
         obj_sparse = true, cons_sparse = false

@@ -1,3 +1,5 @@
+include("test_setup.jl")
+
 @testset "Broadcasting" begin
     for ad in every_ad()
         @test identity.(ad) == ad

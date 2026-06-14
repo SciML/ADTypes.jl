@@ -1,3 +1,5 @@
+include("test_setup.jl")
+
 @testset "AutoChainRules" begin
     ad = AutoChainRules(; ruleconfig = ForwardOrReverseRuleConfig())
     @test ad isa AbstractADType
