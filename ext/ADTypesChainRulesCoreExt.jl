@@ -2,7 +2,6 @@ module ADTypesChainRulesCoreExt
 
 using ADTypes: ADTypes, AutoChainRules
 using ChainRulesCore: HasForwardsMode, HasReverseMode,
-    NoForwardsMode, NoReverseMode,
     RuleConfig
 
 # see https://juliadiff.org/ChainRulesCore.jl/stable/rule_author/superpowers/ruleconfig.html

@@ -1,6 +1,7 @@
 [deps]
 ADTypes = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
 JET = "c3a54625-cd67-489e-a8e7-0a5a0ff4e31b"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
@@ -12,8 +13,9 @@ ADTypes = {path = "../.."}
 [compat]
 ADTypes = "1"
 Aqua = "0.8"
+ExplicitImports = "1.11"
 JET = "0.9, 0.10, 0.11"
 SafeTestsets = "0.1, 1"
-SciMLTesting = "1"
+SciMLTesting = "1.4"
 Test = "1"
 julia = "1.10"

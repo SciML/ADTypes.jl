@@ -3,7 +3,7 @@
 macro public(ex)
     return if VERSION >= v"1.11.0-DEV.469"
         args = ex isa Symbol ? (ex,) :
-            Base.isexpr(ex, :tuple) ? ex.args : error("Failed to mark $ex as public")
+            Base.Meta.isexpr(ex, :tuple) ? ex.args : error("Failed to mark $ex as public")
         esc(Expr(:public, args...))
     else
         nothing
