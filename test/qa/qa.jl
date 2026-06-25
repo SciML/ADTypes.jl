@@ -1,18 +1,15 @@
-using ADTypes
-using Aqua: Aqua
-using ExplicitImports: ExplicitImports
-using JET: JET
-using SciMLTesting: run_qa
-using Test
+using SciMLTesting, ADTypes, Test
+using JET
 
+# Aqua and ExplicitImports are SciMLTesting deps, so they are not imported here.
+# Aqua is still listed in this env's `[deps]` (not ExplicitImports): Aqua's ambiguity
+# check spawns a worker subprocess that runs a bare `using Aqua` against the active
+# project, which only resolves if Aqua is a *direct* dep — a transitive (manifest-only)
+# Aqua makes that worker error with "Package Aqua not found in current path".
 run_qa(
     ADTypes;
-    Aqua = Aqua,
     aqua_kwargs = (; deps_compat = (; check_extras = false)),
-    JET = JET,
-    jet = true,
     jet_kwargs = (; target_defined_modules = true),
-    ExplicitImports = ExplicitImports,
     explicit_imports = true,
     # Two unavoidable non-public `Base` names, ignored only in the public-API access
     # check (every other ExplicitImports check passes unignored):
