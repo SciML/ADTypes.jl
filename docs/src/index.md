@@ -126,5 +126,12 @@ ADTypes.Auto
 ## Deprecated
 
 ```@docs
+AutoModelingToolkit
+AutoSparseFastDifferentiation
+AutoSparseFiniteDiff
+AutoSparseForwardDiff
+AutoSparsePolyesterForwardDiff
+AutoSparseReverseDiff
+AutoSparseZygote
 AutoTapir
 ```
