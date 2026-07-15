@@ -14,5 +14,9 @@ concurrency:
 jobs:
   build-and-deploy-docs:
     name: "Documentation"
+    permissions:
+      actions: write
+      contents: write
+      statuses: write
     uses: "SciML/.github/.github/workflows/documentation.yml@v1"
     secrets: "inherit"
