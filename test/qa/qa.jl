@@ -8,6 +8,7 @@ using JET
 # Aqua makes that worker error with "Package Aqua not found in current path".
 run_qa(
     ADTypes;
+    api_docs_kwargs = (; rendered = true),
     aqua_kwargs = (; deps_compat = (; check_extras = false)),
     jet_kwargs = (; target_defined_modules = true),
     explicit_imports = true,

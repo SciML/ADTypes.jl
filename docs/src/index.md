@@ -59,7 +59,7 @@ AutoDiffractor
 ### Forward, reverse, or sparse mode
 
 ```@docs
-AutoReactant{<:AutoEnzyme}
+AutoReactant
 ```
 
 ### Symbolic mode
