@@ -8,10 +8,8 @@ using JET
 # Aqua makes that worker error with "Package Aqua not found in current path".
 run_qa(
     ADTypes;
-    api_docs_kwargs = (; rendered = true),
     aqua_kwargs = (; deps_compat = (; check_extras = false)),
     jet_kwargs = (; target_defined_modules = true),
-    explicit_imports = true,
     # Two unavoidable non-public `Base` names, ignored only in the public-API access
     # check (every other ExplicitImports check passes unignored):
     #   * `broadcastable` — the documented broadcasting customization hook;
