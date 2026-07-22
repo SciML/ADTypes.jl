@@ -60,7 +60,7 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
   - `mode::M` determines the autodiff mode (forward or reverse). It can be:
 
-      + an object subtyping `EnzymeCore.Mode` (like `EnzymeCore.Forward` or `EnzymeCore.Reverse`) if a specific mode is required
+      + a mode value like `EnzymeCore.Forward` or `EnzymeCore.Reverse` if a specific mode is required
       + `nothing` to choose the best mode automatically
 """
 struct AutoEnzyme{M, A} <: AbstractADType

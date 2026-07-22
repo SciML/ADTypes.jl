@@ -16,7 +16,7 @@ ADTypesEnzymeCoreExt = "EnzymeCore"
 [compat]
 ChainRulesCore = "1.0.2"
 ConstructionBase = "1.5"
-EnzymeCore = "0.5.3,0.6,0.7,0.8,0.9"
+EnzymeCore = "0.9"
 SafeTestsets = "0.1, 1"
 SciMLTesting = "2.4"
 Setfield = "1"
