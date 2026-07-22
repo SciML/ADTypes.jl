@@ -28,6 +28,11 @@ end
 end
 
 @testset "AutoEnzyme" begin
+    if pkgversion(EnzymeCore) >= v"0.9"
+        @test :ForwardMode in names(EnzymeCore)
+        @test :ReverseMode in names(EnzymeCore)
+    end
+
     ad = AutoEnzyme()
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{Nothing, Nothing}
