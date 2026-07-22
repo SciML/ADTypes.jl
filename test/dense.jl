@@ -28,6 +28,9 @@ end
 end
 
 @testset "AutoEnzyme" begin
+    @test :ForwardMode in names(EnzymeCore)
+    @test :ReverseMode in names(EnzymeCore)
+
     ad = AutoEnzyme()
     @test ad isa AbstractADType
     @test ad isa AutoEnzyme{Nothing, Nothing}
@@ -39,6 +42,9 @@ end
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Forward), Nothing}
     @test mode(ad) isa ForwardMode
     @test ad.mode == EnzymeCore.Forward
+
+    ad = AutoEnzyme(; mode = EnzymeCore.ForwardWithPrimal)
+    @test mode(ad) isa ForwardMode
 
     ad = AutoEnzyme(; function_annotation = EnzymeCore.Const)
     @test ad isa AbstractADType
@@ -53,6 +59,9 @@ end
     @test ad isa AutoEnzyme{typeof(EnzymeCore.Reverse), EnzymeCore.Duplicated}
     @test mode(ad) isa ReverseMode
     @test ad.mode == EnzymeCore.Reverse
+
+    ad = AutoEnzyme(; mode = EnzymeCore.ReverseHolomorphicWithPrimal)
+    @test mode(ad) isa ReverseMode
 end
 
 @testset "AutoReactant" begin
