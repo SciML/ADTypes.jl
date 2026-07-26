@@ -4,7 +4,9 @@ using ADTypes
 makedocs(
     sitename = "ADTypes",
     format = Documenter.HTML(),
-    modules = [ADTypes]
+    modules = [ADTypes],
+    doctest = true,
+    checkdocs = :exports,
 )
 
 deploydocs(
