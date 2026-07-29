@@ -5,10 +5,15 @@
 
 Abstract supertype for sparsity pattern detectors.
 
-# Required methods
+# Extension contract
 
-  - [`jacobian_sparsity`](@ref)
-  - [`hessian_sparsity`](@ref)
+External detectors implement the supported public forms of
+[`jacobian_sparsity`](@ref) and/or [`hessian_sparsity`](@ref). A Jacobian pattern
+must be an `AbstractMatrix{Bool}` with shape `(length(y), length(x))`, where `y` is
+`f(x)` for the out-of-place form or the supplied output buffer for the in-place
+form. A Hessian pattern must be an `AbstractMatrix{Bool}` with shape
+`(length(x), length(x))`. Methods for unsupported operations must throw an error;
+they must not return an unrelated pattern.
 """
 abstract type AbstractSparsityDetector end
 
@@ -110,11 +115,14 @@ end
 
 Abstract supertype for Jacobian/Hessian coloring algorithms.
 
-# Required methods
+# Extension contract
 
-  - [`column_coloring`](@ref)
-  - [`row_coloring`](@ref)
-  - [`symmetric_coloring`](@ref)
+External algorithms implement the supported public coloring functions. Each result
+must be an `AbstractVector` of integers: column colorings have length `size(M, 2)`,
+row colorings have length `size(M, 1)`, and symmetric colorings require a square
+matrix and have length `size(M, 1)`. The assigned colors must satisfy the structural
+orthogonality condition documented by each coloring function. Unsupported coloring
+forms must throw an error.
 
 # Note
 

@@ -16,6 +16,12 @@ abstract type AbstractMode end
     mode(ad::AbstractADType)
 
 Return the differentiation mode of `ad`, as a subtype of [`AbstractMode`](@ref).
+
+# Extension contract
+
+Every external concrete subtype of [`AbstractADType`](@ref) must provide this
+method. Return an instance of the most specific applicable mode trait; callers may
+use that trait for dispatch but must not require a particular backend implementation.
 """
 function mode end
 
