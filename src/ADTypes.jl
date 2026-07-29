@@ -11,6 +11,13 @@ using Base: @deprecate
     AbstractADType
 
 Abstract supertype for all AD choices.
+
+# Extension contract
+
+External packages may subtype `AbstractADType` to describe an AD backend. They must
+also implement [`mode`](@ref) for their concrete subtype and return an instance of
+an [`AbstractMode`](@ref) subtype. Consumers should dispatch on `mode(ad)`, rather
+than on a downstream concrete AD type.
 """
 abstract type AbstractADType end
 

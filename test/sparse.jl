@@ -1,5 +1,38 @@
 include(joinpath(@__DIR__, "shared", "test_setup.jl"))
 
+struct ExternalADType <: AbstractADType end
+ADTypes.mode(::ExternalADType) = ForwardMode()
+
+struct ExternalSparsityDetector <: ADTypes.AbstractSparsityDetector end
+ADTypes.jacobian_sparsity(f, x, ::ExternalSparsityDetector) = trues(length(f(x)), length(x))
+ADTypes.jacobian_sparsity(f!, y, x, ::ExternalSparsityDetector) = trues(length(y), length(x))
+ADTypes.hessian_sparsity(f, x, ::ExternalSparsityDetector) = trues(length(x), length(x))
+
+struct ExternalColoringAlgorithm <: ADTypes.AbstractColoringAlgorithm end
+ADTypes.column_coloring(M, ::ExternalColoringAlgorithm) = 1:size(M, 2)
+ADTypes.row_coloring(M, ::ExternalColoringAlgorithm) = 1:size(M, 1)
+ADTypes.symmetric_coloring(M, ::ExternalColoringAlgorithm) = 1:size(M, 1)
+
+@testset "External public interface contracts" begin
+    ad = ExternalADType()
+    @test mode(ad) isa ForwardMode
+
+    x = rand(2)
+    y = similar(x)
+    f(x) = vcat(x, x)
+    f!(y, x) = y .= x
+    detector = ExternalSparsityDetector()
+    @test size(jacobian_sparsity(f, x, detector)) == (4, 2)
+    @test size(jacobian_sparsity(f!, y, x, detector)) == (2, 2)
+    @test size(hessian_sparsity(sum, x, detector)) == (2, 2)
+
+    colors = ExternalColoringAlgorithm()
+    M = trues(2, 3)
+    @test column_coloring(M, colors) == 1:3
+    @test row_coloring(M, colors) == 1:2
+    @test symmetric_coloring(trues(2, 2), colors) == 1:2
+end
+
 @testset "Subtyping" begin
     for ad in every_ad()
         sparse_ad = AutoSparse(ad)
