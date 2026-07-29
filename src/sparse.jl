@@ -48,7 +48,7 @@ jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = trues(length(y), length(x))
 hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
 """
-    KnownJacobianSparsityDetector(jacobian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
+    KnownJacobianSparsityDetector(jacobian_sparsity::AbstractMatrix{Bool}) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Jacobian sparsity pattern.
 
@@ -57,7 +57,7 @@ Trivial sparsity detector used to return a known Jacobian sparsity pattern.
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownHessianSparsityDetector`](@ref)
 """
-struct KnownJacobianSparsityDetector{J <: AbstractMatrix} <: AbstractSparsityDetector
+struct KnownJacobianSparsityDetector{J <: AbstractMatrix{Bool}} <: AbstractSparsityDetector
     jacobian_sparsity::J
 end
 
@@ -80,7 +80,7 @@ function hessian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
 end
 
 """
-    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
+    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix{Bool}) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Hessian sparsity pattern.
 
@@ -89,7 +89,7 @@ Trivial sparsity detector used to return a known Hessian sparsity pattern.
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownJacobianSparsityDetector`](@ref)
 """
-struct KnownHessianSparsityDetector{H <: AbstractMatrix} <: AbstractSparsityDetector
+struct KnownHessianSparsityDetector{H <: AbstractMatrix{Bool}} <: AbstractSparsityDetector
     hessian_sparsity::H
 end
 
@@ -133,7 +133,7 @@ The terminology and definitions are taken from the following paper:
 abstract type AbstractColoringAlgorithm end
 
 """
-    column_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    column_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a structurally orthogonal partition of the columns of `M`.
 
@@ -142,7 +142,7 @@ The result is a coloring vector `c` of length `size(M, 2)` such that for every n
 function column_coloring end
 
 """
-    row_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    row_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a structurally orthogonal partition of the rows of `M`.
 
@@ -151,7 +151,7 @@ The result is a coloring vector `c` of length `size(M, 1)` such that for every n
 function row_coloring end
 
 """
-    symmetric_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    symmetric_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a symmetrically structurally orthogonal partition of the columns (or rows) of the symmetric matrix `M`.
 

@@ -88,6 +88,8 @@ end
     end
 
     @testset "KnownJacobianSparsityDetector" begin
+        @test_throws MethodError KnownJacobianSparsityDetector(rand(2, 2))
+
         @testset "Jacobian sparsity detection" begin
             @testset "Out-of-place functions" begin
                 for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
@@ -139,6 +141,8 @@ end
     end
 
     @testset "KnownHessianSparsityDetector" begin
+        @test_throws MethodError KnownHessianSparsityDetector(rand(2, 2))
+
         @testset "Hessian sparsity detection" begin
             for sx in ((2,), (2, 3))
                 x = rand(sx...)
