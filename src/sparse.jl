@@ -14,6 +14,19 @@ must be an `AbstractMatrix{Bool}` with shape `(length(y), length(x))`, where `y`
 form. A Hessian pattern must be an `AbstractMatrix{Bool}` with shape
 `(length(x), length(x))`. Methods for unsupported operations must throw an error;
 they must not return an unrelated pattern.
+
+New detectors should return `Bool` patterns, but consumers must not require `Bool`:
+they should treat every nonzero entry as a structural nonzero. Patterns given as
+integer or floating point matrices of ones and zeroes are common in the wild, are
+accepted unchanged by [`KnownJacobianSparsityDetector`](@ref) and
+[`KnownHessianSparsityDetector`](@ref), and are handled correctly by the coloring
+and decompression implementations used downstream (SparseMatrixColorings.jl through
+DifferentiationInterface.jl). The element type of the pattern does not propagate to
+the differentiation result.
+
+For a sparse matrix, the stored structure defines the pattern: an explicitly stored
+zero is treated as a structural nonzero, which yields a valid but more conservative
+coloring than the same matrix passed through `dropzeros`.
 """
 abstract type AbstractSparsityDetector end
 
@@ -52,6 +65,12 @@ hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
 Trivial sparsity detector used to return a known Jacobian sparsity pattern.
 
+`AbstractMatrix{Bool}` is the canonical pattern type, but the element type is neither
+converted nor checked: [`jacobian_sparsity`](@ref) hands the pattern back exactly as
+given, and consumers treat every nonzero entry as a structural nonzero, so integer or
+floating point matrices of ones and zeroes work as well (see the extension contract of
+[`AbstractSparsityDetector`](@ref)).
+
 # See also
 
   - [`AbstractSparsityDetector`](@ref)
@@ -83,6 +102,12 @@ end
     KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Hessian sparsity pattern.
+
+`AbstractMatrix{Bool}` is the canonical pattern type, but the element type is neither
+converted nor checked: [`hessian_sparsity`](@ref) hands the pattern back exactly as
+given, and consumers treat every nonzero entry as a structural nonzero, so integer or
+floating point matrices of ones and zeroes work as well (see the extension contract of
+[`AbstractSparsityDetector`](@ref)).
 
 # See also
 
@@ -133,7 +158,7 @@ The terminology and definitions are taken from the following paper:
 abstract type AbstractColoringAlgorithm end
 
 """
-    column_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    column_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a structurally orthogonal partition of the columns of `M`.
 
@@ -142,7 +167,7 @@ The result is a coloring vector `c` of length `size(M, 2)` such that for every n
 function column_coloring end
 
 """
-    row_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    row_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a structurally orthogonal partition of the rows of `M`.
 
@@ -151,7 +176,7 @@ The result is a coloring vector `c` of length `size(M, 1)` such that for every n
 function row_coloring end
 
 """
-    symmetric_coloring(M::AbstractMatrix, ca::ColoringAlgorithm)::AbstractVector{<:Integer}
+    symmetric_coloring(M::AbstractMatrix, ca::AbstractColoringAlgorithm)::AbstractVector{<:Integer}
 
 Use algorithm `ca` to construct a symmetrically structurally orthogonal partition of the columns (or rows) of the symmetric matrix `M`.
 

@@ -1,5 +1,7 @@
 include(joinpath(@__DIR__, "shared", "test_setup.jl"))
 
+using SparseArrays: sparse
+
 struct ExternalADType <: AbstractADType end
 ADTypes.mode(::ExternalADType) = ForwardMode()
 
@@ -88,6 +90,25 @@ end
     end
 
     @testset "KnownJacobianSparsityDetector" begin
+        @testset "Pattern element types" begin
+            # Consumers treat any nonzero entry as a structural nonzero, so patterns
+            # written as integer or float ones and zeroes are stored and returned as-is.
+            Jbool = rand(Bool, 4, 2)
+            x = rand(2)
+            y = rand(4)
+            for J in (
+                    Jbool, BitMatrix(Jbool), Int.(Jbool), UInt8.(Jbool),
+                    Float64.(Jbool), Float32.(Jbool), sparse(Float64.(Jbool)),
+                    Any[Int(v) for v in Jbool],
+                )
+                sd = KnownJacobianSparsityDetector(J)
+                @test sd isa KnownJacobianSparsityDetector{typeof(J)}
+                @test jacobian_sparsity(f_jac1, x, sd) === J
+                @test jacobian_sparsity(f_jac!, y, x, sd) === J
+                @test eltype(jacobian_sparsity(f_jac1, x, sd)) === eltype(J)
+            end
+        end
+
         @testset "Jacobian sparsity detection" begin
             @testset "Out-of-place functions" begin
                 for sx in ((2,), (2, 3)), f in (f_jac1, f_jac2)
@@ -126,19 +147,37 @@ end
             end
         end
         @testset "Exceptions: DimensionMismatch" begin
-            sd = KnownJacobianSparsityDetector(rand(Bool, 6, 7)) # wrong Jacobian size
-            for x in (rand(2), rand(2, 3)), f in (f_jac1, f_jac2)
+            # wrong Jacobian size
+            for J in (rand(Bool, 6, 7), Int.(rand(Bool, 6, 7)), Float64.(rand(Bool, 6, 7)))
+                sd = KnownJacobianSparsityDetector(J)
+                for x in (rand(2), rand(2, 3)), f in (f_jac1, f_jac2)
 
-                @test_throws DimensionMismatch jacobian_sparsity(f, x, sd)
-            end
-            for x in (rand(2), rand(2, 3)), y in (rand(5), rand(5, 6))
+                    @test_throws DimensionMismatch jacobian_sparsity(f, x, sd)
+                end
+                for x in (rand(2), rand(2, 3)), y in (rand(5), rand(5, 6))
 
-                @test_throws DimensionMismatch jacobian_sparsity(f_jac!, y, x, sd)
+                    @test_throws DimensionMismatch jacobian_sparsity(f_jac!, y, x, sd)
+                end
             end
         end
     end
 
     @testset "KnownHessianSparsityDetector" begin
+        @testset "Pattern element types" begin
+            Hbool = rand(Bool, 2, 2)
+            x = rand(2)
+            for H in (
+                    Hbool, BitMatrix(Hbool), Int.(Hbool), UInt8.(Hbool),
+                    Float64.(Hbool), Float32.(Hbool), sparse(Float64.(Hbool)),
+                    Any[Int(v) for v in Hbool],
+                )
+                sd = KnownHessianSparsityDetector(H)
+                @test sd isa KnownHessianSparsityDetector{typeof(H)}
+                @test hessian_sparsity(f_hess, x, sd) === H
+                @test eltype(hessian_sparsity(f_hess, x, sd)) === eltype(H)
+            end
+        end
+
         @testset "Hessian sparsity detection" begin
             for sx in ((2,), (2, 3))
                 x = rand(sx...)
@@ -175,9 +214,12 @@ end
             end
         end
         @testset "Exceptions: DimensionMismatch" begin
-            sd = KnownHessianSparsityDetector(rand(Bool, 2, 3)) #wrong Hessian size
-            for x in (rand(2), rand(2, 3))
-                @test_throws DimensionMismatch hessian_sparsity(f_hess, x, sd)
+            # wrong Hessian size
+            for H in (rand(Bool, 2, 3), Int.(rand(Bool, 2, 3)), Float64.(rand(Bool, 2, 3)))
+                sd = KnownHessianSparsityDetector(H)
+                for x in (rand(2), rand(2, 3))
+                    @test_throws DimensionMismatch hessian_sparsity(f_hess, x, sd)
+                end
             end
         end
     end
