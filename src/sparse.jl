@@ -15,10 +15,18 @@ form. A Hessian pattern must be an `AbstractMatrix{Bool}` with shape
 `(length(x), length(x))`. Methods for unsupported operations must throw an error;
 they must not return an unrelated pattern.
 
-New detectors should return `Bool` patterns, but consumers should treat any nonzero
-entry as a structural nonzero: patterns with an integer element type are also
-accepted by [`KnownJacobianSparsityDetector`](@ref) and
-[`KnownHessianSparsityDetector`](@ref), and are handed back unchanged.
+New detectors should return `Bool` patterns, but consumers must not require `Bool`:
+they should treat every nonzero entry as a structural nonzero. Patterns given as
+integer or floating point matrices of ones and zeroes are common in the wild, are
+accepted unchanged by [`KnownJacobianSparsityDetector`](@ref) and
+[`KnownHessianSparsityDetector`](@ref), and are handled correctly by the coloring
+and decompression implementations used downstream (SparseMatrixColorings.jl through
+DifferentiationInterface.jl). The element type of the pattern does not propagate to
+the differentiation result.
+
+For a sparse matrix, the stored structure defines the pattern: an explicitly stored
+zero is treated as a structural nonzero, which yields a valid but more conservative
+coloring than the same matrix passed through `dropzeros`.
 """
 abstract type AbstractSparsityDetector end
 
@@ -53,21 +61,22 @@ jacobian_sparsity(f!, y, x, ::NoSparsityDetector) = trues(length(y), length(x))
 hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
 """
-    KnownJacobianSparsityDetector(jacobian_sparsity::AbstractMatrix{Bool}) <: AbstractSparsityDetector
+    KnownJacobianSparsityDetector(jacobian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Jacobian sparsity pattern.
 
-`AbstractMatrix{Bool}` is the recommended pattern type, but any integer element type
-is accepted, so that patterns expressed as matrices of ones and zeroes keep working.
-The pattern is returned by [`jacobian_sparsity`](@ref) unchanged, element type
-included. Non-integer element types (e.g. `Float64`) are rejected by the constructor.
+`AbstractMatrix{Bool}` is the canonical pattern type, but the element type is neither
+converted nor checked: [`jacobian_sparsity`](@ref) hands the pattern back exactly as
+given, and consumers treat every nonzero entry as a structural nonzero, so integer or
+floating point matrices of ones and zeroes work as well (see the extension contract of
+[`AbstractSparsityDetector`](@ref)).
 
 # See also
 
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownHessianSparsityDetector`](@ref)
 """
-struct KnownJacobianSparsityDetector{J <: AbstractMatrix{<:Integer}} <: AbstractSparsityDetector
+struct KnownJacobianSparsityDetector{J <: AbstractMatrix} <: AbstractSparsityDetector
     jacobian_sparsity::J
 end
 
@@ -90,21 +99,22 @@ function hessian_sparsity(f, x, sd::KnownJacobianSparsityDetector)
 end
 
 """
-    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix{Bool}) <: AbstractSparsityDetector
+    KnownHessianSparsityDetector(hessian_sparsity::AbstractMatrix) <: AbstractSparsityDetector
 
 Trivial sparsity detector used to return a known Hessian sparsity pattern.
 
-`AbstractMatrix{Bool}` is the recommended pattern type, but any integer element type
-is accepted, so that patterns expressed as matrices of ones and zeroes keep working.
-The pattern is returned by [`hessian_sparsity`](@ref) unchanged, element type
-included. Non-integer element types (e.g. `Float64`) are rejected by the constructor.
+`AbstractMatrix{Bool}` is the canonical pattern type, but the element type is neither
+converted nor checked: [`hessian_sparsity`](@ref) hands the pattern back exactly as
+given, and consumers treat every nonzero entry as a structural nonzero, so integer or
+floating point matrices of ones and zeroes work as well (see the extension contract of
+[`AbstractSparsityDetector`](@ref)).
 
 # See also
 
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownJacobianSparsityDetector`](@ref)
 """
-struct KnownHessianSparsityDetector{H <: AbstractMatrix{<:Integer}} <: AbstractSparsityDetector
+struct KnownHessianSparsityDetector{H <: AbstractMatrix} <: AbstractSparsityDetector
     hessian_sparsity::H
 end
 

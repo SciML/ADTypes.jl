@@ -20,6 +20,7 @@ EnzymeCore = "0.5.3,0.6,0.7,0.8"
 SafeTestsets = "0.1, 1"
 SciMLTesting = "2.4"
 Setfield = "1"
+SparseArrays = "1"
 julia = "1.10"
 
 [extras]
@@ -28,7 +29,8 @@ EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["ChainRulesCore", "EnzymeCore", "SafeTestsets", "SciMLTesting", "Setfield", "Test"]
+test = ["ChainRulesCore", "EnzymeCore", "SafeTestsets", "SciMLTesting", "Setfield", "SparseArrays", "Test"]
