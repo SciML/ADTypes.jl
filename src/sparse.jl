@@ -14,6 +14,11 @@ must be an `AbstractMatrix{Bool}` with shape `(length(y), length(x))`, where `y`
 form. A Hessian pattern must be an `AbstractMatrix{Bool}` with shape
 `(length(x), length(x))`. Methods for unsupported operations must throw an error;
 they must not return an unrelated pattern.
+
+New detectors should return `Bool` patterns, but consumers should treat any nonzero
+entry as a structural nonzero: patterns with an integer element type are also
+accepted by [`KnownJacobianSparsityDetector`](@ref) and
+[`KnownHessianSparsityDetector`](@ref), and are handed back unchanged.
 """
 abstract type AbstractSparsityDetector end
 
@@ -52,12 +57,17 @@ hessian_sparsity(f, x, ::NoSparsityDetector) = trues(length(x), length(x))
 
 Trivial sparsity detector used to return a known Jacobian sparsity pattern.
 
+`AbstractMatrix{Bool}` is the recommended pattern type, but any integer element type
+is accepted, so that patterns expressed as matrices of ones and zeroes keep working.
+The pattern is returned by [`jacobian_sparsity`](@ref) unchanged, element type
+included. Non-integer element types (e.g. `Float64`) are rejected by the constructor.
+
 # See also
 
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownHessianSparsityDetector`](@ref)
 """
-struct KnownJacobianSparsityDetector{J <: AbstractMatrix{Bool}} <: AbstractSparsityDetector
+struct KnownJacobianSparsityDetector{J <: AbstractMatrix{<:Integer}} <: AbstractSparsityDetector
     jacobian_sparsity::J
 end
 
@@ -84,12 +94,17 @@ end
 
 Trivial sparsity detector used to return a known Hessian sparsity pattern.
 
+`AbstractMatrix{Bool}` is the recommended pattern type, but any integer element type
+is accepted, so that patterns expressed as matrices of ones and zeroes keep working.
+The pattern is returned by [`hessian_sparsity`](@ref) unchanged, element type
+included. Non-integer element types (e.g. `Float64`) are rejected by the constructor.
+
 # See also
 
   - [`AbstractSparsityDetector`](@ref)
   - [`KnownJacobianSparsityDetector`](@ref)
 """
-struct KnownHessianSparsityDetector{H <: AbstractMatrix{Bool}} <: AbstractSparsityDetector
+struct KnownHessianSparsityDetector{H <: AbstractMatrix{<:Integer}} <: AbstractSparsityDetector
     hessian_sparsity::H
 end
 
