@@ -7,6 +7,14 @@ using JET
 # `Base.get_extension` returns `nothing` and every extension is silently skipped.
 using ChainRulesCore, ConstructionBase, EnzymeCore
 
+# ExplicitImports silently skips an extension that fails to load, so assert the
+# extension modules actually exist rather than trusting a green run_qa.
+@testset "Extensions loaded" begin
+    for ext in (:ADTypesChainRulesCoreExt, :ADTypesConstructionBaseExt, :ADTypesEnzymeCoreExt)
+        @test Base.get_extension(ADTypes, ext) !== nothing
+    end
+end
+
 # Aqua and ExplicitImports are SciMLTesting deps, so they are not imported here.
 # Aqua is still listed in this env's `[deps]` (not ExplicitImports): Aqua's ambiguity
 # check spawns a worker subprocess that runs a bare `using Aqua` against the active
