@@ -172,6 +172,13 @@ end
     @test ad isa AbstractADType
     @test ad isa AutoHyperHessians{8}
     @test mode(ad) isa ForwardMode
+    @test ad.simd == false
+    @test ad.jet == false
+
+    ad = AutoHyperHessians(; chunksize = 8, simd = true, jet = true)
+    @test ad isa AutoHyperHessians{8}
+    @test ad.simd == true
+    @test ad.jet == true
 
     @test_throws ArgumentError AutoHyperHessians(; chunksize = -1)
 end

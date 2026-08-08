@@ -71,6 +71,7 @@ function every_ad_with_options()
         AutoGTPSA(descriptor = Val(:descriptor)),
         AutoHyperHessians(),
         AutoHyperHessians(chunksize = 8),
+        AutoHyperHessians(chunksize = 8, simd = true, jet = true),
         AutoMooncake(; config = :config),
         AutoMooncakeForward(; config = :config),
         AutoPolyesterForwardDiff(),
