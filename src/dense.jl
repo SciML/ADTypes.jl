@@ -571,26 +571,40 @@ Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
 
 # Constructors
 
-    AutoHyperHessians(; chunksize=nothing)
+    AutoHyperHessians(; chunksize=nothing, simd=false, jet=false)
 
 # Type parameters
 
   - `chunksize`: the preferred chunk size to evaluate several derivatives at once. If `nothing`, HyperHessians chooses automatically.
-"""
-struct AutoHyperHessians{chunksize} <: AbstractADType end
 
-function AutoHyperHessians(; chunksize::Union{Nothing, Int} = nothing)
+# Fields
+
+  - `simd::Bool`: whether to force `SIMD.Vec` arithmetic for the derivative components (only effective for `Float32`/`Float64` elements).
+  - `jet::Bool`: whether to use the symmetric jet representation, which computes a whole Hessian in a single function evaluation. Only sensible for small inputs; ignores `chunksize` for Hessian computations.
+"""
+struct AutoHyperHessians{chunksize} <: AbstractADType
+    simd::Bool
+    jet::Bool
+end
+
+function AutoHyperHessians(;
+        chunksize::Union{Nothing, Int} = nothing, simd::Bool = false, jet::Bool = false
+    )
     if chunksize isa Int
         chunksize > 0 || throw(ArgumentError("chunksize must be positive, got $chunksize"))
     end
-    return AutoHyperHessians{chunksize}()
+    return AutoHyperHessians{chunksize}(simd, jet)
 end
 
 mode(::AutoHyperHessians) = ForwardMode()
 
-function Base.show(io::IO, ::AutoHyperHessians{chunksize}) where {chunksize}
+function Base.show(io::IO, backend::AutoHyperHessians{chunksize}) where {chunksize}
+    options = String[]
+    chunksize !== nothing && push!(options, "chunksize=" * repr(chunksize; context = io))
+    backend.simd && push!(options, "simd=true")
+    backend.jet && push!(options, "jet=true")
     print(io, AutoHyperHessians, "(")
-    chunksize !== nothing && print(io, "chunksize=", repr(chunksize; context = io))
+    join(io, options, ", ")
     return print(io, ")")
 end
 
