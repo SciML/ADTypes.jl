@@ -1,5 +1,5 @@
 using ADTypes
-using ADTypes: write_ad, read_ad
+using ADTypes: write_ad, read_ad, NoSparsityDetector, NoColoringAlgorithm
 using JSON3
 using SparseMatrixColorings
 using StructTypes
