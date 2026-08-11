@@ -3,14 +3,21 @@ using JET
 
 # ExplicitImports only checks an extension module when it actually exists, and an
 # extension only comes into existence once its trigger package is loaded. Loading all
-# three weakdeps here is what puts ADTypes' extensions under QA at all; without them
+# weakdeps here is what puts ADTypes' extensions under QA at all; without them
 # `Base.get_extension` returns `nothing` and every extension is silently skipped.
-using ChainRulesCore, ConstructionBase, EnzymeCore
+using ChainRulesCore, ConstructionBase, EnzymeCore, JSON3, SparseMatrixColorings, StructTypes
 
 # ExplicitImports silently skips an extension that fails to load, so assert the
 # extension modules actually exist rather than trusting a green run_qa.
 @testset "Extensions loaded" begin
-    for ext in (:ADTypesChainRulesCoreExt, :ADTypesConstructionBaseExt, :ADTypesEnzymeCoreExt)
+    for ext in (
+        :ADTypesChainRulesCoreExt,
+        :ADTypesConstructionBaseExt,
+        :ADTypesEnzymeCoreExt,
+        :ADTypesStructTypesExt,
+        :ADTypesSMCStructTypesExt,
+        :ADTypesJSON3Ext,
+    )
         @test Base.get_extension(ADTypes, ext) !== nothing
     end
 end

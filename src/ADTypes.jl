@@ -33,6 +33,27 @@ include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
 
+"""
+    write_ad(ad::AbstractADType) -> String
+
+Serialize an [`AbstractADType`](@ref) to a JSON string.
+
+The output always contains a `"type"` key with the concrete type name, enabling
+round-trip deserialization with [`read_ad`](@ref).
+
+Requires `StructTypes` and `JSON3` to be loaded (via the `ADTypesJSON3Ext` extension).
+"""
+function write_ad end
+
+"""
+    read_ad(json::AbstractString) -> AbstractADType
+
+Deserialize an [`AbstractADType`](@ref) from a JSON string produced by [`write_ad`](@ref).
+
+Requires `StructTypes` and `JSON3` to be loaded (via the `ADTypesJSON3Ext` extension).
+"""
+function read_ad end
+
 # Automatic Differentiation
 export AbstractADType
 export AutoChainRules,
@@ -61,6 +82,7 @@ export AutoChainRules,
 @public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
 @public mode
 @public Auto
+@public write_ad, read_ad
 
 # Sparse Automatic Differentiation
 export AutoSparse
