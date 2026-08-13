@@ -7,22 +7,20 @@ using SparseMatrixColorings
 # This extension's sole responsibility is to register GreedyColoringAlgorithm
 # as a known subtype of ADTypes.AbstractColoringAlgorithm.
 #
+# The StructType/subtypekey/subtypes definitions for AbstractColoringAlgorithm
+# live in ADTypesStructTypesExt (defined exactly once there).  This extension
+# adds its entry to the shared ADTypes._COLORING_ALGORITHM_TYPES registry in
+# __init__() so that StructTypes.subtypes() returns the right map at runtime.
+#
 # The StructTypes support for GreedyColoringAlgorithm itself (and for
 # AbstractOrder and its subtypes) lives in SparseMatrixColorings.jl's own
 # SparseMatrixColoringsStructTypesExt extension, where those types are defined.
 # That keeps the serialization logic with the package that owns the types and
 # avoids type piracy.
-#
-# This definition replaces the one from ADTypesStructTypesExt (which only knows
-# about NoColoringAlgorithm).  Since this extension is loaded after
-# ADTypesStructTypesExt (it requires more packages), its definition takes
-# precedence at runtime when both are loaded.
 
-StructTypes.StructType(::Type{ADTypes.AbstractColoringAlgorithm}) = StructTypes.AbstractType()
-StructTypes.subtypekey(::Type{ADTypes.AbstractColoringAlgorithm}) = :type
-StructTypes.subtypes(::Type{ADTypes.AbstractColoringAlgorithm}) = (
-    NoColoringAlgorithm     = ADTypes.NoColoringAlgorithm,
-    GreedyColoringAlgorithm = SparseMatrixColorings.GreedyColoringAlgorithm,
-)
+function __init__()
+    ADTypes._COLORING_ALGORITHM_TYPES[:GreedyColoringAlgorithm] =
+        SparseMatrixColorings.GreedyColoringAlgorithm
+end
 
 end # module ADTypesSMCStructTypesExt

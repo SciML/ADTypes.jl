@@ -5,7 +5,7 @@ using JET
 # extension only comes into existence once its trigger package is loaded. Loading all
 # weakdeps here is what puts ADTypes' extensions under QA at all; without them
 # `Base.get_extension` returns `nothing` and every extension is silently skipped.
-using ChainRulesCore, ConstructionBase, EnzymeCore, JSON3, SparseMatrixColorings, StructTypes
+using ChainRulesCore, ConstructionBase, EnzymeCore, JSON3, SparseConnectivityTracer, SparseMatrixColorings, StructTypes
 
 # ExplicitImports silently skips an extension that fails to load, so assert the
 # extension modules actually exist rather than trusting a green run_qa.
@@ -14,7 +14,9 @@ using ChainRulesCore, ConstructionBase, EnzymeCore, JSON3, SparseMatrixColorings
         :ADTypesChainRulesCoreExt,
         :ADTypesConstructionBaseExt,
         :ADTypesEnzymeCoreExt,
+        :ADTypesEnzymeCoreStructTypesExt,
         :ADTypesStructTypesExt,
+        :ADTypesSCTStructTypesExt,
         :ADTypesSMCStructTypesExt,
         :ADTypesJSON3Ext,
     )

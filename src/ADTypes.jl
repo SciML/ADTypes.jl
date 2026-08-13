@@ -33,6 +33,14 @@ include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
 
+# Mutable registries used by ADTypesStructTypesExt and its companion extensions
+# to make StructTypes.subtypes() dynamic.  Extensions add their own concrete
+# subtypes during their __init__ callbacks so that JSON3 can read/write values
+# typed as AbstractColoringAlgorithm or AbstractSparsityDetector regardless of
+# which optional packages are loaded.
+const _COLORING_ALGORITHM_TYPES = Dict{Symbol, Type}()
+const _SPARSITY_DETECTOR_TYPES  = Dict{Symbol, Type}()
+
 """
     write_ad(ad::AbstractADType) -> String
 
