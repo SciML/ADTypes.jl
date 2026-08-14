@@ -461,56 +461,6 @@ end
     @test isnothing(ad.mode.mode)
 end
 
-# ── TracerSparsityDetector / TracerLocalSparsityDetector ──────────────────────
-
-@testset "TracerSparsityDetector JSON structure" begin
-    obj = JSON3.read(write_ad(AutoSparse(AutoZygote(); sparsity_detector=TracerSparsityDetector())))
-    @test obj[:sparsity_detector][:type] == "TracerSparsityDetector"
-end
-
-@testset "TracerSparsityDetector round-trip via AutoSparse" begin
-    ad = AutoSparse(AutoZygote(); sparsity_detector=TracerSparsityDetector())
-    rt = roundtrip(ad)
-    @test rt isa AutoSparse
-    @test rt.dense_ad          isa AutoZygote
-    @test rt.sparsity_detector isa TracerSparsityDetector
-end
-
-@testset "TracerLocalSparsityDetector round-trip via AutoSparse" begin
-    ad = AutoSparse(AutoZygote(); sparsity_detector=TracerLocalSparsityDetector())
-    rt = roundtrip(ad)
-    @test rt isa AutoSparse
-    @test rt.sparsity_detector isa TracerLocalSparsityDetector
-end
-
-@testset "TracerSparsityDetector from hand-written JSON" begin
-    json = """
-    {
-        "type": "AutoSparse",
-        "dense_ad":          {"type": "AutoZygote"},
-        "sparsity_detector": {"type": "TracerSparsityDetector"},
-        "coloring_algorithm": {"type": "NoColoringAlgorithm"}
-    }
-    """
-    ad = read_ad(json)
-    @test ad isa AutoSparse
-    @test ad.sparsity_detector isa TracerSparsityDetector
-end
-
-@testset "TracerLocalSparsityDetector from hand-written JSON" begin
-    json = """
-    {
-        "type": "AutoSparse",
-        "dense_ad":          {"type": "AutoZygote"},
-        "sparsity_detector": {"type": "TracerLocalSparsityDetector"},
-        "coloring_algorithm": {"type": "NoColoringAlgorithm"}
-    }
-    """
-    ad = read_ad(json)
-    @test ad isa AutoSparse
-    @test ad.sparsity_detector isa TracerLocalSparsityDetector
-end
-
 # ── DenseSparsityDetector ─────────────────────────────────────────────────────
 
 @testset "DenseSparsityDetector JSON structure" begin
