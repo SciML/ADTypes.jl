@@ -121,6 +121,8 @@ ADTypes.SymbolicMode
 
 ```@docs
 ADTypes.Auto
+write_ad
+read_ad
 ```
 
 ## Deprecated
