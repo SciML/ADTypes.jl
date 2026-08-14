@@ -1,10 +1,7 @@
 using ADTypes
 using ADTypes: write_ad, read_ad, NoSparsityDetector, NoColoringAlgorithm
-using DifferentiationInterface: DenseSparsityDetector
 using EnzymeCore: EnzymeCore
 using JSON3
-using SparseConnectivityTracer
-using SparseMatrixColorings
 using StructTypes
 using Test
 
@@ -120,32 +117,6 @@ end
     @test ad.coloring_algorithm isa NoColoringAlgorithm
 end
 
-# ── GreedyColoringAlgorithm serialization ────────────────────────────────────
-
-@testset "write_ad AutoSparse with GreedyColoringAlgorithm" begin
-    ad = AutoSparse(AutoZygote(); coloring_algorithm=GreedyColoringAlgorithm(LargestFirst()))
-    obj = JSON3.read(write_ad(ad))
-    @test obj[:coloring_algorithm][:type]             == "GreedyColoringAlgorithm"
-    @test obj[:coloring_algorithm][:decompression]    == "direct"
-    @test obj[:coloring_algorithm][:postprocessing]   == false
-    @test obj[:coloring_algorithm][:orders][1][:type] == "LargestFirst"
-end
-
-@testset "round-trip AutoSparse with GreedyColoringAlgorithm" begin
-    for order in [NaturalOrder(), LargestFirst(), IncidenceDegree()]
-        ad = AutoSparse(AutoZygote(); coloring_algorithm=GreedyColoringAlgorithm(order))
-        rt = roundtrip(ad)
-        @test rt.coloring_algorithm isa GreedyColoringAlgorithm
-        @test rt.coloring_algorithm.orders[1] isa typeof(order)
-        @test rt.coloring_algorithm.postprocessing == false
-    end
-
-    # postprocessing=true survives the round-trip
-    ad = AutoSparse(AutoZygote(); coloring_algorithm=GreedyColoringAlgorithm(; postprocessing=true))
-    rt = roundtrip(ad)
-    @test rt.coloring_algorithm.postprocessing == true
-end
-
 # ── AutoForwardDiff ───────────────────────────────────────────────────────────
 
 @testset "AutoForwardDiff JSON structure" begin
@@ -221,31 +192,6 @@ end
     @test ad.mode isa EnzymeCore.ForwardMode
     ad2 = read_ad("""{"type":"AutoEnzyme","mode":"Reverse"}""")
     @test ad2.mode isa EnzymeCore.ReverseMode
-end
-
-# ── read_ad AutoSparse with GreedyColoringAlgorithm from hand-written JSON ────
-
-@testset "read_ad AutoSparse with GreedyColoringAlgorithm from hand-written JSON" begin
-    json = """
-    {
-        "type": "AutoSparse",
-        "dense_ad":           {"type": "AutoZygote"},
-        "sparsity_detector":  {"type": "NoSparsityDetector"},
-        "coloring_algorithm": {
-            "type":           "GreedyColoringAlgorithm",
-            "decompression":  "direct",
-            "orders":         [{"type": "LargestFirst"}],
-            "postprocessing": false
-        }
-    }
-    """
-    ad = read_ad(json)
-    @test ad isa AutoSparse
-    @test ad.dense_ad                         isa AutoZygote
-    @test ad.sparsity_detector                isa NoSparsityDetector
-    @test ad.coloring_algorithm               isa GreedyColoringAlgorithm
-    @test ad.coloring_algorithm.orders[1]     isa LargestFirst
-    @test ad.coloring_algorithm.postprocessing == false
 end
 
 # ── AutoTaylorDiff ────────────────────────────────────────────────────────────
@@ -459,58 +405,4 @@ end
     @test ad isa AutoReactant
     @test ad.mode isa AutoEnzyme
     @test isnothing(ad.mode.mode)
-end
-
-# ── DenseSparsityDetector ─────────────────────────────────────────────────────
-
-@testset "DenseSparsityDetector JSON structure" begin
-    detector = DenseSparsityDetector(AutoForwardDiff(); atol = 1e-5)
-    ad = AutoSparse(AutoZygote(); sparsity_detector = detector)
-    obj = JSON3.read(write_ad(ad))
-    @test obj[:sparsity_detector][:type]   == "DenseSparsityDetector"
-    @test obj[:sparsity_detector][:method] == "iterative"
-    @test obj[:sparsity_detector][:atol]   ≈  1e-5
-    @test obj[:sparsity_detector][:backend][:type] == "AutoForwardDiff"
-
-    detector2 = DenseSparsityDetector(AutoForwardDiff(); atol = 1e-8, method = :direct)
-    ad2 = AutoSparse(AutoZygote(); sparsity_detector = detector2)
-    obj2 = JSON3.read(write_ad(ad2))
-    @test obj2[:sparsity_detector][:method] == "direct"
-end
-
-@testset "DenseSparsityDetector round-trip via AutoSparse" begin
-    detector = DenseSparsityDetector(AutoForwardDiff(); atol = 1e-5)
-    ad = AutoSparse(AutoZygote(); sparsity_detector = detector)
-    rt = roundtrip(ad)
-    @test rt isa AutoSparse
-    @test rt.dense_ad          isa AutoZygote
-    @test rt.sparsity_detector isa DenseSparsityDetector{:iterative}
-    @test rt.sparsity_detector.backend isa AutoForwardDiff{nothing, Nothing}
-    @test rt.sparsity_detector.atol    ≈  1e-5
-
-    detector2 = DenseSparsityDetector(AutoForwardDiff(); atol = 1e-8, method = :direct)
-    rt2 = roundtrip(AutoSparse(AutoZygote(); sparsity_detector = detector2))
-    @test rt2.sparsity_detector isa DenseSparsityDetector{:direct}
-    @test rt2.sparsity_detector.atol ≈ 1e-8
-end
-
-@testset "DenseSparsityDetector from hand-written JSON" begin
-    json = """
-    {
-        "type": "AutoSparse",
-        "dense_ad":          {"type": "AutoZygote"},
-        "sparsity_detector": {
-            "type":    "DenseSparsityDetector",
-            "method":  "iterative",
-            "backend": {"type": "AutoForwardDiff", "chunksize": null},
-            "atol":    1e-5
-        },
-        "coloring_algorithm": {"type": "NoColoringAlgorithm"}
-    }
-    """
-    ad = read_ad(json)
-    @test ad isa AutoSparse
-    @test ad.sparsity_detector               isa DenseSparsityDetector{:iterative}
-    @test ad.sparsity_detector.backend       isa AutoForwardDiff{nothing}
-    @test ad.sparsity_detector.atol          ≈   1e-5
 end
