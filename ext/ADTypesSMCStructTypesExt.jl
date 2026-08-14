@@ -21,6 +21,7 @@ using SparseMatrixColorings
 function __init__()
     ADTypes._COLORING_ALGORITHM_TYPES[:GreedyColoringAlgorithm] =
         SparseMatrixColorings.GreedyColoringAlgorithm
+    return nothing
 end
 
 end # module ADTypesSMCStructTypesExt

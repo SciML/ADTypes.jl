@@ -24,6 +24,7 @@ function __init__()
         SparseConnectivityTracer.TracerSparsityDetector
     ADTypes._SPARSITY_DETECTOR_TYPES[:TracerLocalSparsityDetector] =
         SparseConnectivityTracer.TracerLocalSparsityDetector
+    return nothing
 end
 
 end # module ADTypesSCTStructTypesExt

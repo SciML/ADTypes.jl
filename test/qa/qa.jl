@@ -11,15 +11,15 @@ using ChainRulesCore, ConstructionBase, EnzymeCore, JSON3, SparseConnectivityTra
 # extension modules actually exist rather than trusting a green run_qa.
 @testset "Extensions loaded" begin
     for ext in (
-        :ADTypesChainRulesCoreExt,
-        :ADTypesConstructionBaseExt,
-        :ADTypesEnzymeCoreExt,
-        :ADTypesEnzymeCoreStructTypesExt,
-        :ADTypesStructTypesExt,
-        :ADTypesSCTStructTypesExt,
-        :ADTypesSMCStructTypesExt,
-        :ADTypesJSON3Ext,
-    )
+            :ADTypesChainRulesCoreExt,
+            :ADTypesConstructionBaseExt,
+            :ADTypesEnzymeCoreExt,
+            :ADTypesEnzymeCoreStructTypesExt,
+            :ADTypesStructTypesExt,
+            :ADTypesSCTStructTypesExt,
+            :ADTypesSMCStructTypesExt,
+            :ADTypesJSON3Ext,
+        )
         @test Base.get_extension(ADTypes, ext) !== nothing
     end
 end

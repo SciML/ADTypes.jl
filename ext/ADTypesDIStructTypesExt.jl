@@ -21,6 +21,7 @@ using StructTypes
 
 function __init__()
     ADTypes._SPARSITY_DETECTOR_TYPES[:DenseSparsityDetector] = DenseSparsityDetector
+    return nothing
 end
 
 end # module ADTypesDIStructTypesExt

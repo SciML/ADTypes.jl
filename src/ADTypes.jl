@@ -39,7 +39,7 @@ include("symbols.jl")
 # typed as AbstractColoringAlgorithm or AbstractSparsityDetector regardless of
 # which optional packages are loaded.
 const _COLORING_ALGORITHM_TYPES = Dict{Symbol, Type}()
-const _SPARSITY_DETECTOR_TYPES  = Dict{Symbol, Type}()
+const _SPARSITY_DETECTOR_TYPES = Dict{Symbol, Type}()
 
 """
     write_ad(ad::AbstractADType) -> String

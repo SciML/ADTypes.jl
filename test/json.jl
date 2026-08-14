@@ -15,13 +15,13 @@ end
 
 @testset "write_ad includes type key" begin
     for (ad, expected_type) in [
-        (AutoDiffractor(),          "AutoDiffractor"),
-        (AutoFastDifferentiation(), "AutoFastDifferentiation"),
-        (AutoSymbolics(),           "AutoSymbolics"),
-        (AutoTracker(),             "AutoTracker"),
-        (AutoZygote(),              "AutoZygote"),
-        (NoAutoDiff(),              "NoAutoDiff"),
-    ]
+            (AutoDiffractor(), "AutoDiffractor"),
+            (AutoFastDifferentiation(), "AutoFastDifferentiation"),
+            (AutoSymbolics(), "AutoSymbolics"),
+            (AutoTracker(), "AutoTracker"),
+            (AutoZygote(), "AutoZygote"),
+            (NoAutoDiff(), "NoAutoDiff"),
+        ]
         json = write_ad(ad)
         obj = JSON3.read(json)
         @test obj[:type] == expected_type
@@ -31,23 +31,23 @@ end
 @testset "write_ad AutoSparse includes type keys at every level" begin
     ad = AutoSparse(AutoZygote())
     obj = JSON3.read(write_ad(ad))
-    @test obj[:type]                           == "AutoSparse"
-    @test obj[:dense_ad][:type]                == "AutoZygote"
-    @test obj[:sparsity_detector][:type]       == "NoSparsityDetector"
-    @test obj[:coloring_algorithm][:type]      == "NoColoringAlgorithm"
+    @test obj[:type] == "AutoSparse"
+    @test obj[:dense_ad][:type] == "AutoZygote"
+    @test obj[:sparsity_detector][:type] == "NoSparsityDetector"
+    @test obj[:coloring_algorithm][:type] == "NoColoringAlgorithm"
 end
 
 # ── round-trip: write_ad → read_ad ────────────────────────────────────────────
 
 @testset "round-trip empty backends" begin
     for ad in [
-        AutoDiffractor(),
-        AutoFastDifferentiation(),
-        AutoSymbolics(),
-        AutoTracker(),
-        AutoZygote(),
-        NoAutoDiff(),
-    ]
+            AutoDiffractor(),
+            AutoFastDifferentiation(),
+            AutoSymbolics(),
+            AutoTracker(),
+            AutoZygote(),
+            NoAutoDiff(),
+        ]
         @test roundtrip(ad) isa typeof(ad)
     end
 end
@@ -56,12 +56,14 @@ end
     ad = AutoSparse(AutoZygote())
     rt = roundtrip(ad)
     @test rt isa AutoSparse
-    @test rt.dense_ad              isa AutoZygote
-    @test rt.sparsity_detector     isa NoSparsityDetector
-    @test rt.coloring_algorithm    isa NoColoringAlgorithm
+    @test rt.dense_ad isa AutoZygote
+    @test rt.sparsity_detector isa NoSparsityDetector
+    @test rt.coloring_algorithm isa NoColoringAlgorithm
 
-    ad2 = AutoSparse(AutoTracker(); sparsity_detector=NoSparsityDetector(),
-                                    coloring_algorithm=NoColoringAlgorithm())
+    ad2 = AutoSparse(
+        AutoTracker(); sparsity_detector = NoSparsityDetector(),
+        coloring_algorithm = NoColoringAlgorithm()
+    )
     rt2 = roundtrip(ad2)
     @test rt2.dense_ad isa AutoTracker
 end
@@ -78,13 +80,13 @@ StructTypes.StructType(::Type{_TestConfig}) = StructTypes.Struct()
 
 @testset "round-trip via abstract-typed struct field" begin
     for ad in [
-        AutoDiffractor(),
-        AutoFastDifferentiation(),
-        AutoSymbolics(),
-        AutoTracker(),
-        AutoZygote(),
-        AutoSparse(AutoZygote()),
-    ]
+            AutoDiffractor(),
+            AutoFastDifferentiation(),
+            AutoSymbolics(),
+            AutoTracker(),
+            AutoZygote(),
+            AutoSparse(AutoZygote()),
+        ]
         cfg = _TestConfig(ad)
         json = JSON3.write(cfg)
         recovered = JSON3.read(json, _TestConfig)
@@ -95,12 +97,12 @@ end
 # ── read_ad from hand-written JSON (Python interop simulation) ─────────────────
 
 @testset "read_ad from hand-written JSON" begin
-    @test read_ad("""{"type":"AutoZygote"}""")              isa AutoZygote
-    @test read_ad("""{"type":"AutoTracker"}""")             isa AutoTracker
-    @test read_ad("""{"type":"AutoDiffractor"}""")          isa AutoDiffractor
+    @test read_ad("""{"type":"AutoZygote"}""") isa AutoZygote
+    @test read_ad("""{"type":"AutoTracker"}""") isa AutoTracker
+    @test read_ad("""{"type":"AutoDiffractor"}""") isa AutoDiffractor
     @test read_ad("""{"type":"AutoFastDifferentiation"}""") isa AutoFastDifferentiation
-    @test read_ad("""{"type":"AutoSymbolics"}""")           isa AutoSymbolics
-    @test read_ad("""{"type":"NoAutoDiff"}""")              isa NoAutoDiff
+    @test read_ad("""{"type":"AutoSymbolics"}""") isa AutoSymbolics
+    @test read_ad("""{"type":"NoAutoDiff"}""") isa NoAutoDiff
 
     sparse_json = """
     {
@@ -112,8 +114,8 @@ end
     """
     ad = read_ad(sparse_json)
     @test ad isa AutoSparse
-    @test ad.dense_ad           isa AutoZygote
-    @test ad.sparsity_detector  isa NoSparsityDetector
+    @test ad.dense_ad isa AutoZygote
+    @test ad.sparsity_detector isa NoSparsityDetector
     @test ad.coloring_algorithm isa NoColoringAlgorithm
 end
 
@@ -124,41 +126,41 @@ end
     @test obj[:type] == "AutoForwardDiff"
     @test isnothing(obj[:chunksize])
 
-    obj2 = JSON3.read(write_ad(AutoForwardDiff(; chunksize=8)))
-    @test obj2[:type]      == "AutoForwardDiff"
+    obj2 = JSON3.read(write_ad(AutoForwardDiff(; chunksize = 8)))
+    @test obj2[:type] == "AutoForwardDiff"
     @test obj2[:chunksize] == 8
 end
 
 @testset "AutoForwardDiff round-trip" begin
     @test roundtrip(AutoForwardDiff()) isa AutoForwardDiff{nothing, Nothing}
-    @test roundtrip(AutoForwardDiff(; chunksize=4)) isa AutoForwardDiff{4, Nothing}
+    @test roundtrip(AutoForwardDiff(; chunksize = 4)) isa AutoForwardDiff{4, Nothing}
 end
 
 @testset "AutoForwardDiff from hand-written JSON" begin
     @test read_ad("""{"type":"AutoForwardDiff","chunksize":null}""") isa AutoForwardDiff{nothing}
-    @test read_ad("""{"type":"AutoForwardDiff","chunksize":6}""")    isa AutoForwardDiff{6}
+    @test read_ad("""{"type":"AutoForwardDiff","chunksize":6}""") isa AutoForwardDiff{6}
 end
 
 # ── AutoReverseDiff ───────────────────────────────────────────────────────────
 
 @testset "AutoReverseDiff JSON structure" begin
     obj = JSON3.read(write_ad(AutoReverseDiff()))
-    @test obj[:type]    == "AutoReverseDiff"
+    @test obj[:type] == "AutoReverseDiff"
     @test obj[:compile] == false
 
-    obj2 = JSON3.read(write_ad(AutoReverseDiff(; compile=true)))
+    obj2 = JSON3.read(write_ad(AutoReverseDiff(; compile = true)))
     @test obj2[:compile] == true
 end
 
 @testset "AutoReverseDiff round-trip" begin
-    @test roundtrip(AutoReverseDiff())               isa AutoReverseDiff{false}
-    @test roundtrip(AutoReverseDiff(; compile=true)) isa AutoReverseDiff{true}
-    @test roundtrip(AutoReverseDiff(; compile=Val(true))) isa AutoReverseDiff{true}
+    @test roundtrip(AutoReverseDiff()) isa AutoReverseDiff{false}
+    @test roundtrip(AutoReverseDiff(; compile = true)) isa AutoReverseDiff{true}
+    @test roundtrip(AutoReverseDiff(; compile = Val(true))) isa AutoReverseDiff{true}
 end
 
 @testset "AutoReverseDiff from hand-written JSON" begin
     @test read_ad("""{"type":"AutoReverseDiff","compile":false}""") isa AutoReverseDiff{false}
-    @test read_ad("""{"type":"AutoReverseDiff","compile":true}""")  isa AutoReverseDiff{true}
+    @test read_ad("""{"type":"AutoReverseDiff","compile":true}""") isa AutoReverseDiff{true}
 end
 
 # ── AutoEnzyme ────────────────────────────────────────────────────────────────
@@ -168,10 +170,10 @@ end
     @test obj[:type] == "AutoEnzyme"
     @test isnothing(obj[:mode])
 
-    obj2 = JSON3.read(write_ad(AutoEnzyme(mode=EnzymeCore.Forward)))
+    obj2 = JSON3.read(write_ad(AutoEnzyme(mode = EnzymeCore.Forward)))
     @test obj2[:mode] == "Forward"
 
-    obj3 = JSON3.read(write_ad(AutoEnzyme(mode=EnzymeCore.Reverse)))
+    obj3 = JSON3.read(write_ad(AutoEnzyme(mode = EnzymeCore.Reverse)))
     @test obj3[:mode] == "Reverse"
 end
 
@@ -179,15 +181,15 @@ end
     rt = roundtrip(AutoEnzyme())
     @test isnothing(rt.mode)
 
-    rt2 = roundtrip(AutoEnzyme(mode=EnzymeCore.Forward))
+    rt2 = roundtrip(AutoEnzyme(mode = EnzymeCore.Forward))
     @test rt2.mode isa EnzymeCore.ForwardMode
 
-    rt3 = roundtrip(AutoEnzyme(mode=EnzymeCore.Reverse))
+    rt3 = roundtrip(AutoEnzyme(mode = EnzymeCore.Reverse))
     @test rt3.mode isa EnzymeCore.ReverseMode
 end
 
 @testset "AutoEnzyme from hand-written JSON" begin
-    @test read_ad("""{"type":"AutoEnzyme","mode":null}""")      isa AutoEnzyme{Nothing}
+    @test read_ad("""{"type":"AutoEnzyme","mode":null}""") isa AutoEnzyme{Nothing}
     ad = read_ad("""{"type":"AutoEnzyme","mode":"Forward"}""")
     @test ad.mode isa EnzymeCore.ForwardMode
     ad2 = read_ad("""{"type":"AutoEnzyme","mode":"Reverse"}""")
@@ -198,16 +200,16 @@ end
 
 @testset "AutoTaylorDiff JSON structure" begin
     obj = JSON3.read(write_ad(AutoTaylorDiff()))
-    @test obj[:type]  == "AutoTaylorDiff"
+    @test obj[:type] == "AutoTaylorDiff"
     @test obj[:order] == 1
 
-    obj2 = JSON3.read(write_ad(AutoTaylorDiff(; order=3)))
+    obj2 = JSON3.read(write_ad(AutoTaylorDiff(; order = 3)))
     @test obj2[:order] == 3
 end
 
 @testset "AutoTaylorDiff round-trip" begin
-    @test roundtrip(AutoTaylorDiff())          isa AutoTaylorDiff{1}
-    @test roundtrip(AutoTaylorDiff(; order=5)) isa AutoTaylorDiff{5}
+    @test roundtrip(AutoTaylorDiff()) isa AutoTaylorDiff{1}
+    @test roundtrip(AutoTaylorDiff(; order = 5)) isa AutoTaylorDiff{5}
 end
 
 @testset "AutoTaylorDiff from hand-written JSON" begin
@@ -219,27 +221,27 @@ end
 
 @testset "AutoHyperHessians JSON structure" begin
     obj = JSON3.read(write_ad(AutoHyperHessians()))
-    @test obj[:type]      == "AutoHyperHessians"
+    @test obj[:type] == "AutoHyperHessians"
     @test isnothing(obj[:chunksize])
-    @test obj[:simd]      == false
-    @test obj[:jet]       == false
+    @test obj[:simd] == false
+    @test obj[:jet] == false
 
-    obj2 = JSON3.read(write_ad(AutoHyperHessians(; chunksize=4, simd=true, jet=true)))
+    obj2 = JSON3.read(write_ad(AutoHyperHessians(; chunksize = 4, simd = true, jet = true)))
     @test obj2[:chunksize] == 4
-    @test obj2[:simd]      == true
-    @test obj2[:jet]       == true
+    @test obj2[:simd] == true
+    @test obj2[:jet] == true
 end
 
 @testset "AutoHyperHessians round-trip" begin
     rt = roundtrip(AutoHyperHessians())
     @test rt isa AutoHyperHessians{nothing}
     @test rt.simd == false
-    @test rt.jet  == false
+    @test rt.jet == false
 
-    rt2 = roundtrip(AutoHyperHessians(; chunksize=8, simd=true, jet=false))
+    rt2 = roundtrip(AutoHyperHessians(; chunksize = 8, simd = true, jet = false))
     @test rt2 isa AutoHyperHessians{8}
     @test rt2.simd == true
-    @test rt2.jet  == false
+    @test rt2.jet == false
 end
 
 @testset "AutoHyperHessians from hand-written JSON" begin
@@ -250,17 +252,17 @@ end
     ad2 = read_ad("""{"type":"AutoHyperHessians","chunksize":4,"simd":true,"jet":true}""")
     @test ad2 isa AutoHyperHessians{4}
     @test ad2.simd == true
-    @test ad2.jet  == true
+    @test ad2.jet == true
 end
 
 # ── AutoPolyesterForwardDiff ──────────────────────────────────────────────────
 
 @testset "AutoPolyesterForwardDiff JSON structure" begin
     obj = JSON3.read(write_ad(AutoPolyesterForwardDiff()))
-    @test obj[:type]      == "AutoPolyesterForwardDiff"
+    @test obj[:type] == "AutoPolyesterForwardDiff"
     @test isnothing(obj[:chunksize])
 
-    obj2 = JSON3.read(write_ad(AutoPolyesterForwardDiff(; chunksize=8)))
+    obj2 = JSON3.read(write_ad(AutoPolyesterForwardDiff(; chunksize = 8)))
     @test obj2[:chunksize] == 8
 end
 
@@ -268,13 +270,13 @@ end
     rt = roundtrip(AutoPolyesterForwardDiff())
     @test rt isa AutoPolyesterForwardDiff{nothing, Nothing}
 
-    rt2 = roundtrip(AutoPolyesterForwardDiff(; chunksize=4))
+    rt2 = roundtrip(AutoPolyesterForwardDiff(; chunksize = 4))
     @test rt2 isa AutoPolyesterForwardDiff{4, Nothing}
 end
 
 @testset "AutoPolyesterForwardDiff from hand-written JSON" begin
     @test read_ad("""{"type":"AutoPolyesterForwardDiff","chunksize":null}""") isa AutoPolyesterForwardDiff{nothing}
-    @test read_ad("""{"type":"AutoPolyesterForwardDiff","chunksize":6}""")    isa AutoPolyesterForwardDiff{6}
+    @test read_ad("""{"type":"AutoPolyesterForwardDiff","chunksize":6}""") isa AutoPolyesterForwardDiff{6}
 end
 
 # ── AutoGTPSA ─────────────────────────────────────────────────────────────────
@@ -326,7 +328,7 @@ end
 
 @testset "AutoTapir JSON structure" begin
     obj = JSON3.read(write_ad(AutoTapir(false)))  # positional: avoids depwarn
-    @test obj[:type]      == "AutoTapir"
+    @test obj[:type] == "AutoTapir"
     @test obj[:safe_mode] == false
 
     obj2 = JSON3.read(write_ad(AutoTapir(true)))
@@ -335,7 +337,7 @@ end
 
 @testset "AutoTapir round-trip" begin
     @test roundtrip(AutoTapir(false)).safe_mode == false
-    @test roundtrip(AutoTapir(true)).safe_mode  == true
+    @test roundtrip(AutoTapir(true)).safe_mode == true
 end
 
 @testset "AutoTapir from hand-written JSON" begin
@@ -348,8 +350,8 @@ end
 
 @testset "AutoFiniteDiff JSON structure" begin
     obj = JSON3.read(write_ad(AutoFiniteDiff()))
-    @test obj[:type]    == "AutoFiniteDiff"
-    @test obj[:fdtype]  == "forward"
+    @test obj[:type] == "AutoFiniteDiff"
+    @test obj[:fdtype] == "forward"
     @test obj[:fdjtype] == "forward"
     @test obj[:fdhtype] == "hcentral"
     @test isnothing(obj[:relstep])
@@ -360,23 +362,23 @@ end
 @testset "AutoFiniteDiff round-trip" begin
     rt = roundtrip(AutoFiniteDiff())
     @test rt isa AutoFiniteDiff
-    @test rt.fdtype  == Val(:forward)
+    @test rt.fdtype == Val(:forward)
     @test rt.fdjtype == Val(:forward)
     @test rt.fdhtype == Val(:hcentral)
     @test isnothing(rt.relstep)
     @test isnothing(rt.absstep)
     @test rt.dir == true
 
-    rt2 = roundtrip(AutoFiniteDiff(; fdtype=Val(:central), relstep=1e-5, absstep=1e-8))
+    rt2 = roundtrip(AutoFiniteDiff(; fdtype = Val(:central), relstep = 1.0e-5, absstep = 1.0e-8))
     @test rt2.fdtype == Val(:central)
-    @test rt2.relstep ≈ 1e-5
-    @test rt2.absstep ≈ 1e-8
+    @test rt2.relstep ≈ 1.0e-5
+    @test rt2.absstep ≈ 1.0e-8
 end
 
 @testset "AutoFiniteDiff from hand-written JSON" begin
     ad = read_ad("""{"type":"AutoFiniteDiff","fdtype":"forward","fdjtype":"forward","fdhtype":"hcentral","relstep":null,"absstep":null,"dir":true}""")
     @test ad isa AutoFiniteDiff
-    @test ad.fdtype  == Val(:forward)
+    @test ad.fdtype == Val(:forward)
     @test ad.fdhtype == Val(:hcentral)
     @test isnothing(ad.relstep)
     @test ad.dir == true
@@ -386,8 +388,8 @@ end
 
 @testset "AutoReactant JSON structure" begin
     obj = JSON3.read(write_ad(AutoReactant()))
-    @test obj[:type]              == "AutoReactant"
-    @test obj[:mode][:type]       == "AutoEnzyme"
+    @test obj[:type] == "AutoReactant"
+    @test obj[:mode][:type] == "AutoEnzyme"
     @test isnothing(obj[:mode][:mode])
 end
 
@@ -396,7 +398,7 @@ end
     @test rt isa AutoReactant
     @test rt.mode isa AutoEnzyme
 
-    rt2 = roundtrip(AutoReactant(; mode=AutoEnzyme(mode=EnzymeCore.Forward)))
+    rt2 = roundtrip(AutoReactant(; mode = AutoEnzyme(mode = EnzymeCore.Forward)))
     @test rt2.mode.mode isa EnzymeCore.ForwardMode
 end
 

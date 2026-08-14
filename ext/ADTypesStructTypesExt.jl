@@ -26,7 +26,8 @@ using StructTypes
 
 function __init__()
     ADTypes._COLORING_ALGORITHM_TYPES[:NoColoringAlgorithm] = ADTypes.NoColoringAlgorithm
-    ADTypes._SPARSITY_DETECTOR_TYPES[:NoSparsityDetector]   = ADTypes.NoSparsityDetector
+    ADTypes._SPARSITY_DETECTOR_TYPES[:NoSparsityDetector] = ADTypes.NoSparsityDetector
+    return nothing
 end
 
 StructTypes.StructType(::Type{ADTypes.AbstractColoringAlgorithm}) = StructTypes.AbstractType()
@@ -42,25 +43,25 @@ StructTypes.subtypes(::Type{ADTypes.AbstractSparsityDetector}) =
 StructTypes.StructType(::Type{ADTypes.AbstractADType}) = StructTypes.AbstractType()
 StructTypes.subtypekey(::Type{ADTypes.AbstractADType}) = :type
 StructTypes.subtypes(::Type{ADTypes.AbstractADType}) = (
-    AutoDiffractor           = ADTypes.AutoDiffractor,
-    AutoEnzyme               = ADTypes.AutoEnzyme,
-    AutoFastDifferentiation  = ADTypes.AutoFastDifferentiation,
-    AutoFiniteDiff           = ADTypes.AutoFiniteDiff,
-    AutoForwardDiff          = ADTypes.AutoForwardDiff,
-    AutoGTPSA                = ADTypes.AutoGTPSA,
-    AutoHyperHessians        = ADTypes.AutoHyperHessians,
-    AutoMooncake             = ADTypes.AutoMooncake,
-    AutoMooncakeForward      = ADTypes.AutoMooncakeForward,
+    AutoDiffractor = ADTypes.AutoDiffractor,
+    AutoEnzyme = ADTypes.AutoEnzyme,
+    AutoFastDifferentiation = ADTypes.AutoFastDifferentiation,
+    AutoFiniteDiff = ADTypes.AutoFiniteDiff,
+    AutoForwardDiff = ADTypes.AutoForwardDiff,
+    AutoGTPSA = ADTypes.AutoGTPSA,
+    AutoHyperHessians = ADTypes.AutoHyperHessians,
+    AutoMooncake = ADTypes.AutoMooncake,
+    AutoMooncakeForward = ADTypes.AutoMooncakeForward,
     AutoPolyesterForwardDiff = ADTypes.AutoPolyesterForwardDiff,
-    AutoReactant             = ADTypes.AutoReactant,
-    AutoReverseDiff          = ADTypes.AutoReverseDiff,
-    AutoSymbolics            = ADTypes.AutoSymbolics,
-    AutoTapir                = ADTypes.AutoTapir,
-    AutoTaylorDiff           = ADTypes.AutoTaylorDiff,
-    AutoTracker              = ADTypes.AutoTracker,
-    AutoZygote               = ADTypes.AutoZygote,
-    NoAutoDiff               = ADTypes.NoAutoDiff,
-    AutoSparse               = ADTypes.AutoSparse,
+    AutoReactant = ADTypes.AutoReactant,
+    AutoReverseDiff = ADTypes.AutoReverseDiff,
+    AutoSymbolics = ADTypes.AutoSymbolics,
+    AutoTapir = ADTypes.AutoTapir,
+    AutoTaylorDiff = ADTypes.AutoTaylorDiff,
+    AutoTracker = ADTypes.AutoTracker,
+    AutoZygote = ADTypes.AutoZygote,
+    NoAutoDiff = ADTypes.NoAutoDiff,
+    AutoSparse = ADTypes.AutoSparse,
 )
 
 # ── _TypedRepr — helper for fieldless types ───────────────────────────────────
@@ -194,7 +195,7 @@ StructTypes.lowertype(::Type{<:ADTypes.AutoSparse}) = _AutoSparseRepr
 function StructTypes.construct(::Type{<:ADTypes.AutoSparse}, x::_AutoSparseRepr)
     return ADTypes.AutoSparse(
         x.dense_ad;
-        sparsity_detector  = x.sparsity_detector,
+        sparsity_detector = x.sparsity_detector,
         coloring_algorithm = x.coloring_algorithm,
     )
 end
@@ -376,12 +377,12 @@ StructTypes.lowertype(::Type{<:ADTypes.AutoFiniteDiff}) = _AutoFiniteDiffRepr
 
 function StructTypes.construct(::Type{<:ADTypes.AutoFiniteDiff}, x::_AutoFiniteDiffRepr)
     return ADTypes.AutoFiniteDiff(
-        fdtype  = Val(Symbol(x.fdtype)),
+        fdtype = Val(Symbol(x.fdtype)),
         fdjtype = Val(Symbol(x.fdjtype)),
         fdhtype = Val(Symbol(x.fdhtype)),
         relstep = x.relstep,
         absstep = x.absstep,
-        dir     = x.dir,
+        dir = x.dir,
     )
 end
 
