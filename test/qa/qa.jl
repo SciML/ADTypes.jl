@@ -23,7 +23,6 @@ end
 run_qa(
     ADTypes;
     aqua_kwargs = (; deps_compat = (; check_extras = false)),
-    jet_kwargs = (; target_defined_modules = true),
     # Four unavoidable non-public names, ignored only in the public-API access check
     # (every other ExplicitImports check passes unignored):
     #   * `broadcastable` — the documented broadcasting customization hook;
