@@ -6,31 +6,50 @@ version = "1.23.0"
 [weakdeps]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
 ConstructionBase = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
+DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
 EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+SparseConnectivityTracer = "9f842d2f-2579-4b1d-911e-f412cf18a3f5"
+SparseMatrixColorings = "0a514795-09f3-496d-8182-132a7b665d35"
+StructUtils = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
 
 [extensions]
 ADTypesChainRulesCoreExt = "ChainRulesCore"
 ADTypesConstructionBaseExt = "ConstructionBase"
 ADTypesEnzymeCoreExt = "EnzymeCore"
+ADTypesEnzymeCoreJSONExt = ["EnzymeCore", "JSON", "StructUtils"]
+ADTypesEnzymeCoreStructUtilsExt = ["EnzymeCore", "StructUtils"]
+ADTypesJSONExt = ["JSON", "StructUtils"]
+ADTypesDIStructUtilsExt = ["DifferentiationInterface", "StructUtils"]
+ADTypesSCTStructUtilsExt = ["SparseConnectivityTracer", "StructUtils"]
+ADTypesSMCStructUtilsExt = ["SparseMatrixColorings", "StructUtils"]
+ADTypesStructUtilsExt = "StructUtils"
 
 [compat]
 ChainRulesCore = "1.0.2"
 ConstructionBase = "1.5"
+DifferentiationInterface = "0.7"
 EnzymeCore = "0.5.3,0.6,0.7,0.8"
+JSON = "1"
 SafeTestsets = "0.1, 1"
 SciMLTesting = "2.4"
 Setfield = "1"
 SparseArrays = "1"
+SparseConnectivityTracer = "1"
+SparseMatrixColorings = "0.4"
+StructUtils = "2"
 julia = "1.10"
 
 [extras]
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
 EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Setfield = "efcf1570-3423-57d1-acb7-fd33fddbac46"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+StructUtils = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["ChainRulesCore", "EnzymeCore", "SafeTestsets", "SciMLTesting", "Setfield", "SparseArrays", "Test"]
+test = ["ChainRulesCore", "EnzymeCore", "JSON", "SafeTestsets", "SciMLTesting", "Setfield", "SparseArrays", "StructUtils", "Test"]

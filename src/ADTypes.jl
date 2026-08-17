@@ -33,6 +33,35 @@ include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
 
+# Mutable registries used by ADTypesStructUtilsExt and its companion extensions
+# to make @choosetype dispatch dynamic.  Extensions add their own concrete
+# subtypes during their __init__ callbacks so that JSON can read/write values
+# typed as AbstractColoringAlgorithm or AbstractSparsityDetector regardless of
+# which optional packages are loaded.
+const _COLORING_ALGORITHM_TYPES = Dict{Symbol, Type}()
+const _SPARSITY_DETECTOR_TYPES = Dict{Symbol, Type}()
+
+"""
+    write_ad(ad::AbstractADType) -> String
+
+Serialize an [`AbstractADType`](@ref) to a JSON string.
+
+The output always contains a `"type"` key with the concrete type name, enabling
+round-trip deserialization with [`read_ad`](@ref).
+
+Requires `StructUtils` and `JSON` to be loaded (via the `ADTypesJSONExt` extension).
+"""
+function write_ad end
+
+"""
+    read_ad(json::AbstractString) -> AbstractADType
+
+Deserialize an [`AbstractADType`](@ref) from a JSON string produced by [`write_ad`](@ref).
+
+Requires `StructUtils` and `JSON` to be loaded (via the `ADTypesJSONExt` extension).
+"""
+function read_ad end
+
 # Automatic Differentiation
 export AbstractADType
 export AutoChainRules,
@@ -61,6 +90,7 @@ export AutoChainRules,
 @public ForwardMode, ReverseMode, ForwardOrReverseMode, SymbolicMode
 @public mode
 @public Auto
+@public write_ad, read_ad
 
 # Sparse Automatic Differentiation
 export AutoSparse

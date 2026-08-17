@@ -13,6 +13,7 @@ run_tests(;
         @safetestset "Symbols" include("symbols.jl")
         @safetestset "Legacy" include("legacy.jl")
         @safetestset "Miscellaneous" include("misc.jl")
+        @safetestset "JSON" include("json.jl")
         return if VERSION >= v"1.11.0-DEV.469"
             @safetestset "Public" include("public.jl")
         end
