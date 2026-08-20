@@ -32,6 +32,7 @@ include("dense.jl")
 include("sparse.jl")
 include("legacy.jl")
 include("symbols.jl")
+include("precompile.jl")
 
 # Automatic Differentiation
 export AbstractADType
