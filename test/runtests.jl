@@ -13,6 +13,7 @@ run_tests(;
         @safetestset "Symbols" include("symbols.jl")
         @safetestset "Legacy" include("legacy.jl")
         @safetestset "Miscellaneous" include("misc.jl")
+        @safetestset "Precompile workload" include("precompile_workload.jl")
         return if VERSION >= v"1.11.0-DEV.469"
             @safetestset "Public" include("public.jl")
         end
