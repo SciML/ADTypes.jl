@@ -1,6 +1,6 @@
 using ADTypes
 using ADTypes: write_ad, read_ad, NoSparsityDetector, NoColoringAlgorithm,
-    register_sparsity_detector_type!
+    register_sparsity_detector_type!, register_coloring_algorithm_type!
 using EnzymeCore: EnzymeCore
 using JSON
 using StructUtils
@@ -80,6 +80,9 @@ end
 struct _JSONRegisteredDetector <: AbstractSparsityDetector end
 struct _JSONConflictingDetector <: AbstractSparsityDetector end
 
+struct _JSONRegisteredColoring <: AbstractColoringAlgorithm end
+struct _JSONConflictingColoring <: AbstractColoringAlgorithm end
+
 @testset "round-trip via abstract-typed struct field" begin
     for ad in [
             AutoDiffractor(),
@@ -115,6 +118,28 @@ end
         _JSONRegisteredDetector
     @test_throws ArgumentError register_sparsity_detector_type!(
         :JSONRegisteredDetector, _JSONConflictingDetector
+    )
+end
+
+@testset "register_coloring_algorithm_type! drives JSON deserialization" begin
+    register_coloring_algorithm_type!(:JSONRegisteredColoring, _JSONRegisteredColoring)
+
+    json = """
+    {
+        "type": "AutoSparse",
+        "dense_ad":             {"type": "AutoZygote"},
+        "sparsity_detector":    {"type": "NoSparsityDetector"},
+        "coloring_algorithm":   {"type": "JSONRegisteredColoring"}
+    }
+    """
+    ad = read_ad(json)
+    @test ad isa AutoSparse
+    @test ad.coloring_algorithm isa _JSONRegisteredColoring
+
+    @test register_coloring_algorithm_type!(:JSONRegisteredColoring, _JSONRegisteredColoring) ===
+        _JSONRegisteredColoring
+    @test_throws ArgumentError register_coloring_algorithm_type!(
+        :JSONRegisteredColoring, _JSONConflictingColoring
     )
 end
 

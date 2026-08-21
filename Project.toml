@@ -9,7 +9,6 @@ ConstructionBase = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
 EnzymeCore = "f151be2c-9106-41f4-ab19-57ee4f262869"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-SparseMatrixColorings = "0a514795-09f3-496d-8182-132a7b665d35"
 StructUtils = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
 
 [extensions]
@@ -20,7 +19,6 @@ ADTypesEnzymeCoreJSONExt = ["EnzymeCore", "JSON", "StructUtils"]
 ADTypesEnzymeCoreStructUtilsExt = ["EnzymeCore", "StructUtils"]
 ADTypesJSONExt = ["JSON", "StructUtils"]
 ADTypesDIStructUtilsExt = ["DifferentiationInterface", "StructUtils"]
-ADTypesSMCStructUtilsExt = ["SparseMatrixColorings", "StructUtils"]
 ADTypesStructUtilsExt = "StructUtils"
 
 [compat]
@@ -33,7 +31,6 @@ SafeTestsets = "0.1, 1"
 SciMLTesting = "2.4"
 Setfield = "1"
 SparseArrays = "1"
-SparseMatrixColorings = "0.4"
 StructUtils = "2"
 julia = "1.10"
 

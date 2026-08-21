@@ -104,6 +104,7 @@ export jacobian_sparsity, hessian_sparsity
 @public KnownJacobianSparsityDetector
 @public KnownHessianSparsityDetector
 @public register_sparsity_detector_type!
+@public register_coloring_algorithm_type!
 
 # Matrix coloring
 export AbstractColoringAlgorithm
