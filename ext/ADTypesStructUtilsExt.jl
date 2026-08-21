@@ -1,6 +1,7 @@
 module ADTypesStructUtilsExt
 
 using ADTypes
+using ADTypes: register_coloring_algorithm_type!, register_sparsity_detector_type!
 using StructUtils
 
 # ── Abstract supertype registrations ──────────────────────────────────────────
@@ -14,8 +15,8 @@ using StructUtils
 # The base concrete types are registered in __init__ below.
 
 function __init__()
-    ADTypes._COLORING_ALGORITHM_TYPES[:NoColoringAlgorithm] = ADTypes.NoColoringAlgorithm
-    ADTypes.register_sparsity_detector_type!(:NoSparsityDetector, ADTypes.NoSparsityDetector)
+    register_coloring_algorithm_type!(:NoColoringAlgorithm, ADTypes.NoColoringAlgorithm)
+    register_sparsity_detector_type!(:NoSparsityDetector, ADTypes.NoSparsityDetector)
     return nothing
 end
 
