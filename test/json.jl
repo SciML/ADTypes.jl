@@ -1,5 +1,6 @@
 using ADTypes
-using ADTypes: write_ad, read_ad, NoSparsityDetector, NoColoringAlgorithm
+using ADTypes: write_ad, read_ad, NoSparsityDetector, NoColoringAlgorithm,
+    register_sparsity_detector_type!
 using EnzymeCore: EnzymeCore
 using JSON
 using StructUtils
@@ -76,6 +77,9 @@ struct _TestConfig
     backend::AbstractADType
 end
 
+struct _JSONRegisteredDetector <: AbstractSparsityDetector end
+struct _JSONConflictingDetector <: AbstractSparsityDetector end
+
 @testset "round-trip via abstract-typed struct field" begin
     for ad in [
             AutoDiffractor(),
@@ -90,6 +94,28 @@ end
         recovered = JSON.parse(json, _TestConfig)
         @test recovered.backend isa typeof(ad)
     end
+end
+
+@testset "register_sparsity_detector_type! drives JSON deserialization" begin
+    register_sparsity_detector_type!(:JSONRegisteredDetector, _JSONRegisteredDetector)
+
+    json = """
+    {
+        "type": "AutoSparse",
+        "dense_ad":             {"type": "AutoZygote"},
+        "sparsity_detector":    {"type": "JSONRegisteredDetector"},
+        "coloring_algorithm":   {"type": "NoColoringAlgorithm"}
+    }
+    """
+    ad = read_ad(json)
+    @test ad isa AutoSparse
+    @test ad.sparsity_detector isa _JSONRegisteredDetector
+
+    @test register_sparsity_detector_type!(:JSONRegisteredDetector, _JSONRegisteredDetector) ===
+        _JSONRegisteredDetector
+    @test_throws ArgumentError register_sparsity_detector_type!(
+        :JSONRegisteredDetector, _JSONConflictingDetector
+    )
 end
 
 # ── read_ad from hand-written JSON (Python interop simulation) ─────────────────

@@ -31,6 +31,31 @@ coloring than the same matrix passed through `dropzeros`.
 abstract type AbstractSparsityDetector end
 
 """
+    register_sparsity_detector_type!(name::Symbol, T::Type{<:AbstractSparsityDetector})
+
+Register `T` under discriminator `name` for `StructUtils`-based deserialization of
+[`AbstractSparsityDetector`](@ref) values.
+
+Re-registering the same `name => T` mapping is a no-op. Registering the same
+`name` for a different type throws `ArgumentError`.
+"""
+function register_sparsity_detector_type!(
+        name::Symbol, T::Type{<:AbstractSparsityDetector}
+    )
+    existing = get(_SPARSITY_DETECTOR_TYPES, name, nothing)
+    if isnothing(existing)
+        _SPARSITY_DETECTOR_TYPES[name] = T
+    elseif existing !== T
+        throw(
+            ArgumentError(
+                "Sparsity detector type name $name is already registered for $(existing); cannot re-register it for $(T)."
+            )
+        )
+    end
+    return T
+end
+
+"""
     jacobian_sparsity(f, x, sd::AbstractSparsityDetector)::AbstractMatrix{Bool}
     jacobian_sparsity(f!, y, x, sd::AbstractSparsityDetector)::AbstractMatrix{Bool}
 

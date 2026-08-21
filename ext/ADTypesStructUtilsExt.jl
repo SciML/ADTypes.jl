@@ -15,7 +15,7 @@ using StructUtils
 
 function __init__()
     ADTypes._COLORING_ALGORITHM_TYPES[:NoColoringAlgorithm] = ADTypes.NoColoringAlgorithm
-    ADTypes._SPARSITY_DETECTOR_TYPES[:NoSparsityDetector] = ADTypes.NoSparsityDetector
+    ADTypes.register_sparsity_detector_type!(:NoSparsityDetector, ADTypes.NoSparsityDetector)
     return nothing
 end
 

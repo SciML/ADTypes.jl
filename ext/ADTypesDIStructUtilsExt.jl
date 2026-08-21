@@ -18,8 +18,9 @@ using DifferentiationInterface
 # with the package that owns the type and avoids type piracy.
 
 function __init__()
-    ADTypes._SPARSITY_DETECTOR_TYPES[:DenseSparsityDetector] =
-        DifferentiationInterface.DenseSparsityDetector
+    ADTypes.register_sparsity_detector_type!(
+        :DenseSparsityDetector, DifferentiationInterface.DenseSparsityDetector
+    )
     return nothing
 end
 
