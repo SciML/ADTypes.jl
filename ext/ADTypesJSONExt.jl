@@ -65,12 +65,12 @@ function StructUtils.make(style::JSON.JSONStyle, ::Type{ADTypes.AutoTapir}, sour
 end
 
 function StructUtils.make(style::JSON.JSONStyle, ::Type{<:ADTypes.AutoFiniteDiff}, source)
-    fdtype  = Val(Symbol(source["fdtype"][]))
+    fdtype = Val(Symbol(source["fdtype"][]))
     fdjtype = Val(Symbol(source["fdjtype"][]))
     fdhtype = Val(Symbol(source["fdhtype"][]))
     relstep = source["relstep"][]
     absstep = source["absstep"][]
-    dir     = source["dir"][]
+    dir = source["dir"][]
     return ADTypes.AutoFiniteDiff(; fdtype, fdjtype, fdhtype, relstep, absstep, dir),
         JSON.skip(source)
 end
