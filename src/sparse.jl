@@ -133,6 +133,31 @@ function jacobian_sparsity(f!, y, x, sd::KnownHessianSparsityDetector)
     throw(ArgumentError("KnownHessianSparsityDetector can't be used to compute Jacobian sparsity."))
 end
 
+"""
+    register_sparsity_detector_type!(name::Symbol, T::Type{<:AbstractSparsityDetector})
+
+Register `T` under discriminator `name` for `StructUtils`-based deserialization of
+[`AbstractSparsityDetector`](@ref) values.
+
+Re-registering the same `name => T` mapping is a no-op. Registering the same
+`name` for a different type throws `ArgumentError`.
+"""
+function register_sparsity_detector_type!(
+        name::Symbol, T::Type{<:AbstractSparsityDetector}
+    )
+    existing = get(_SPARSITY_DETECTOR_TYPES, name, nothing)
+    if isnothing(existing)
+        _SPARSITY_DETECTOR_TYPES[name] = T
+    elseif existing !== T
+        throw(
+            ArgumentError(
+                "Sparsity detector type name $name is already registered for $(existing); cannot re-register it for $(T)."
+            )
+        )
+    end
+    return T
+end
+
 ## Coloring algorithm
 
 """
@@ -201,6 +226,31 @@ struct NoColoringAlgorithm <: AbstractColoringAlgorithm end
 column_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 2)
 row_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
 symmetric_coloring(M::AbstractMatrix, ::NoColoringAlgorithm) = 1:size(M, 1)
+
+"""
+    register_coloring_algorithm_type!(name::Symbol, T::Type{<:AbstractColoringAlgorithm})
+
+Register `T` under discriminator `name` for `StructUtils`-based deserialization of
+[`AbstractColoringAlgorithm`](@ref) values.
+
+Re-registering the same `name => T` mapping is a no-op. Registering the same
+`name` for a different type throws `ArgumentError`.
+"""
+function register_coloring_algorithm_type!(
+        name::Symbol, T::Type{<:AbstractColoringAlgorithm}
+    )
+    existing = get(_COLORING_ALGORITHM_TYPES, name, nothing)
+    if isnothing(existing)
+        _COLORING_ALGORITHM_TYPES[name] = T
+    elseif existing !== T
+        throw(
+            ArgumentError(
+                "Coloring algorithm type name $name is already registered for $(existing); cannot re-register it for $(T)."
+            )
+        )
+    end
+    return T
+end
 
 ## Sparse backend
 
