@@ -86,6 +86,7 @@ ADTypes.hessian_sparsity
 ADTypes.NoSparsityDetector
 ADTypes.KnownJacobianSparsityDetector
 ADTypes.KnownHessianSparsityDetector
+ADTypes.register_sparsity_detector_type!
 ```
 
 ### Coloring algorithm
@@ -97,6 +98,7 @@ ADTypes.column_coloring
 ADTypes.row_coloring
 ADTypes.symmetric_coloring
 ADTypes.NoColoringAlgorithm
+ADTypes.register_coloring_algorithm_type!
 ```
 
 ## No automatic differentiation
@@ -121,6 +123,8 @@ ADTypes.SymbolicMode
 
 ```@docs
 ADTypes.Auto
+ADTypes.read_ad
+ADTypes.write_ad
 ```
 
 ## Deprecated
