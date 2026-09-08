@@ -1,7 +1,7 @@
 using ADTypes
 using Test
 
-@test ADTypes.Auto(:ChainRules, 1) isa AutoChainRules{Int64}
+@test ADTypes.Auto(:ChainRules, 1) isa AutoChainRules{Int}
 @test ADTypes.Auto(:Diffractor) isa AutoDiffractor
 @test ADTypes.Auto(:Enzyme) isa AutoEnzyme
 @test ADTypes.Auto(:FastDifferentiation) isa AutoFastDifferentiation
