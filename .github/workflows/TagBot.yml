@@ -5,5 +5,19 @@ on:
   workflow_dispatch:
 jobs:
   tagbot:
+    # This repository's default GITHUB_TOKEN is read-only; the reusable workflow needs these to run and to tag.
+    permissions:
+      actions: read
+      checks: read
+      contents: write
+      deployments: read
+      issues: read
+      discussions: read
+      packages: read
+      pages: read
+      pull-requests: read
+      repository-projects: read
+      security-events: read
+      statuses: read
     uses: "SciML/.github/.github/workflows/tagbot.yml@v1"
     secrets: "inherit"
