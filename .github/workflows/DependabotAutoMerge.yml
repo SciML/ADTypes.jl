@@ -5,6 +5,9 @@ permissions:
   pull-requests: write
   checks: read
   statuses: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   automerge:
     uses: "SciML/.github/.github/workflows/dependabot-automerge.yml@v1"
