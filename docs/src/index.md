@@ -54,6 +54,7 @@ AutoZygote
 AutoEnzyme
 AutoChainRules
 AutoDiffractor
+AutoPiste
 ```
 
 ### Forward, reverse, or sparse mode
