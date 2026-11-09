@@ -385,6 +385,43 @@ function Base.show(io::IO, backend::AutoMooncakeForward)
 end
 
 """
+    AutoPiste{M,chunksize}
+
+Struct used to select the [Piste.jl](https://github.com/EvoArt/Piste.jl) backend for automatic differentiation.
+
+Defined by [ADTypes.jl](https://github.com/SciML/ADTypes.jl).
+
+# Constructors
+
+    AutoPiste(; mode=ForwardMode(), chunksize=nothing)
+
+# Type parameters
+
+  - `chunksize`: the number of partials carried per forward pass (forward mode only), either `nothing` or an `Int`.
+    Pass an explicit value when compiling with `juliac --trim`, so that the width is known statically.
+
+# Fields
+
+  - `mode::M`: either [`ForwardMode()`](@ref ForwardMode) (dual numbers) or [`ReverseMode()`](@ref ReverseMode) (a tape).
+"""
+struct AutoPiste{M <: Union{ForwardMode, ReverseMode}, chunksize} <: AbstractADType
+    mode::M
+end
+
+function AutoPiste(; mode::M = ForwardMode(), chunksize = nothing) where {M}
+    return AutoPiste{M, _unwrap_val(chunksize)}(mode)
+end
+
+mode(backend::AutoPiste) = backend.mode
+
+function Base.show(io::IO, backend::AutoPiste{M, chunksize}) where {M, chunksize}
+    print(io, AutoPiste, "(")
+    print(io, "mode=", repr(backend.mode; context = io))
+    chunksize !== nothing && print(io, ", chunksize=", repr(chunksize; context = io))
+    return print(io, ")")
+end
+
+"""
     AutoPolyesterForwardDiff{chunksize,T}
 
 Struct used to select the [PolyesterForwardDiff.jl](https://github.com/JuliaDiff/PolyesterForwardDiff.jl) backend for automatic differentiation.

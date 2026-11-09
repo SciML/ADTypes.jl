@@ -10,6 +10,7 @@ using Test
 @test ADTypes.Auto(:ForwardDiff) isa AutoForwardDiff
 @test ADTypes.Auto(:HyperHessians) isa AutoHyperHessians
 @test ADTypes.Auto(:Mooncake) isa AutoMooncake
+@test ADTypes.Auto(:Piste) isa AutoPiste
 @test ADTypes.Auto(:PolyesterForwardDiff) isa AutoPolyesterForwardDiff
 @test ADTypes.Auto(:ReverseDiff) isa AutoReverseDiff
 @test ADTypes.Auto(:Reactant) isa AutoReactant

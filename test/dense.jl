@@ -203,6 +203,26 @@ end
     @test ad.config === nothing
 end
 
+@testset "AutoPiste" begin
+    ad = AutoPiste()
+    @test ad isa AbstractADType
+    @test ad isa AutoPiste{ForwardMode, nothing}
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoPiste(; chunksize = 4)
+    @test ad isa AutoPiste{ForwardMode, 4}
+    @test mode(ad) isa ForwardMode
+
+    ad = AutoPiste(; chunksize = Val(4))
+    @test ad isa AutoPiste{ForwardMode, 4}
+
+    ad = AutoPiste(; mode = ReverseMode())
+    @test ad isa AutoPiste{ReverseMode, nothing}
+    @test mode(ad) isa ReverseMode
+
+    @test_throws TypeError AutoPiste(; mode = SymbolicMode())
+end
+
 @testset "AutoPolyesterForwardDiff" begin
     ad = AutoPolyesterForwardDiff()
     @test ad isa AbstractADType
